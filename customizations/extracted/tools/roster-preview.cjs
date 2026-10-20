@@ -31,6 +31,11 @@ app.whenReady().then(async()=>{
   if(!popup.close||!popup.fits||!popup.text.includes('星海龙吟')||popup.opacity!=='1')throw Error(JSON.stringify(popup));
   fs.writeFileSync(path.join(output,'AI称号与技能详情.png'),(await w.webContents.capturePage()).toPNG());
   await run(`document.querySelector('.intro-close').click();`);await until(`return !document.querySelector('#nodeintro');`);
+  await run(`window.preview.close();ui.openDisplaySettings();[...document.querySelectorAll('.accessibility-panel button')].find(node=>node.textContent==='手机紧凑').click();`);
+  w.setContentSize(844,390);await delay(500);
+  fs.writeFileSync(path.join(output,'显示与操作.png'),(await w.webContents.capturePage()).toPNG());
+  await run(`document.querySelector('.accessibility-close').click();`);await delay(500);
+  fs.writeFileSync(path.join(output,'手机横屏游戏内预览.png'),(await w.webContents.capturePage()).toPNG());
   fs.writeFileSync(path.join(__dirname,'roster-preview.log'),'PASS '+JSON.stringify({info,popup})+'\n');
  }catch(error){fs.writeFileSync(path.join(__dirname,'roster-preview.log'),'FAIL '+error.stack);process.exitCode=1;}
  finally{w.destroy();app.exit(process.exitCode||0);}
