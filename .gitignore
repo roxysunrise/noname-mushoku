@@ -1,0 +1,35 @@
+dist
+output
+node_modules
+package-lock.json
+
+# Local build diagnostics, temporary files and credentials
+*.log
+/tmp/
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+
+# Upstream automation requires separate workflow authorization and setup
+/.github/workflows/
+
+# IDE
+.idea/
+.vscode/
+
+# macOS
+._*
+.Spotlight-V100
+.Trashes
+.DS_Store
+.DS_Store?
+
+# Windows
+ehthumbs.db
+Thumbs.db
+
+# Skill for private use
+.agents/skills/*-selfuse
