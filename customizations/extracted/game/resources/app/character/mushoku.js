@@ -5,7 +5,11 @@ import { game as game5 } from "noname";
 var characters = {
   ac_yumeko: { sex: "female", group: "huan", hp: 4, maxHp: 4, skills: ["ac_haodu", "ac_xuju"], img: "image/character/ac_yumeko.jpg" },
   ac_kaito: { sex: "male", group: "huan", hp: 4, maxHp: 4, skills: ["ac_zhangyan"], img: "image/character/ac_kaito.jpg" },
-  ac_chatgpt: { sex: "none", group: "xu", hp: 4, maxHp: 4, skills: ["ac_tuiyan"], img: "image/character/ac_chatgpt.jpg" },
+  ac_chatgpt: { sex: "female", group: "xu", hp: 4, maxHp: 4, skills: ["ac_tuiyan"], img: "image/character/ac_chatgpt.jpg" },
+  ai_doubao: { sex: "female", group: "xu", hp: 3, skills: ["ai_banda", "ai_qingyu"], img: "image/character/ai_doubao.jpg" },
+  ai_deepseek: { sex: "female", group: "xu", hp: 3, skills: ["ai_shensuan", "ai_chengsi"], img: "image/character/ai_deepseek.jpg" },
+  ai_claude: { sex: "female", group: "xu", hp: 3, skills: ["ai_shenshen", "ai_chengzhang"], img: "image/character/ai_claude.jpg" },
+  ai_grok: { sex: "female", group: "xu", hp: 4, skills: ["ai_ruiwen", "ai_zhuiwen"], img: "image/character/ai_grok.jpg" },
   mc_netherite: { sex: "none", group: "qi", hp: 4, maxHp: 4, skills: ["mc_fengcang", "mc_xiejia", "mc_rongzhu"], img: "image/character/mc_netherite.jpg" },
   th_mokou: { sex: "female", group: "shen", hp: 2, maxHp: 2, skills: ["th_penglai", "th_fengyi"], img: "image/character/th_mokou.jpg" },
   ac_yuu: { sex: "male", group: "huan", hp: 3, maxHp: 3, skills: ["ac_heyun", "ac_yinhui"], img: "image/character/ac_yuu.jpg" },
@@ -22,8 +26,35 @@ var characters = {
 for (const [id, character] of Object.entries(characters)) character.img ??= `image/character/${id}.${id.startsWith("ac_") || id.startsWith("mc_") ? "svg" : "jpg"}`;
 var mushoku_characters_default = characters;
 
+// game/resources/app/src/noname/init/mushoku-rosters.js
+var packForCharacter = (id) => id === "ac_chatgpt" || id.startsWith("ai_") ? "ai" : id.startsWith("mc_") ? "minecraft" : "mushoku";
+var badge = (text, color) => `<span style="display:inline-block;color:${color};border:1px solid currentColor;border-radius:5px;padding:1px 5px;margin:2px 3px;line-height:1.5;font-size:.9em">${text}</span>`;
+var labels = {
+  th_mokou: [["\u4E0D\u706D\u7684\u70DF\u706B", "#ff8d72"], ["\u84EC\u83B1\u4E0D\u6B7B", "#ffd284"]],
+  ac_yumeko: [["\u6DF1\u6E0A\u8D4C\u5F92", "#e898ac"], ["\u547D\u8FD0\u8C6A\u8D4C", "#d0a5ff"]],
+  ac_kaito: [["\u6708\u4E0B\u9B54\u672F\u5E08", "#a4d8ff"], ["\u5343\u9762\u5E7B\u5F71", "#d3c3ff"]],
+  ac_yuu: [["\u661F\u9699\u56DE\u58F0", "#adc5ff"], ["\u9006\u65F6\u97F3\u5F8B", "#a2e4e5"]],
+  mt_rudeus: [["\u65E0\u58F0\u548F\u5531", "#a0d5fa"], ["\u9B54\u672F\u65B0\u751F", "#d5b0f5"]],
+  mt_roxy: [["\u6C34\u8272\u5BFC\u5E08", "#94d4fa"], ["\u8FFD\u77E5\u4E4B\u65C5", "#b9c8ff"]],
+  mt_sylphie: [["\u9759\u98CE\u5B88\u671B", "#a6e5bb"], ["\u6E29\u67D4\u63F4\u62A4", "#c2e6ed"]],
+  mt_eris: [["\u8D64\u5203\u51B3\u610F", "#ff9d96"], ["\u5251\u5FC3\u4E0D\u9000", "#ffc582"]],
+  mt_orsted: [["\u9F99\u795E", "#e5c887"], ["\u8F6E\u56DE\u5B64\u65C5", "#b6c8ea"]],
+  mt_ruijerd: [["\u989D\u773C\u5B88\u62A4", "#9be0c8"], ["\u4E0D\u5C48\u6218\u58EB", "#e5c194"]],
+  mt_paul: [["\u4E09\u6D41\u6D3E\u5251\u58EB", "#d7bf92"], ["\u820D\u8EAB\u6551\u63F4", "#f6b0a0"]],
+  mt_ghislaine: [["\u5251\u738B", "#f3b36f"], ["\u6388\u5251\u4E4B\u5E08", "#c4dba7"]],
+  mc_dream: [["\u9010\u730E\u5E7B\u8E2A", "#a8e887"], ["\u7EDD\u5883\u9003\u751F", "#8fe0d7"]],
+  mc_netherite: [["\u4F59\u70EC\u4E4B\u950B", "#d7a4ef"], ["\u7194\u94F8\u653B\u5B88", "#efba8a"]],
+  ac_chatgpt: [["\u4E07\u8A00\u4E4B\u955C", "#9ce0ca"], ["\u661F\u6D77\u9F99\u541F", "#dbb7ff"]],
+  ai_doubao: [["\u4E91\u95F4\u4F34\u8BED", "#ffc49d"], ["\u6696\u5FC3\u5171\u9E23", "#ffadca"]],
+  ai_deepseek: [["\u6DF1\u6D77\u6C42\u7D22", "#9acfff"], ["\u6F84\u6F88\u63A8\u7406", "#93e4e2"]],
+  ai_claude: [["\u957F\u5377\u7EC7\u8BED", "#efbf9c"], ["\u5BA1\u614E\u5B88\u671B", "#cfb7ef"]],
+  ai_grok: [["\u661F\u9645\u9510\u95EE", "#c1d3f7"], ["\u9006\u98CE\u8FFD\u95EE", "#f1a4ca"]]
+};
+var characterTitles = Object.fromEntries(Object.entries(labels).map(([id, values]) => [id, values.map(([text, color]) => badge(text, color)).join(" ")]));
+var titlesForPack = (pack) => Object.fromEntries(Object.entries(characterTitles).filter(([id]) => packForCharacter(id) === pack));
+
 // game/resources/app/src/character/mushoku/character.js
-var character_default = Object.fromEntries(Object.entries(mushoku_characters_default).filter(([id]) => !id.startsWith("mc_")));
+var character_default = Object.fromEntries(Object.entries(mushoku_characters_default).filter(([id]) => packForCharacter(id) === "mushoku"));
 
 // game/resources/app/src/character/mushoku/skill.js
 import { lib, game, get, _status } from "noname";
@@ -147,7 +178,7 @@ var skills = {
   },
   mt_resolve: {
     trigger: { player: "phaseJieshuBegin" },
-    filter: (event, player) => player.getHistory("sourceDamage").length > 0,
+    filter: (event, player) => player.hp <= 2 || player.getHistory("sourceDamage").length > 0,
     frequent: true,
     async content(event, trigger, player) {
       await player.draw(player.hp <= 2 ? 2 : player.getHistory("sourceDamage").reduce((sum, evt) => sum + evt.num, 0));
@@ -400,7 +431,7 @@ var translate_default = {
   mt_sword: "\u70C8\u5251",
   mt_sword_info: "\u6BCF\u56DE\u5408\u9650\u4E00\u6B21\uFF0C\u4F60\u4E8E\u51FA\u724C\u9636\u6BB5\u4F7F\u7528\u4EC5\u6307\u5B9A\u4E00\u4E2A\u76EE\u6807\u7684\u3010\u6740\u3011\u6307\u5B9A\u76EE\u6807\u540E\uFF0C\u4F60\u53EF\u4EE5\u5931\u53BB1\u70B9\u4F53\u529B\uFF0C\u4EE4\u8BE5\u76EE\u6807\u4E0D\u80FD\u54CD\u5E94\u6B64\u3010\u6740\u3011\u3002",
   mt_resolve: "\u51B3\u610F",
-  mt_resolve_info: "\u7ED3\u675F\u9636\u6BB5\uFF0C\u82E5\u4F60\u672C\u56DE\u5408\u9020\u6210\u8FC7\u4F24\u5BB3\uFF0C\u4F60\u53EF\u4EE5\u6478X\u5F20\u724C\uFF08X\u4E3A\u4F60\u672C\u56DE\u5408\u9020\u6210\u7684\u4F24\u5BB3\u603B\u70B9\u6570\uFF09\uFF1B\u82E5\u4F60\u7684\u4F53\u529B\u4E0D\u5927\u4E8E2\uFF0C\u6539\u4E3A\u6478\u4E24\u5F20\u724C\u3002",
+  mt_resolve_info: "\u7ED3\u675F\u9636\u6BB5\uFF0C\u82E5\u4F60\u7684\u4F53\u529B\u4E0D\u5927\u4E8E2\uFF0C\u4F60\u53EF\u4EE5\u6478\u4E24\u5F20\u724C\uFF1B\u5426\u5219\uFF0C\u82E5\u4F60\u672C\u56DE\u5408\u9020\u6210\u8FC7\u4F24\u5BB3\uFF0C\u4F60\u53EF\u4EE5\u6478X\u5F20\u724C\uFF08X\u4E3A\u4F60\u672C\u56DE\u5408\u9020\u6210\u7684\u4F24\u5BB3\u603B\u70B9\u6570\uFF09\u3002",
   mt_dragon: "\u9F99\u529B",
   mt_dragon_info: "\u9996\u6B21\u83B7\u5F97\u6B64\u6280\u80FD\u65F6\uFF0C\u4F60\u83B7\u5F973\u70B9\u9F99\u529B\uFF08\u4E0A\u96503\uFF09\u3002\u4F60\u4F7F\u7528\u3010\u6740\u3011\u65E0\u8DDD\u79BB\u9650\u5236\u3002\u6BCF\u56DE\u5408\u5404\u9650\u4E00\u6B21\uFF1A\u2460\u4F60\u4E8E\u51FA\u724C\u9636\u6BB5\u4EE5\u3010\u6740\u3011\u5BF9\u5176\u4ED6\u89D2\u8272\u9020\u6210\u4F24\u5BB3\u65F6\uFF0C\u53EF\u4EE5\u6D88\u80171\u70B9\u9F99\u529B\u4EE4\u4F24\u5BB3+1\uFF1B\u2461\u4F60\u53D7\u5230\u4F24\u5BB3\u65F6\uFF0C\u53EF\u4EE5\u6D88\u80171\u70B9\u9F99\u529B\u4EE4\u4F24\u5BB3-1\u3002\u9501\u5B9A\u6280\uFF0C\u7ED3\u675F\u9636\u6BB5\uFF0C\u82E5\u4F60\u672C\u56DE\u5408\u672A\u9020\u6210\u8FC7\u4F24\u5BB3\uFF0C\u4F60\u56DE\u590D1\u70B9\u9F99\u529B\uFF08\u81F3\u591A3\uFF09\u3002",
   mt_dragon_strike: "\u9F99\u529B\xB7\u653B",
@@ -448,6 +479,7 @@ var visibleSkills = (player) => player.getSkills(null, false, false).filter((id)
   return info && !info.charlotte && !info.hiddenSkill && lib2.translate[id + "_info"];
 });
 var learnable = (player, target) => visibleSkills(target).filter((id) => !player.hasSkill(id));
+var remoteChoice = (source) => get2.infoFuncOL("_noname_func:" + source);
 var crossover_default = {
   ac_heyun: {
     enable: "phaseUse",
@@ -461,7 +493,8 @@ var crossover_default = {
     async content(event, trigger, player) {
       const list = visibleSkills(player);
       if (!list.length) return;
-      const result = await player.chooseControl(list).set("prompt", "\u5408\u97F5\uFF1A\u5931\u53BB\u4E00\u4E2A\u6280\u80FD\uFF0C\u7136\u540E\u4EE4\u6240\u9009\u89D2\u8272\u6478\u4E24\u5F20\u724C").set("ai", () => list.find((id) => (player.additionalSkills.ac_yinhui || []).includes(id)) || list[0]).forResult();
+      const preferred = list.find((id) => (player.additionalSkills.ac_yinhui || []).includes(id)) || list[0];
+      const result = await player.chooseControl(list).set("prompt", "\u5408\u97F5\uFF1A\u5931\u53BB\u4E00\u4E2A\u6280\u80FD\uFF0C\u7136\u540E\u4EE4\u6240\u9009\u89D2\u8272\u6478\u4E24\u5F20\u724C").set("acHeyunPreferred", preferred).set("ai", remoteChoice("() => _status.event.acHeyunPreferred")).forResult();
       if (!list.includes(result.control)) return;
       await player.removeSkills(result.control);
       if (event.target.isIn()) await event.target.draw(2);
@@ -471,6 +504,9 @@ var crossover_default = {
     } } }
   },
   ac_yinhui: {
+    // Remote choice functions are serialized without this module's lexical scope.
+    // Resolve helpers through the client's loaded skill registry, including after bundling.
+    learnable,
     trigger: { global: "roundStart" },
     filter(event, player) {
       return (player.additionalSkills.ac_yinhui || []).length > 0 || game2.hasPlayer((target) => target !== player && learnable(player, target).length > 0);
@@ -482,11 +518,12 @@ var crossover_default = {
         player.removeAdditionalSkill("ac_yinhui");
       }
       if (!game2.hasPlayer((target) => target !== player && learnable(player, target).length > 0)) return;
-      const chosen = await player.chooseTarget("\u97F3\u6D04\uFF1A\u9009\u62E9\u4E00\u540D\u5176\u4ED6\u89D2\u8272\uFF0C\u83B7\u5F97\u5176\u4E00\u4E2A\u5F53\u524D\u6280\u80FD", true, (card, source, target) => target !== source && learnable(source, target).length > 0).set("ai", (target) => Math.max(0, ...learnable(player, target).map((id) => get2.skillRank(id)))).forResult();
+      const chosen = await player.chooseTarget("\u97F3\u6D04\uFF1A\u9009\u62E9\u4E00\u540D\u5176\u4ED6\u89D2\u8272\uFF0C\u83B7\u5F97\u5176\u4E00\u4E2A\u5F53\u524D\u6280\u80FD", true, remoteChoice("(card, source, target) => target !== source && lib.skill.ac_yinhui.learnable(source, target).length > 0")).set("ai", remoteChoice("target => Math.max(0, ...lib.skill.ac_yinhui.learnable(_status.event.player, target).map(id => get.skillRank(id)))")).forResult();
       if (!chosen.bool) return;
       const list = learnable(player, chosen.targets[0]);
       if (!list.length) return;
-      const result = await player.chooseControl(list).set("prompt", "\u97F3\u6D04\uFF1A\u9009\u62E9\u8981\u83B7\u5F97\u7684\u6280\u80FD").set("ai", () => list.reduce((best, id) => get2.skillRank(id) > get2.skillRank(best) ? id : best)).forResult();
+      const preferred = list.reduce((best, id) => get2.skillRank(id) > get2.skillRank(best) ? id : best);
+      const result = await player.chooseControl(list).set("prompt", "\u97F3\u6D04\uFF1A\u9009\u62E9\u8981\u83B7\u5F97\u7684\u6280\u80FD").set("acYinhuiPreferred", preferred).set("ai", remoteChoice("() => _status.event.acYinhuiPreferred")).forResult();
       if (!(player.additionalSkills.ac_yinhui || []).length && list.includes(result.control) && !player.hasSkill(result.control)) player.addAdditionalSkill("ac_yinhui", result.control);
     }
   }
@@ -602,6 +639,7 @@ import { lib as lib3, game as game4, get as get4, _status as _status3 } from "no
 var discardable = (card, player) => lib3.filter.cardDiscardable(card, player, "ac_haodu");
 var suits = (cards) => new Set(cards.map((card) => get4.suit(card, false)).filter((suit) => ["heart", "diamond", "club", "spade"].includes(suit))).size;
 var replayTargets = (player) => player.getStorage("ac_xuju");
+var remoteChoice2 = (source) => get4.infoFuncOL("_noname_func:" + source);
 var expansion_default = {
   ac_haodu: {
     enable: "phaseUse",
@@ -611,7 +649,7 @@ var expansion_default = {
     },
     async content(event, trigger, player) {
       const target = event.target;
-      const results = await player.chooseCardOL([player, target], "he", [0, Infinity], true, "\u8C6A\u8D4C\uFF1A\u79D8\u5BC6\u9009\u62E9\u8981\u5F03\u7F6E\u7684\u724C\uFF0C\u53EF\u9009\u62E9\u96F6\u5F20", discardable).set("ai", (card) => 4 - get4.value(card)).forResult();
+      const results = await player.chooseCardOL([player, target], "he", [0, Infinity], true, "\u8C6A\u8D4C\uFF1A\u79D8\u5BC6\u9009\u62E9\u8981\u5F03\u7F6E\u7684\u724C\uFF0C\u53EF\u9009\u62E9\u96F6\u5F20", remoteChoice2('(card, owner) => lib.filter.cardDiscardable(card, owner, "ac_haodu")')).set("ai", remoteChoice2("card => 4 - get.value(card)")).forResult();
       const chosen = [player, target].map((who, i) => [who, (results[i]?.cards || []).filter((card) => who.getCards("he").includes(card) && discardable(card, who))]);
       const counts = chosen.map(([, cards]) => ({ count: cards.length, suits: suits(cards) }));
       if (chosen.some(([, cards]) => cards.length)) await game4.loseAsync({ lose_list: chosen.filter(([, cards]) => cards.length) }).setContent("discardMultiple");
@@ -622,7 +660,7 @@ var expansion_default = {
       for (let i = 0; i < limit && player.isIn(); i++) {
         const options = remaining.filter((option) => option !== "\u4F24\u5BB3" || target.isIn());
         if (!options.length) break;
-        const result = await player.chooseControl([...options, "cancel2"]).set("prompt", `\u8C6A\u8D4C\uFF1A\u8FD8\u53EF\u4F9D\u6B21\u6267\u884C${limit - i}\u9879\uFF08\u4F24\u5BB3\uFF1A\u5BF9\u76EE\u6807\u9020\u62101\u70B9\u4F24\u5BB3\uFF1B\u6478\u724C\uFF1A\u81EA\u5DF1\u6478\u4E09\u5F20\u724C\uFF09`).set("ai", () => options.includes("\u4F24\u5BB3") && get4.attitude(player, target) < 0 ? "\u4F24\u5BB3" : "\u6478\u724C").forResult();
+        const result = await player.chooseControl([...options, "cancel2"]).set("prompt", `\u8C6A\u8D4C\uFF1A\u8FD8\u53EF\u4F9D\u6B21\u6267\u884C${limit - i}\u9879\uFF08\u4F24\u5BB3\uFF1A\u5BF9\u76EE\u6807\u9020\u62101\u70B9\u4F24\u5BB3\uFF1B\u6478\u724C\uFF1A\u81EA\u5DF1\u6478\u4E09\u5F20\u724C\uFF09`).set("acHaoduPreferred", options.includes("\u4F24\u5BB3") && get4.attitude(player, target) < 0 ? "\u4F24\u5BB3" : "\u6478\u724C").set("ai", remoteChoice2("() => _status.event.acHaoduPreferred")).forResult();
         if (!options.includes(result.control)) break;
         remaining.splice(remaining.indexOf(result.control), 1);
         player.storage.ac_haodu_last.last = result.control === "\u4F24\u5BB3" ? "damage" : "draw";
@@ -689,14 +727,14 @@ var expansion_default = {
       if (!player.hasSkill("ac_tuiyan_draw")) choices.push("\u8865\u5145\u624B\u724C");
       if (!player.hasSkill("ac_tuiyan_give") && player.countCards("h") > player.hp && game4.hasPlayer((target) => target !== player)) choices.push("\u4EA4\u4ED8\u624B\u724C");
       if (!choices.length) return;
-      const result = await player.chooseControl(choices).set("prompt", "\u63A8\u6F14\uFF1A\u6BCF\u9879\u6BCF\u51FA\u724C\u9636\u6BB5\u9650\u4E00\u6B21").set("ai", () => choices[0]).forResult();
+      const result = await player.chooseControl(choices).set("prompt", "\u63A8\u6F14\uFF1A\u6BCF\u9879\u6BCF\u51FA\u724C\u9636\u6BB5\u9650\u4E00\u6B21").set("ai", remoteChoice2("() => _status.event.controls[0]")).forResult();
       if (result.control === "\u8865\u5145\u624B\u724C") {
         player.addTempSkill("ac_tuiyan_draw", { player: "phaseUseAfter" });
         await player.drawTo(player.maxHp);
       } else if (result.control === "\u4EA4\u4ED8\u624B\u724C") {
         const num = player.countCards("h") - player.hp;
         if (num <= 0) return;
-        const selected = await player.chooseTarget("\u63A8\u6F14\uFF1A\u9009\u62E9\u63A5\u6536\u624B\u724C\u7684\u5176\u4ED6\u89D2\u8272", true, (card, source, target) => target !== source).set("ai", (target) => get4.attitude(player, target)).forResult();
+        const selected = await player.chooseTarget("\u63A8\u6F14\uFF1A\u9009\u62E9\u63A5\u6536\u624B\u724C\u7684\u5176\u4ED6\u89D2\u8272", true, (card, source, target) => target !== source).set("ai", remoteChoice2("target => get.attitude(_status.event.player, target)")).forResult();
         if (!selected.bool) return;
         const given = await player.chooseToGive(selected.targets[0], "h", num, true).forResult();
         if (given.bool) player.addTempSkill("ac_tuiyan_give", { player: "phaseUseAfter" });
@@ -807,4 +845,12 @@ var expansion_translate_default = {
 };
 
 // game/resources/app/src/character/mushoku/index.js
-game5.import("character", () => ({ name: "mushoku", connect: true, character: character_default, skill: { ...skill_default, ...crossover_default, ...mokou_default, ...Object.fromEntries(Object.entries(expansion_default).filter(([id]) => !id.startsWith("mc_"))) }, translate: { ...translate_default, ...Object.fromEntries(Object.entries(expansion_translate_default).filter(([id]) => !id.startsWith("mc_"))) }, characterIntro: { ...intro_default, ac_yumeko: "\u6DF1\u6E0A\u8D4C\u5F92\u3002\u4EE5\u724C\u4E0E\u547D\u8FD0\u4E0B\u6CE8\uFF0C\u8FFD\u9010\u80DC\u8D1F\u8FB9\u7F18\u7684\u523A\u6FC0\u3002", ac_kaito: "\u6708\u4E0B\u9B54\u672F\u5E08\u3002\u4EE5\u969C\u773C\u6CD5\u5728\u4F17\u76EE\u777D\u777D\u4E4B\u4E0B\u593A\u53D6\u5B9D\u7269\u3002", ac_chatgpt: "\u4E07\u8A00\u4E4B\u955C\u3002\u4E8E\u4E07\u5343\u53EF\u80FD\u4E2D\u63A8\u6F14\u7B54\u6848\uFF0C\u5C06\u77E5\u8BC6\u4EA4\u4ED8\u4ED6\u4EBA\u3002" }, characterTitle: { th_mokou: "\u4E0D\u6B7B\u7684\u70DF\u706B", ac_yumeko: "\u6DF1\u6E0A\u8D4C\u5F92", ac_kaito: "\u6708\u4E0B\u9B54\u672F\u5E08", ac_chatgpt: "\u4E07\u8A00\u4E4B\u955C" } }));
+game5.import("character", () => ({
+  name: "mushoku",
+  connect: true,
+  character: character_default,
+  skill: { ...skill_default, ...crossover_default, ...mokou_default, ...Object.fromEntries(Object.entries(expansion_default).filter(([id]) => !id.startsWith("mc_") && id !== "ac_tuiyan")) },
+  translate: { ...translate_default, ...Object.fromEntries(Object.entries(expansion_translate_default).filter(([id]) => !id.startsWith("mc_") && !id.startsWith("ac_tuiyan") && id !== "ac_chatgpt")) },
+  characterIntro: { ...intro_default, ac_yumeko: "\u6DF1\u6E0A\u8D4C\u5F92\u3002\u4EE5\u724C\u4E0E\u547D\u8FD0\u4E0B\u6CE8\uFF0C\u8FFD\u9010\u80DC\u8D1F\u8FB9\u7F18\u7684\u523A\u6FC0\u3002", ac_kaito: "\u6708\u4E0B\u9B54\u672F\u5E08\u3002\u4EE5\u969C\u773C\u6CD5\u5728\u4F17\u76EE\u777D\u777D\u4E4B\u4E0B\u593A\u53D6\u5B9D\u7269\u3002" },
+  characterTitle: titlesForPack("mushoku")
+}));

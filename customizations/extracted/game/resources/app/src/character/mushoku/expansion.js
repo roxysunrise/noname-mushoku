@@ -2,6 +2,7 @@ import { lib, game, get, _status } from "noname";
 const discardable = (card, player) => lib.filter.cardDiscardable(card, player, "ac_haodu");
 const suits = cards => new Set(cards.map(card => get.suit(card, false)).filter(suit => ["heart", "diamond", "club", "spade"].includes(suit))).size;
 const replayTargets = player => player.getStorage("ac_xuju");
+const remoteChoice = source => get.infoFuncOL("_noname_func:" + source);
 export default {
  ac_haodu: {
   enable: "phaseUse", usable: 1,
@@ -9,8 +10,9 @@ export default {
   async content(event, trigger, player) {
    const target = event.target;
    // Collect sealed choices before moving either player's cards (including zero-card bids).
-   const results = await player.chooseCardOL([player, target], "he", [0, Infinity], true, "豪赌：秘密选择要弃置的牌，可选择零张", discardable)
-    .set("ai", card => 4 - get.value(card)).forResult();
+   // Parse through the engine's injected scope, not optional debug globals.
+   const results = await player.chooseCardOL([player, target], "he", [0, Infinity], true, "豪赌：秘密选择要弃置的牌，可选择零张", remoteChoice('(card, owner) => lib.filter.cardDiscardable(card, owner, "ac_haodu")'))
+    .set("ai", remoteChoice("card => 4 - get.value(card)")).forResult();
    const chosen = [player, target].map((who, i) => [who, (results[i]?.cards || []).filter(card => who.getCards("he").includes(card) && discardable(card, who))]);
    const counts = chosen.map(([, cards]) => ({ count: cards.length, suits: suits(cards) }));
    if (chosen.some(([, cards]) => cards.length)) await game.loseAsync({ lose_list: chosen.filter(([, cards]) => cards.length) }).setContent("discardMultiple");
@@ -22,7 +24,8 @@ export default {
     const options = remaining.filter(option => option !== "伤害" || target.isIn());
     if (!options.length) break;
     const result = await player.chooseControl([...options, "cancel2"]).set("prompt", `豪赌：还可依次执行${limit - i}项（伤害：对目标造成1点伤害；摸牌：自己摸三张牌）`)
-     .set("ai", () => options.includes("伤害") && get.attitude(player, target) < 0 ? "伤害" : "摸牌").forResult();
+     .set("acHaoduPreferred", options.includes("伤害") && get.attitude(player, target) < 0 ? "伤害" : "摸牌")
+     .set("ai", remoteChoice("() => _status.event.acHaoduPreferred")).forResult();
     if (!options.includes(result.control)) break;
     remaining.splice(remaining.indexOf(result.control), 1);
     player.storage.ac_haodu_last.last = result.control === "伤害" ? "damage" : "draw";
@@ -78,14 +81,14 @@ export default {
    if (!player.hasSkill("ac_tuiyan_draw")) choices.push("补充手牌");
    if (!player.hasSkill("ac_tuiyan_give") && player.countCards("h") > player.hp && game.hasPlayer(target => target !== player)) choices.push("交付手牌");
    if (!choices.length) return;
-   const result = await player.chooseControl(choices).set("prompt", "推演：每项每出牌阶段限一次").set("ai", () => choices[0]).forResult();
+   const result = await player.chooseControl(choices).set("prompt", "推演：每项每出牌阶段限一次").set("ai", remoteChoice("() => _status.event.controls[0]")).forResult();
    if (result.control === "补充手牌") {
     player.addTempSkill("ac_tuiyan_draw", { player: "phaseUseAfter" });
     await player.drawTo(player.maxHp);
    } else if (result.control === "交付手牌") {
     const num = player.countCards("h") - player.hp;
     if (num <= 0) return;
-    const selected = await player.chooseTarget("推演：选择接收手牌的其他角色", true, (card, source, target) => target !== source).set("ai", target => get.attitude(player, target)).forResult();
+    const selected = await player.chooseTarget("推演：选择接收手牌的其他角色", true, (card, source, target) => target !== source).set("ai", remoteChoice("target => get.attitude(_status.event.player, target)")).forResult();
     if (!selected.bool) return;
     const given = await player.chooseToGive(selected.targets[0], "h", num, true).forResult();
     if (given.bool) player.addTempSkill("ac_tuiyan_give", { player: "phaseUseAfter" });

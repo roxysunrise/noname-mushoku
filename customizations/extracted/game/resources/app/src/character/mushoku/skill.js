@@ -78,7 +78,7 @@ const skills = {
  },
  mt_resolve: {
   trigger: { player: "phaseJieshuBegin" },
-  filter: (event, player) => player.getHistory("sourceDamage").length > 0,
+  filter: (event, player) => player.hp <= 2 || player.getHistory("sourceDamage").length > 0,
   frequent: true, async content(event, trigger, player) { await player.draw(player.hp <= 2 ? 2 : player.getHistory("sourceDamage").reduce((sum, evt) => sum + evt.num, 0)); },
  },
  mt_dragon: {

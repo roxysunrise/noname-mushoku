@@ -1,26 +1,36 @@
 import characters from "./mushoku-characters.js";
+import { characterPacks, packForCharacter } from "./mushoku-rosters.js";
+import { bossCharacters } from "./mushoku-boss.js";
+import { onlineModes, roomSeats, configureOnlineMenus } from "./mushoku-online-modes.js";
 
 export function roomError(lib, config = lib.configOL) {
-  if (config.mode !== "identity" || (config.identity_mode || "normal") !== "normal") return "当前联机仅支持标准身份局。";
-  const number = Number(config.player_number || config.number || 8);
+  if (!onlineModes.includes(config.mode)) return "当前联机支持标准身份、休闲斗地主、2对2和Boss挑战。";
+  if (config.mode === "identity" && (config.identity_mode || "normal") !== "normal") return "身份联机仅支持标准身份局。";
+  if (config.mode === "doudizhu" && (config.doudizhu_mode || "normal") !== "normal") return "斗地主联机仅支持休闲玩法。";
+  if (config.mode === "versus" && (config.versus_mode || "2v2") !== "2v2") return "对决联机仅支持2对2。";
+  if (config.mode === "boss" && config.boss_character && !bossCharacters[config.boss_character]) return "请选择本版已注册的Boss。";
+  const number = roomSeats(config);
   if (!Number.isInteger(number) || number < 2 || number > 8) return "房间人数须为2至8人（含AI）。";
   if (config.double_character) return "当前联机仅支持单将，确保角色不重复。";
   if (config.cardPack?.includes("jiubian")) return "标准身份联机暂不支持依赖国战接口的九变卡牌包。";
-  const packs = (config.characterPack || ["mushoku", "minecraft"]).filter(p => ["mushoku", "minecraft"].includes(p));
-  const available = Object.keys(characters).filter(id => packs.includes(id.startsWith("mc_") ? "minecraft" : "mushoku") && !(config.banned || []).includes(id));
-  if (available.length < number) return `需要${number}名不同角色，当前角色池仅${available.length}名。`;
+  const packs = (config.characterPack || characterPacks).filter(p => characterPacks.includes(p));
+  const available = Object.keys(characters).filter(id => packs.includes(packForCharacter(id)) && !(config.banned || []).includes(id));
+  const required = config.mode === "boss" ? 3 : number;
+  if (available.length < required) return `需要${required}名不同角色，当前角色池仅${available.length}名。`;
   return null;
 }
 
 export function findAiSeat(game) {
-  return game.players.find(player => player !== game.me && player.isIn() && (!player.ws || player.ws.closed));
+  return game.players.find(player => player !== game.me && player !== game.boss && player.isIn() && (!player.ws || player.ws.closed));
 }
 
 export function installMushokuOnline(lib, game, ui, get, status) {
   // Use a distinct protocol version: vanilla clients must not inject a different roster/skill set.
-  lib.versionOL = 27111727;
+  lib.versionOL = 27111729;
+  game.mushokuOnlineContext = { ui, status };
   if (game.mushokuOnlineInstalled) return;
   game.mushokuOnlineInstalled = true;
+  configureOnlineMenus(lib, game);
   const switchMode = game.switchMode;
   game.switchMode = function (...args) {
     // Jiubian equipment calls guozhan-only APIs absent in standard identity.
@@ -31,15 +41,22 @@ export function installMushokuOnline(lib, game, ui, get, status) {
   game.createServer = function (...args) {
     const error = roomError(lib);
     if (error) throw new Error(error);
-    lib.configOL.number = Number(lib.configOL.player_number || lib.configOL.number || 8);
-    lib.configOL.characterPack = (lib.configOL.characterPack || ["mushoku", "minecraft"]).filter(p => ["mushoku", "minecraft"].includes(p));
+    lib.configOL.number = roomSeats(lib.configOL);
+    if (lib.configOL.mode !== "identity") lib.configOL.player_number = lib.configOL.number;
+    if (lib.configOL.mode === "boss") lib.configOL.boss_character ||= "boss_mt_roxy";
+    lib.configOL.characterPack = (lib.configOL.characterPack || characterPacks).filter(p => characterPacks.includes(p));
     lib.configOL.mushokuAiRoom = true;
     return createServer.apply(this, args);
   };
   const connectPlayers = ui.create.connectPlayers;
   const labelAiSeats = () => {
     if (lib.configOL.mushokuAiRoom) {
-      for (const seat of game.connectPlayers || []) if (!seat.playerid && !seat.classList?.contains("unselectable2")) seat.node.nameol.textContent = "AI（玩家加入后替换）";
+      const seats = game.connectPlayers || [];
+      for (const seat of seats) if (!seat.playerid && !seat.classList?.contains("unselectable2")) seat.node.nameol.textContent = "AI（玩家加入后替换）";
+      if (lib.configOL.mode === "boss" && seats.length) {
+        seats.at(-1).node.nameol.textContent = "Boss（固定AI）";
+        seats.at(-1).classList?.add("unselectable2");
+      }
     }
   };
   ui.create.connectPlayers = function (...args) {
@@ -64,6 +81,10 @@ export function installMushokuOnline(lib, game, ui, get, status) {
       (!get.config("check_versionLocal", "connect") || config.versionLocal === lib.version) &&
       (!get.config("check_extension", "connect") || !config.extension);
     const reconnect = config?.id && lib.playerOL?.[config.id];
+    if (lib.configOL.mode === "boss" && status.waitingForPlayer && valid && !reconnect &&
+      (lib.node.clients || []).filter(client => client !== this && (client.inited || client.mushokuAccepted) && !client.closed).length >= 2) {
+      this.send("denied", "number"); this.close(); return;
+    }
     if (reconnect && reconnect.ws && !reconnect.ws.closed && reconnect.ws !== this) {
       this.send("denied", "gaming"); this.close(); return;
     }
@@ -92,11 +113,12 @@ export function installMushokuOnline(lib, game, ui, get, status) {
     if (lib.configOL.mushokuAiRoom && !valid) {
       this.send("denied", version !== lib.versionOL ? "version" : "banned"); this.close(); return;
     }
+    if (valid && status.waitingForPlayer) this.mushokuAccepted = true;
     return init.call(this, version, config, bannedInfo);
   };
   const change = server.changeRoomConfig;
   server.changeRoomConfig = function (config) {
-    if (lib.configOL.mushokuAiRoom && roomError(lib, { ...lib.configOL, ...config })) return;
+    if (lib.configOL.mushokuAiRoom && ((config.mode && config.mode !== lib.configOL.mode) || roomError(lib, { ...lib.configOL, ...config }))) return;
     return change.call(this, config);
   };
 }

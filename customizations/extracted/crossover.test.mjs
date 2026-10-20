@@ -9,7 +9,8 @@ const game = { import(type, fn) { const pack = fn(); Object.assign(lib.skill, pa
 const get = { type: card => card.type, type2: card => card.type, tag: (card, tag) => card[tag], value: () => 1,
  is: { damageCard: card => !!card.damage }, suit: card => card.suit, name: card => card.name, autoViewAs: card => card };
 const packs = {};
-for (const name of ['mushoku', 'minecraft']) {
+get.infoFuncOL = info => vm.runInNewContext(`(${info.slice(13)})`, {lib,get,_status});
+for (const name of ['mushoku', 'minecraft', 'ai']) {
  const source = (await readFile(new URL(`character/${name}.js`, root), 'utf8')).replace(/^import \{(.*?)\} from "noname";/gm, (_, names) => `const {${names.replace(/ as /g, ': ')}} = runtime;`);
  vm.runInNewContext(source, { runtime: { lib, ui, _status, game: new Proxy(game, { get(target, key) { return key === 'import' ? (type, fn) => { packs[name] = game.import(type, fn); } : target[key]; } }), get } });
 }
@@ -94,11 +95,11 @@ test('Eris pays HP without discarding; resolve sums damage points and low-health
  const p={get hp(){return hp;},loseHp:async()=>hp--,isPhaseUsing:()=>true};
  const e={card:{name:'sha'},targets:[{}],target:{},getParent:()=>({directHit:{add:t=>hits.push(t)}})};
  assert.ok(skill.mt_sword.filter(e,p)); await skill.mt_sword.content({},e,p); assert.equal(hp,3); assert.deepEqual(hits,[e.target]);
- for(const [health,damage,expected] of [[4,[1,3],4],[3,[1],1],[2,[5],2],[1,[1],2]]) {
+ for(const [health,damage,expected] of [[4,[1,3],4],[3,[1],1],[2,[5],2],[1,[1],2],[2,[],2],[1,[],2]]) {
   let drawn=0; const owner={hp:health,getHistory:()=>damage.map(num=>({num})),draw:async n=>drawn+=n};
   assert.ok(skill.mt_resolve.filter({},owner)); await skill.mt_resolve.content({}, {},owner); assert.equal(drawn,expected);
  }
- assert.equal(skill.mt_resolve.filter({},{getHistory:()=>[]}),false);
+ assert.equal(skill.mt_resolve.filter({},{hp:3,getHistory:()=>[]}),false);
 });
 test('Mokou stats, Penglai hand limit, distance, conditional draw and dying draw', async () => {
  const info = packs.mushoku.character.th_mokou;
@@ -148,9 +149,12 @@ test('Fengyi black discard permits current player self, rejects response-only an
  assert.equal(s.filter({...e,card:{name:'tao'}},p),false);
  _status.currentPhase=null; assert.equal(!!s.filter(e,p),false);
 });
-test('two packs expose fifteen distinct characters and complete skill descriptions', () => {
- const characters = { ...packs.mushoku.character, ...packs.minecraft.character };
- assert.equal(Object.keys(characters).length, 15);
+test('three packs expose nineteen distinct characters and complete skill descriptions', () => {
+ const characters = { ...packs.mushoku.character, ...packs.minecraft.character, ...packs.ai.character };
+ assert.equal(Object.keys(characters).length, 19);
+ assert.equal(Object.keys(packs.ai.character).length, 5);
+ assert.equal(packs.mushoku.character.ac_chatgpt, undefined);
+ assert.equal(packs.ai.character.ac_chatgpt.sex, 'female');
  assert.equal(packs.mushoku.translate.mushoku, '二次元');
  assert.equal(packs.minecraft.character.mc_dream.group, 'wang');
  assert.equal(packs.mushoku.character.ac_yuu.hp, 3);
@@ -332,13 +336,13 @@ test('Spear checks range and legality without normal Sha quota, and forces a hit
   used=undefined; await s.content({target:far},{},p); assert.equal(used,undefined);
  }
 });
-test('compatibility preserves both packs, respects disabling one, and rejects duplicate roster shortages', async () => {
+test('compatibility preserves three packs, respects disabling one, and rejects duplicate roster shortages', async () => {
  const { installMushokuCompatibility, getMushokuRestriction } = await import(new URL('noname/init/mushoku-compatibility.js', root));
- const state = { character: {}, characterPack: { standard: {} }, config: { characters: ['mushoku', 'minecraft'] }, group: [], connectCharacterPack: [] };
- installMushokuCompatibility(state); assert.equal(Object.keys(state.character).length, 15);
+ const state = { character: {}, characterPack: { standard: {} }, config: { characters: ['mushoku', 'minecraft', 'ai'] }, group: [], connectCharacterPack: [] };
+ installMushokuCompatibility(state); assert.equal(Object.keys(state.character).length, 19);
  assert.equal(Object.keys(state.characterPack.minecraft).length, 2);
  state.config.characters = ['mushoku']; installMushokuCompatibility(state);
- assert.equal(Object.keys(state.character).length, 13); assert.equal(state.character.mc_dream, undefined);
+ assert.equal(Object.keys(state.character).length, 12); assert.equal(state.character.mc_dream, undefined); assert.equal(state.character.ac_chatgpt,undefined);
  const config = { player_number: 8, double_character: true };
  assert.match(getMushokuRestriction(state, { config: key => config[key] }, 'identity'), /16/);
 });
