@@ -47,7 +47,7 @@ function getMushokuRestriction(lib, get, modeName = lib.config.mode, checkAvaila
     if (config("two_assign")) return "禁止重复上场：代替队友选将的原版分配可能与对手重复，请关闭代替队友选将。";
     required = 4;
   } else if (modeName === "boss") {
-    if (double) return "洛琪希挑战当前仅支持单将，请关闭双将。";
+    if (double) return "Boss挑战当前仅支持单将，请关闭双将。";
     required = 3;
   } else {
     const reasons = {
@@ -100,7 +100,7 @@ function prepareMushokuMode(mode, lib, get, game) {
     result.characterPack = { mode_boss: { ...bossCharacters } };
     result.skill = { ...mode.skill, ...createBossSkills(game, get) };
     result.translate = { ...mode.translate, ...bossTranslate };
-    result.boss = { global: { loopType: 1, chongzheng: 0 }, boss_mt_roxy: {} };
+    result.boss = { global: { loopType: 1, chongzheng: 0 }, ...Object.fromEntries(Object.keys(bossCharacters).map(id => [id, {}])) };
   }
   // Online configuration is populated by switchMode after this loader returns.
   // The room validator handles bans and roster capacity when the server starts.

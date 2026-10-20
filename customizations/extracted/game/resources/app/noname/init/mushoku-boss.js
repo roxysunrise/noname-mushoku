@@ -1,3 +1,4 @@
+import { alucardCharacters, createAlucardSkills, alucardTranslate } from "./mushoku-alucard.js";
 const mana = player => player.countMark("mt_boss_mana");
 const addMana = (player, amount) => {
  const gain = Math.min(amount, 8 - mana(player));
@@ -5,11 +6,13 @@ const addMana = (player, amount) => {
 };
 const spend = (player, amount) => player.removeMark("mt_boss_mana", amount);
 export const bossCharacters = {
+ ...alucardCharacters,
  boss_mt_roxy: { sex: "female", group: "huan", hp: 10, maxHp: 10,
   skills: ["mt_boss_mana", "mt_boss_water", "mt_boss_rain", "mt_boss_resolve", "mt_boss_spirit"],
   isBoss: true, img: "image/character/boss_mt_roxy.jpg" },
 };
 export function createBossSkills(game, get) { return {
+ ...createAlucardSkills(game, get),
  mt_boss_mana: {
   mark: true, marktext: "魔", intro: { content: "魔力：#/8" },
   init(player) {
@@ -106,6 +109,7 @@ export function createBossSkills(game, get) { return {
  },
 }; }
 export const bossTranslate = {
+ ...alucardTranslate,
  boss_mt_roxy: "洛琪希", boss_mt_roxy_ab: "洛琪希", boss_mt_roxy_info: "未知级／幻。三名挑战者对战；按座次依次行动。",
  mt_boss_mana: "水咏", mt_boss_mana_info: "锁定技，初始拥有4点魔力，每轮开始获得3点魔力，上限为8。每回合限一次，你使用普通锦囊牌结算后获得1点魔力。",
  mt_boss_water: "水袭", mt_boss_water_info: "出牌阶段限两次，你可以消耗2点魔力并弃置一张黑色手牌，令一名其他角色弃置两张手牌，否则你对其造成1点伤害。",

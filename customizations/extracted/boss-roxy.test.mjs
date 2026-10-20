@@ -13,16 +13,16 @@ function fixture() {
  const s=createBossSkills(game,{type:c=>c.type,color:c=>c.color});
  return {p,s,targets,get marks(){return marks;},get draws(){return draws;},get heals(){return heals;}};
 }
-test('boss is separate from eleven normal characters, opens 3v1 sequential challenge only',()=>{
+test('boss is separate from fifteen normal characters, opens 3v1 sequential challenge only',()=>{
  const lib={config:{mode:'boss',characters:['mushoku','minecraft']},character:{},characterPack:{standard:{}},group:[]};
  installMushokuCompatibility(lib);
- assert.equal(Object.keys(lib.character).length,11);
- assert.deepEqual(Object.keys(lib.characterPack.mode_boss),['boss_mt_roxy']);
+ assert.equal(Object.keys(lib.character).length,15);
+ assert.deepEqual(Object.keys(lib.characterPack.mode_boss),['boss_alucard','boss_mt_roxy']);
  assert.equal(bossCharacters.boss_mt_roxy.hp,10);
  assert.equal(getMushokuRestriction(lib,{config:()=>false},'boss'),null);
  const mode=prepareMushokuMode({name:'boss',characterPack:{mode_boss:{stock:{}}}},lib,{config:()=>false},{});
  assert.equal(mode.boss.global.loopType,1); assert.equal(mode.boss.global.chongzheng,0);
- assert.deepEqual(Object.keys(mode.characterPack.mode_boss),['boss_mt_roxy']);
+ assert.deepEqual(Object.keys(mode.characterPack.mode_boss),['boss_alucard','boss_mt_roxy']);
  assert.ok(getMushokuRestriction(lib,{config:k=>k==='double_character'},'boss'));
  lib.config.mode='identity';lib.character.boss_mt_roxy=bossCharacters.boss_mt_roxy;
  installMushokuCompatibility(lib);assert.equal(lib.character.boss_mt_roxy,undefined);

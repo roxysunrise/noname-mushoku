@@ -1,0 +1,57 @@
+const {app,BrowserWindow}=require('electron');
+const path=require('node:path');
+const fs=require('node:fs');
+const assert=require('node:assert/strict');
+const root=path.resolve(__dirname,'../game/resources/app');
+const output=path.join(__dirname,'online-smoke.log');
+fs.writeFileSync(output,`RUN ${new Date().toISOString()}\n`);
+console.log=(...args)=>fs.appendFileSync(output,args.join(' ')+'\n');
+console.error=console.log;
+app.setPath('userData',path.join(app.getPath('temp'),`noname-online-test-${Date.now()}`));
+app.commandLine.appendSwitch('no-sandbox');
+app.whenReady().then(async()=>{
+ const w=new BrowserWindow({show:false,webPreferences:{nodeIntegration:true,contextIsolation:false,webSecurity:false,preload:path.join(__dirname,'online-smoke-preload.cjs')}});
+ w.webContents.on('console-message',(_e,level,message)=>console.log(level,message));
+ await w.loadURL('http://127.0.0.1:8091/');
+ const run=code=>w.webContents.executeJavaScript(`(async()=>{const {lib,game,ui,get,_status}=await import('./noname.js');${code}})()`);
+ const delay=ms=>new Promise(r=>setTimeout(r,ms));
+ try {
+  await delay(12000);
+  console.log('DIAGNOSTIC',await run(`return JSON.stringify({ready:document.readyState,dir:window.__dirname,node:!!lib.node,configKeys:Object.keys(lib.config),loads:performance.getEntriesByType('resource').slice(-8).map(r=>r.name),html:document.documentElement.outerHTML.slice(-300)});`));
+  await run(`await game.promises.saveConfig('new_tutorial',true);await game.promises.saveConfig('connect_cards',['jiubian']);await game.promises.saveConfig('mode','connect');await game.promises.saveConfig('directstartmode','identity');await game.promises.saveConfig('connect_player_number','4','identity');await game.promises.saveConfig('connect_identity_mode','normal','identity');await game.promises.saveConfig('connect_double_character',false,'identity');game.reload();`);
+  await delay(12000);
+  console.log('LOBBY',await run(`return JSON.stringify({body:document.body.innerText.slice(0,500),waiting:_status.waitingForPlayer,config:lib.configOL});`));
+  await run(`ui.connectStartButton.click();`);
+  await delay(4000);
+  await run(`if(!_status.auto)ui.click.auto();`);
+  await delay(3000);
+  await run(`game.pause();`);
+  console.log('HOST',await run(`return JSON.stringify({phase:game.phaseNumber,players:game.players.map(p=>({id:p.playerid,name:p.name,hp:p.hp})),event:_status.event?.name,body:document.body.innerText.slice(0,400)});`));
+  const c=new BrowserWindow({show:false,webPreferences:{partition:'persist:online-client-test',nodeIntegration:true,contextIsolation:false,webSecurity:false,preload:path.join(__dirname,'online-smoke-preload.cjs')}});
+  c.webContents.on('console-message',(_e,level,message)=>console.log('CLIENT',level,message));
+  const client=code=>c.webContents.executeJavaScript(`(async()=>{const {lib,game,ui,get,_status}=await import('./noname.js');${code}})()`);
+  await c.loadURL('http://127.0.0.1:8091/');
+  await delay(12000);
+  await client(`await game.promises.saveConfig('new_tutorial',true);await game.promises.saveConfig('mode','connect');await game.promises.saveConfig('directstartmode');game.reload();`);
+  await delay(10000);
+  await client(`game.connect('127.0.0.1:8080');`);
+  await delay(6000);
+  const state=JSON.parse(await client(`return JSON.stringify({id:game.onlineID,name:game.me?.name,hp:game.me?.hp,cards:game.me?.getCards('h').map(c=>c.cardid)});`));
+  const host=JSON.parse(await run(`return JSON.stringify(game.players.filter(p=>p.ws&&!p.ws.closed).map(p=>({id:p.playerid,name:p.name,hp:p.hp,cards:p.getCards('h').map(c=>c.cardid)})));`));
+  assert.deepEqual(host,[state]);
+  console.log('TAKEOVER_PASS',JSON.stringify(state));
+  await client(`localStorage.setItem(lib.configprefix+'directstart',true);game.ws.onclose=null;game.ws.close();`);
+  await delay(1000);
+  assert.equal(await run(`return lib.playerOL[${JSON.stringify(state.id)}].ws.closed;`),true);
+  console.log('DISCONNECT_PASS');
+  // Native disconnect recovery reloads the client; do not reuse a live arena.
+  await c.reload();
+  await delay(10000);
+  await client(`game.connect('127.0.0.1:8080',success=>{if(success)game.onlineID=lib.config.reconnect_info?.[1];});`);
+  await delay(5000);
+  assert.equal(await client(`return game.onlineID;`),state.id);
+  assert.equal(await run(`return lib.playerOL[${JSON.stringify(state.id)}].isOnline();`),true);
+  console.log('RECONNECT_PASS');
+ } catch(e){console.error('SMOKE_ERROR',e.stack);app.exit(1);return;}
+ app.exit(0);
+});

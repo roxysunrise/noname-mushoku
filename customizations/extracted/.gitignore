@@ -1,0 +1,8 @@
+android/build/
+android/*.keystore
+android/*.jks
+tools/online-test-profile/
+tools/online-runtime/
+tools/*.log
+releases/
+__pycache__/

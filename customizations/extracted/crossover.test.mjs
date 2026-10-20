@@ -148,9 +148,9 @@ test('Fengyi black discard permits current player self, rejects response-only an
  assert.equal(s.filter({...e,card:{name:'tao'}},p),false);
  _status.currentPhase=null; assert.equal(!!s.filter(e,p),false);
 });
-test('two packs expose eleven distinct characters and complete skill descriptions', () => {
+test('two packs expose fifteen distinct characters and complete skill descriptions', () => {
  const characters = { ...packs.mushoku.character, ...packs.minecraft.character };
- assert.equal(Object.keys(characters).length, 11);
+ assert.equal(Object.keys(characters).length, 15);
  assert.equal(packs.mushoku.translate.mushoku, '二次元');
  assert.equal(packs.minecraft.character.mc_dream.group, 'wang');
  assert.equal(packs.mushoku.character.ac_yuu.hp, 3);
@@ -335,10 +335,10 @@ test('Spear checks range and legality without normal Sha quota, and forces a hit
 test('compatibility preserves both packs, respects disabling one, and rejects duplicate roster shortages', async () => {
  const { installMushokuCompatibility, getMushokuRestriction } = await import(new URL('noname/init/mushoku-compatibility.js', root));
  const state = { character: {}, characterPack: { standard: {} }, config: { characters: ['mushoku', 'minecraft'] }, group: [], connectCharacterPack: [] };
- installMushokuCompatibility(state); assert.equal(Object.keys(state.character).length, 11);
- assert.equal(Object.keys(state.characterPack.minecraft).length, 1);
+ installMushokuCompatibility(state); assert.equal(Object.keys(state.character).length, 15);
+ assert.equal(Object.keys(state.characterPack.minecraft).length, 2);
  state.config.characters = ['mushoku']; installMushokuCompatibility(state);
- assert.equal(Object.keys(state.character).length, 10); assert.equal(state.character.mc_dream, undefined);
+ assert.equal(Object.keys(state.character).length, 13); assert.equal(state.character.mc_dream, undefined);
  const config = { player_number: 8, double_character: true };
  assert.match(getMushokuRestriction(state, { config: key => config[key] }, 'identity'), /16/);
 });

@@ -18,7 +18,7 @@ export function findAiSeat(game) {
 
 export function installMushokuOnline(lib, game, ui, get, status) {
   // Use a distinct protocol version: vanilla clients must not inject a different roster/skill set.
-  lib.versionOL = 27111726;
+  lib.versionOL = 27111727;
   if (game.mushokuOnlineInstalled) return;
   game.mushokuOnlineInstalled = true;
   const switchMode = game.switchMode;

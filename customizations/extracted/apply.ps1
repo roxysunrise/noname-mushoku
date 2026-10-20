@@ -47,4 +47,4 @@ foreach ($item in $manifest) {
     if ((Get-FileHash -LiteralPath (Join-Path $AppRoot $item.path) -Algorithm SHA256).Hash -ne $item.sha256) { throw "Installed checksum mismatch: $($item.path)" }
 }
 & (Join-Path $PSScriptRoot 'disable-music.ps1') -AppRoot $AppRoot
-Write-Output "Installed Dream / Roxy Boss update. Existing files backed up to: $backup"
+Write-Output "Installed custom roster and Boss update. Existing files backed up to: $backup"

@@ -1,8 +1,12 @@
 // game/resources/app/src/character/mushoku/index.js
-import { game as game4 } from "noname";
+import { game as game5 } from "noname";
 
 // game/resources/app/src/noname/init/mushoku-characters.js
 var characters = {
+  ac_yumeko: { sex: "female", group: "huan", hp: 4, maxHp: 4, skills: ["ac_haodu", "ac_xuju"], img: "image/character/ac_yumeko.jpg" },
+  ac_kaito: { sex: "male", group: "huan", hp: 4, maxHp: 4, skills: ["ac_zhangyan"], img: "image/character/ac_kaito.jpg" },
+  ac_chatgpt: { sex: "none", group: "xu", hp: 4, maxHp: 4, skills: ["ac_tuiyan"], img: "image/character/ac_chatgpt.jpg" },
+  mc_netherite: { sex: "none", group: "qi", hp: 4, maxHp: 4, skills: ["mc_fengcang", "mc_xiejia", "mc_rongzhu"], img: "image/character/mc_netherite.jpg" },
   th_mokou: { sex: "female", group: "shen", hp: 2, maxHp: 2, skills: ["th_penglai", "th_fengyi"], img: "image/character/th_mokou.jpg" },
   ac_yuu: { sex: "male", group: "huan", hp: 3, maxHp: 3, skills: ["ac_heyun", "ac_yinhui"], img: "image/character/ac_yuu.jpg" },
   mc_dream: { sex: "male", group: "wang", hp: 4, skills: ["mc_choumou", "mc_xianyi", "mc_xianzhui"], img: "image/character/mc_dream.jpg" },
@@ -593,5 +597,214 @@ var mokou_default = {
   }
 };
 
+// game/resources/app/src/character/mushoku/expansion.js
+import { lib as lib3, game as game4, get as get4, _status as _status3 } from "noname";
+var discardable = (card, player) => lib3.filter.cardDiscardable(card, player, "ac_haodu");
+var suits = (cards) => new Set(cards.map((card) => get4.suit(card, false)).filter((suit) => ["heart", "diamond", "club", "spade"].includes(suit))).size;
+var replayTargets = (player) => player.getStorage("ac_xuju");
+var expansion_default = {
+  ac_haodu: {
+    enable: "phaseUse",
+    usable: 1,
+    filterTarget(card, player, target) {
+      return target !== player;
+    },
+    async content(event, trigger, player) {
+      const target = event.target;
+      const results = await player.chooseCardOL([player, target], "he", [0, Infinity], true, "\u8C6A\u8D4C\uFF1A\u79D8\u5BC6\u9009\u62E9\u8981\u5F03\u7F6E\u7684\u724C\uFF0C\u53EF\u9009\u62E9\u96F6\u5F20", discardable).set("ai", (card) => 4 - get4.value(card)).forResult();
+      const chosen = [player, target].map((who, i) => [who, (results[i]?.cards || []).filter((card) => who.getCards("he").includes(card) && discardable(card, who))]);
+      const counts = chosen.map(([, cards]) => ({ count: cards.length, suits: suits(cards) }));
+      if (chosen.some(([, cards]) => cards.length)) await game4.loseAsync({ lose_list: chosen.filter(([, cards]) => cards.length) }).setContent("discardMultiple");
+      const limit = Number(counts[0].count >= counts[1].count) + Number(counts[0].suits >= counts[1].suits);
+      player.storage.ac_haodu_last = { count: counts[0].count, last: null };
+      player.syncStorage("ac_haodu_last");
+      const remaining = ["\u4F24\u5BB3", "\u6478\u724C"];
+      for (let i = 0; i < limit && player.isIn(); i++) {
+        const options = remaining.filter((option) => option !== "\u4F24\u5BB3" || target.isIn());
+        if (!options.length) break;
+        const result = await player.chooseControl([...options, "cancel2"]).set("prompt", `\u8C6A\u8D4C\uFF1A\u8FD8\u53EF\u4F9D\u6B21\u6267\u884C${limit - i}\u9879\uFF08\u4F24\u5BB3\uFF1A\u5BF9\u76EE\u6807\u9020\u62101\u70B9\u4F24\u5BB3\uFF1B\u6478\u724C\uFF1A\u81EA\u5DF1\u6478\u4E09\u5F20\u724C\uFF09`).set("ai", () => options.includes("\u4F24\u5BB3") && get4.attitude(player, target) < 0 ? "\u4F24\u5BB3" : "\u6478\u724C").forResult();
+        if (!options.includes(result.control)) break;
+        remaining.splice(remaining.indexOf(result.control), 1);
+        player.storage.ac_haodu_last.last = result.control === "\u4F24\u5BB3" ? "damage" : "draw";
+        player.syncStorage("ac_haodu_last");
+        if (result.control === "\u4F24\u5BB3") await target.damage(1, player);
+        else await player.draw(3);
+      }
+    },
+    ai: { order: 6, result: { player: 1, target: -1 } }
+  },
+  ac_xuju: {
+    trigger: { player: "phaseJieshuBegin" },
+    direct: true,
+    mark: true,
+    marktext: "\u7EED",
+    intro: { content: "\u5DF2\u7EED\u5C40\u89D2\u8272\uFF1A$" },
+    filter(event, player) {
+      const last = player.storage.ac_haodu_last;
+      return !!last?.last && player.countCards("he", (card) => lib3.filter.cardDiscardable(card, player, "ac_xuju")) >= last.count && game4.hasPlayer((target) => target.isDamaged() && !replayTargets(player).includes(target));
+    },
+    async content(event, trigger, player) {
+      const last = { ...player.storage.ac_haodu_last };
+      const result = await player.chooseTarget(`\u7EED\u5C40\uFF1A\u5F03\u7F6E${last.count}\u5F20\u724C\uFF0C\u4EE4\u4E00\u540D\u5DF2\u53D7\u4F24\u4E14\u672A\u7EED\u5C40\u7684\u89D2\u8272${last.last === "draw" ? "\u6478\u4E09\u5F20\u724C" : "\u53D7\u5230\u4F60\u9020\u6210\u76841\u70B9\u4F24\u5BB3"}`, (card, source, target2) => target2.isDamaged() && !source.getStorage("ac_xuju").includes(target2)).set("ai", (target2) => get4.attitude(player, target2) * (last.last === "draw" ? 1 : -1)).forResult();
+      if (!result.bool) return;
+      if (last.count > 0) {
+        const paid = await player.chooseToDiscard("he", last.count, true, "\u7EED\u5C40\uFF1A\u652F\u4ED8\u5F03\u724C\u8D39\u7528").forResult();
+        if (!paid.bool || paid.cards?.length !== last.count) return;
+      }
+      const target = result.targets[0];
+      player.logSkill("ac_xuju", target);
+      player.markAuto("ac_xuju", [target]);
+      if (!target.isIn()) return;
+      if (last.last === "draw") await target.draw(3);
+      else await target.damage(1, player);
+    }
+  },
+  ac_zhangyan: {
+    enable: "phaseUse",
+    usable: 1,
+    position: "he",
+    filterCard: true,
+    filter(event, player) {
+      return player.countCards("he") > 0 && game4.hasPlayer((target) => target !== player && target.countCards("h") > 0);
+    },
+    filterTarget(card, player, target) {
+      return target !== player && target.countCards("h") > 0;
+    },
+    async content(event, trigger, player) {
+      const target = event.target;
+      if (player.countCards("h")) await target.viewHandcards(player);
+      if (!target.isIn() || !target.countCards("h")) return;
+      await player.viewHandcards(target);
+      await player.gainPlayerCard(target, "h", true, "visible");
+    },
+    ai: { order: 8, result: { target: -1 } }
+  },
+  ac_tuiyan: {
+    enable: "phaseUse",
+    filter(event, player) {
+      return !player.hasSkill("ac_tuiyan_draw") || !player.hasSkill("ac_tuiyan_give") && player.countCards("h") > player.hp && game4.hasPlayer((target) => target !== player);
+    },
+    async content(event, trigger, player) {
+      const choices = [];
+      if (!player.hasSkill("ac_tuiyan_draw")) choices.push("\u8865\u5145\u624B\u724C");
+      if (!player.hasSkill("ac_tuiyan_give") && player.countCards("h") > player.hp && game4.hasPlayer((target) => target !== player)) choices.push("\u4EA4\u4ED8\u624B\u724C");
+      if (!choices.length) return;
+      const result = await player.chooseControl(choices).set("prompt", "\u63A8\u6F14\uFF1A\u6BCF\u9879\u6BCF\u51FA\u724C\u9636\u6BB5\u9650\u4E00\u6B21").set("ai", () => choices[0]).forResult();
+      if (result.control === "\u8865\u5145\u624B\u724C") {
+        player.addTempSkill("ac_tuiyan_draw", { player: "phaseUseAfter" });
+        await player.drawTo(player.maxHp);
+      } else if (result.control === "\u4EA4\u4ED8\u624B\u724C") {
+        const num = player.countCards("h") - player.hp;
+        if (num <= 0) return;
+        const selected = await player.chooseTarget("\u63A8\u6F14\uFF1A\u9009\u62E9\u63A5\u6536\u624B\u724C\u7684\u5176\u4ED6\u89D2\u8272", true, (card, source, target) => target !== source).set("ai", (target) => get4.attitude(player, target)).forResult();
+        if (!selected.bool) return;
+        const given = await player.chooseToGive(selected.targets[0], "h", num, true).forResult();
+        if (given.bool) player.addTempSkill("ac_tuiyan_give", { player: "phaseUseAfter" });
+      }
+    },
+    ai: { order: 0.5, result: { player: 1 } },
+    subSkill: {
+      draw: { charlotte: true, mark: true, marktext: "\u6F14", intro: { content: "\u672C\u51FA\u724C\u9636\u6BB5\u4E0D\u80FD\u5BF9\u5176\u4ED6\u89D2\u8272\u4F7F\u7528\u724C\u3002" }, mod: { playerEnabled(card, player, target) {
+        if (target !== player) return false;
+      } } },
+      give: { charlotte: true }
+    }
+  },
+  mc_fengcang: {
+    zhuanhuanji: true,
+    locked: true,
+    forced: true,
+    mark: true,
+    marktext: "\u950B",
+    intro: { content(storage) {
+      return storage ? "\u9634\uFF1A\u5176\u4ED6\u89D2\u8272\u81F3\u4F60\u7684\u8DDD\u79BB+1\uFF1B\u4E0D\u80FD\u54CD\u5E94\u5176\u4ED6\u89D2\u8272\u7684\u7EA2\u8272\u6740\u3002" : "\u9633\uFF1A\u4F60\u81F3\u5176\u4ED6\u89D2\u8272\u7684\u8DDD\u79BB-1\uFF1B\u9ED1\u8272\u6740\u4E0D\u53EF\u54CD\u5E94\u3002";
+    } },
+    trigger: { player: ["phaseZhunbeiBegin", "phaseJieshuBegin"] },
+    async content(event, trigger, player) {
+      const yin = trigger.name === "phaseJieshu";
+      if (!!player.storage.mc_fengcang !== yin) player.changeZhuanhuanji("mc_fengcang");
+    },
+    mod: {
+      globalFrom(from, to, distance) {
+        if (!from.storage.mc_fengcang) return distance - 1;
+      },
+      globalTo(from, to, distance) {
+        if (to.storage.mc_fengcang) return distance + 1;
+      }
+    },
+    group: ["mc_fengcang_black", "mc_fengcang_red"],
+    subSkill: {
+      black: { charlotte: true, forced: true, trigger: { player: "useCard" }, filter(event, player) {
+        return !player.storage.mc_fengcang && event.card.name === "sha" && get4.color(event.card) === "black";
+      }, async content(event, trigger) {
+        trigger.directHit.addArray(game4.players);
+      } },
+      red: { charlotte: true, forced: true, trigger: { target: "useCardToTargeted" }, filter(event, player) {
+        return !!player.storage.mc_fengcang && event.player !== player && event.card.name === "sha" && get4.color(event.card) === "red";
+      }, async content(event, trigger, player) {
+        trigger.getParent().directHit.add(player);
+      } }
+    }
+  },
+  mc_xiejia: {
+    trigger: { source: "damageBegin2" },
+    filter(event, player) {
+      return event.player !== player && event.num > 0 && event.player.countGainableCards(player, "e") > 0;
+    },
+    check(event, player) {
+      return event.num > 1 || get4.attitude(player, event.player) > 0 || event.player.countCards("e") > 0;
+    },
+    async content(event, trigger, player) {
+      trigger.num--;
+      await player.gainPlayerCard(trigger.player, "e", true);
+    }
+  },
+  mc_rongzhu: {
+    enable: "chooseToUse",
+    position: "hes",
+    selectCard: 1,
+    filterCard(card) {
+      return get4.type(card) === "equip";
+    },
+    viewAs: { name: "jiu" },
+    viewAsFilter(player) {
+      return player.countCards("hes", (card) => get4.type(card) === "equip") > 0;
+    },
+    check(card) {
+      return 6 - get4.value(card);
+    },
+    mod: { maxHandcard(player, num) {
+      return num + player.countCards("e");
+    } },
+    ai: { order: 5 }
+  }
+};
+
+// game/resources/app/src/character/mushoku/expansion-translate.js
+var expansion_translate_default = {
+  ac_yumeko: "\u86C7\u55B0\u68A6\u5B50",
+  ac_yumeko_ab: "\u68A6\u5B50",
+  ac_haodu: "\u8C6A\u8D4C",
+  ac_haodu_info: "\u51FA\u724C\u9636\u6BB5\u9650\u4E00\u6B21\uFF0C\u4F60\u53EF\u4EE5\u4E0E\u4E00\u540D\u5176\u4ED6\u89D2\u8272\u540C\u65F6\u79D8\u5BC6\u9009\u62E9\u5F03\u7F6E\u4EFB\u610F\u5F20\u624B\u724C\u6216\u88C5\u5907\u724C\uFF08\u53EF\u4E3A\u96F6\u5F20\uFF09\u3002\u7136\u540E\u4F60\u53EF\u4EE5\u9009\u62E9\u5E76\u4F9D\u6B21\u6267\u884C\u81F3\u591AX\u4E2A\u4E0D\u540C\u9009\u9879\uFF1A\u2460\u5BF9\u5176\u9020\u62101\u70B9\u4F24\u5BB3\uFF1B\u2461\u4F60\u6478\u4E09\u5F20\u724C\u3002X\u4E3A\u4EE5\u4E0B\u6761\u4EF6\u4E2D\u6EE1\u8DB3\u7684\u9879\u6570\uFF1A\u4F60\u5F03\u7F6E\u7684\u724C\u6570\u4E0D\u5C0F\u4E8E\u5176\uFF1B\u4F60\u5F03\u7F6E\u7684\u724C\u7684\u82B1\u8272\u6570\u4E0D\u5C0F\u4E8E\u5176\u3002",
+  ac_xuju: "\u7EED\u5C40",
+  ac_xuju_info: "\u6BCF\u540D\u89D2\u8272\u9650\u4E00\u6B21\u3002\u7ED3\u675F\u9636\u6BB5\uFF0C\u4F60\u53EF\u4EE5\u9009\u62E9\u4E00\u540D\u5DF2\u53D7\u4F24\u89D2\u8272\uFF0C\u5F03\u7F6EX\u5F20\u624B\u724C\u6216\u88C5\u5907\u724C\uFF08X\u4E3A\u4F60\u4E0A\u6B21\u53D1\u52A8\u8C6A\u8D4C\u65F6\u5F03\u7F6E\u7684\u724C\u6570\uFF09\uFF0C\u4EE4\u5176\u6267\u884C\u4E0A\u6B21\u8C6A\u8D4C\u6267\u884C\u7684\u6700\u540E\u4E00\u9879\uFF1A\u53D7\u5230\u4F60\u9020\u6210\u76841\u70B9\u4F24\u5BB3\uFF0C\u6216\u6478\u4E09\u5F20\u724C\u3002\u672A\u6267\u884C\u8FC7\u4EFB\u4F55\u9009\u9879\u65F6\u4E0D\u53EF\u53D1\u52A8\u3002",
+  ac_kaito: "\u602A\u76D7\u57FA\u5FB7",
+  ac_kaito_ab: "\u57FA\u5FB7",
+  ac_zhangyan: "\u969C\u773C",
+  ac_zhangyan_info: "\u51FA\u724C\u9636\u6BB5\u9650\u4E00\u6B21\uFF0C\u4F60\u53EF\u4EE5\u5F03\u7F6E\u4E00\u5F20\u724C\uFF0C\u9009\u62E9\u4E00\u540D\u6709\u624B\u724C\u7684\u5176\u4ED6\u89D2\u8272\uFF0C\u4EE4\u5176\u89C2\u770B\u4F60\u7684\u624B\u724C\uFF0C\u7136\u540E\u4F60\u89C2\u770B\u5176\u624B\u724C\u5E76\u83B7\u5F97\u5176\u4E2D\u4E00\u5F20\u3002",
+  ac_chatgpt: "ChatGPT",
+  ac_chatgpt_ab: "GPT",
+  ac_tuiyan: "\u63A8\u6F14",
+  ac_tuiyan_info: "\u51FA\u724C\u9636\u6BB5\uFF0C\u4F60\u53EF\u4EE5\u9009\u62E9\u4E00\u9879\uFF0C\u6BCF\u9879\u6BCF\u9636\u6BB5\u9650\u4E00\u6B21\uFF1A\u2460\u5C06\u624B\u724C\u6478\u81F3\u4F53\u529B\u4E0A\u9650\uFF0C\u7136\u540E\u76F4\u5230\u672C\u9636\u6BB5\u7ED3\u675F\uFF0C\u4F60\u4E0D\u80FD\u5BF9\u5176\u4ED6\u89D2\u8272\u4F7F\u7528\u724C\uFF1B\u2461\u5C06X\u5F20\u624B\u724C\u4EA4\u7ED9\u4E00\u540D\u5176\u4ED6\u89D2\u8272\uFF08X\u4E3A\u4F60\u7684\u624B\u724C\u6570\u51CF\u53BB\u4F60\u7684\u4F53\u529B\u503C\uFF0C\u4E14\u987B\u5927\u4E8E0\uFF09\u3002",
+  mc_netherite: "\u4E0B\u754C\u5408\u91D1\u5251",
+  mc_netherite_ab: "\u5408\u91D1\u5251",
+  mc_fengcang: "\u950B\u85CF",
+  mc_fengcang_info: "\u8F6C\u6362\u6280\uFF0C\u9501\u5B9A\u6280\u3002\u51C6\u5907\u9636\u6BB5\u8F6C\u4E3A\u9633\uFF0C\u7ED3\u675F\u9636\u6BB5\u8F6C\u4E3A\u9634\u3002\u9633\uFF1A\u4F60\u8BA1\u7B97\u4E0E\u5176\u4ED6\u89D2\u8272\u7684\u8DDD\u79BB-1\uFF0C\u4F60\u4F7F\u7528\u7684\u9ED1\u8272\u6740\u4E0D\u53EF\u88AB\u54CD\u5E94\uFF1B\u9634\uFF1A\u5176\u4ED6\u89D2\u8272\u8BA1\u7B97\u4E0E\u4F60\u7684\u8DDD\u79BB+1\uFF0C\u4F60\u4E0D\u53EF\u54CD\u5E94\u5176\u4ED6\u89D2\u8272\u5BF9\u4F60\u4F7F\u7528\u7684\u7EA2\u8272\u6740\u3002\u521D\u59CB\u4E3A\u9633\u3002",
+  mc_xiejia: "\u5378\u7532",
+  mc_xiejia_info: "\u5F53\u4F60\u5BF9\u5176\u4ED6\u89D2\u8272\u9020\u6210\u4F24\u5BB3\u65F6\uFF0C\u4F60\u53EF\u4EE5\u4EE4\u6B64\u4F24\u5BB3-1\uFF0C\u5E76\u83B7\u5F97\u5176\u88C5\u5907\u533A\u91CC\u7684\u4E00\u5F20\u724C\u3002",
+  mc_rongzhu: "\u7194\u94F8",
+  mc_rongzhu_info: "\u4F60\u53EF\u4EE5\u5C06\u4E00\u5F20\u88C5\u5907\u724C\u5F53\u9152\u4F7F\u7528\u3002\u4F60\u7684\u624B\u724C\u4E0A\u9650+X\uFF08X\u4E3A\u4F60\u88C5\u5907\u533A\u91CC\u7684\u724C\u6570\uFF09\u3002"
+};
+
 // game/resources/app/src/character/mushoku/index.js
-game4.import("character", () => ({ name: "mushoku", connect: true, character: character_default, skill: { ...skill_default, ...crossover_default, ...mokou_default }, translate: translate_default, characterIntro: intro_default, characterTitle: { th_mokou: "\u4E0D\u6B7B\u7684\u70DF\u706B" } }));
+game5.import("character", () => ({ name: "mushoku", connect: true, character: character_default, skill: { ...skill_default, ...crossover_default, ...mokou_default, ...Object.fromEntries(Object.entries(expansion_default).filter(([id]) => !id.startsWith("mc_"))) }, translate: { ...translate_default, ...Object.fromEntries(Object.entries(expansion_translate_default).filter(([id]) => !id.startsWith("mc_"))) }, characterIntro: { ...intro_default, ac_yumeko: "\u6DF1\u6E0A\u8D4C\u5F92\u3002\u4EE5\u724C\u4E0E\u547D\u8FD0\u4E0B\u6CE8\uFF0C\u8FFD\u9010\u80DC\u8D1F\u8FB9\u7F18\u7684\u523A\u6FC0\u3002", ac_kaito: "\u6708\u4E0B\u9B54\u672F\u5E08\u3002\u4EE5\u969C\u773C\u6CD5\u5728\u4F17\u76EE\u777D\u777D\u4E4B\u4E0B\u593A\u53D6\u5B9D\u7269\u3002", ac_chatgpt: "\u4E07\u8A00\u4E4B\u955C\u3002\u4E8E\u4E07\u5343\u53EF\u80FD\u4E2D\u63A8\u6F14\u7B54\u6848\uFF0C\u5C06\u77E5\u8BC6\u4EA4\u4ED8\u4ED6\u4EBA\u3002" }, characterTitle: { th_mokou: "\u4E0D\u6B7B\u7684\u70DF\u706B", ac_yumeko: "\u6DF1\u6E0A\u8D4C\u5F92", ac_kaito: "\u6708\u4E0B\u9B54\u672F\u5E08", ac_chatgpt: "\u4E07\u8A00\u4E4B\u955C" } }));
