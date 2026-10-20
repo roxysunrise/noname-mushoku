@@ -1,0 +1,110 @@
+[
+  {
+    "path": "character/minecraft.js",
+    "sha256": "4605DAC7EAD45A9FEDD2A73FCD8F8801D31B5C0329FACDFFC85A39C7CC6B973B"
+  },
+  {
+    "path": "character/mushoku.js",
+    "sha256": "B540CB6D23586EF831F021B8B82058072D50BA5741DCAE1F6E2C2D5D8C03867C"
+  },
+  {
+    "path": "image/character/ac_yuu.jpg",
+    "sha256": "5959704FA047F2C976252EEBA668BC711787E1BF93CFF1A183069605850167C8"
+  },
+  {
+    "path": "image/character/ac_yuu.svg",
+    "sha256": "795BA162E4B99B921E94F0FE34479E80F019EE7E34BF1EDD40547583E3D1F9FF"
+  },
+  {
+    "path": "image/character/boss_mt_roxy.jpg",
+    "sha256": "DA93E8A55548B45138F3CA80FC4D230073C6F8D01823AD35EDEB1B017EC484DB"
+  },
+  {
+    "path": "image/character/mc_dream.svg",
+    "sha256": "856DDA170D36350DE4B7CECBC51F7F085F5DC281CA49F0412830DC1AB53A0766"
+  },
+  {
+    "path": "image/character/th_mokou.jpg",
+    "sha256": "CAFEE8DB0F295374D4EBCC5F0686A0BC59E14E2EEAC0161B99936DED6BE0DAE0"
+  },
+  {
+    "path": "image/mode/boss/character/boss_mt_roxy.jpg",
+    "sha256": "DA93E8A55548B45138F3CA80FC4D230073C6F8D01823AD35EDEB1B017EC484DB"
+  },
+  {
+    "path": "noname/init/mushoku-boss.js",
+    "sha256": "E9674101BD5DE300259B9B61AF864131C5052DBCB08D7775F4407A1D2CDE4018"
+  },
+  {
+    "path": "noname/init/mushoku-characters.js",
+    "sha256": "6AD82F4CD3F922193F495226EB897483EDD5D35AEA25F392F000DB7A05EBDB72"
+  },
+  {
+    "path": "noname/init/mushoku-compatibility.js",
+    "sha256": "AAB6C92948398B0B4F47D75ACFA9A4559D71AEFD1F17CBDE8C7CD4BB9B5536C4"
+  },
+  {
+    "path": "noname/init/mushoku-online.js",
+    "sha256": "3D53C0C99581477F849070285724A9637937296FECEAE5929E1C283C4660259F"
+  },
+  {
+    "path": "src/character/minecraft/character.js",
+    "sha256": "9AF8B226AE01F6F6341C7FB089DB131178A180DED2A57D25A8DF8CE741708E1C"
+  },
+  {
+    "path": "src/character/minecraft/index.js",
+    "sha256": "5565B09F4DAFB288F10C016851F50414F41BB4C5DA4962440C11BF19C2A5943E"
+  },
+  {
+    "path": "src/character/minecraft/skill.js",
+    "sha256": "831F7CFEB058B42F35710D4BC826E81499FB5ECF8A10E2416268B8B041F3099F"
+  },
+  {
+    "path": "src/character/minecraft/translate.js",
+    "sha256": "8F3C2D032B3DB27DFA7E0040E353A908CB11B1866296372E421F7CFA62767FCC"
+  },
+  {
+    "path": "src/character/mushoku/character.js",
+    "sha256": "42984133228BD88A058E2CEFEB95698CBD3521098F27A4E0CCEA1B1E5A6F31D2"
+  },
+  {
+    "path": "src/character/mushoku/crossover.js",
+    "sha256": "0A020A0B31C06170DF389499DA503BFB926832E0B953578B0537F9327C7EB986"
+  },
+  {
+    "path": "src/character/mushoku/index.js",
+    "sha256": "C45DF00119FA88141D67F0269E7259F1CB8E3C2A03EB8F99658262D0A95C29F9"
+  },
+  {
+    "path": "src/character/mushoku/intro.js",
+    "sha256": "64A59BE44FAD8B2BC61B2953DAA8D4084F43478B113D904B635160C59D29C2D1"
+  },
+  {
+    "path": "src/character/mushoku/mokou.js",
+    "sha256": "0F7757AECD87BAA584DD56399B0906C00743C5B02EF7623270384EFCB1094DA1"
+  },
+  {
+    "path": "src/character/mushoku/skill.js",
+    "sha256": "45A84DD583F6DF8757EAEBA26EB49819208F57A81D8A5BD6D0DF129F89FAB739"
+  },
+  {
+    "path": "src/character/mushoku/translate.js",
+    "sha256": "397129111A751591CD4E34D1BD75F452D88E5510CADA9D07423567A1394D6F76"
+  },
+  {
+    "path": "src/noname/init/mushoku-boss.js",
+    "sha256": "E9674101BD5DE300259B9B61AF864131C5052DBCB08D7775F4407A1D2CDE4018"
+  },
+  {
+    "path": "src/noname/init/mushoku-characters.js",
+    "sha256": "6AD82F4CD3F922193F495226EB897483EDD5D35AEA25F392F000DB7A05EBDB72"
+  },
+  {
+    "path": "src/noname/init/mushoku-compatibility.js",
+    "sha256": "AAB6C92948398B0B4F47D75ACFA9A4559D71AEFD1F17CBDE8C7CD4BB9B5536C4"
+  },
+  {
+    "path": "src/noname/init/mushoku-online.js",
+    "sha256": "3D53C0C99581477F849070285724A9637937296FECEAE5929E1C283C4660259F"
+  }
+]
