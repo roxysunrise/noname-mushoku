@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>无名杀 · 山河入局</title>
+  <link rel="stylesheet" href="launcher.css">
+</head>
+<body>
+  <main class="scene">
+    <header><span class="edition">三国风云 · 群英入局</span><nav aria-label="启动设置"><button id="logs">更新日志</button><button id="settings">更新设置</button></nav></header>
+    <div class="title"><span class="seal" aria-hidden="true">群英</span><h1>无名杀</h1><p>一局山河，万般谋略</p></div>
+    <section class="loading" aria-label="游戏加载与更新">
+      <div class="status-line"><span id="status" role="status" aria-live="polite">正在准备启动…</span><span id="percent">—</span></div>
+      <div id="progress" class="track" role="progressbar" aria-label="下载进度" aria-valuemin="0" aria-valuemax="100"><div id="fill"></div></div>
+      <div class="metrics"><span id="speed">下载速度 —</span><span id="amount">已下载 —</span><span id="remaining">剩余 —</span><span id="eta">预计用时 —</span></div>
+      <div class="actions"><button id="check">检查更新</button><button id="cancel" hidden>取消下载</button><button id="install" class="primary" hidden>重启并安装</button><button id="enter" class="primary">进入游戏</button></div>
+      <footer><span id="version">读取版本…</span><span>抵制不良游戏 · 拒绝盗版游戏 · 适度游戏益脑</span></footer>
+    </section>
+  </main>
+  <dialog id="notice" aria-labelledby="notice-title"><div class="dialog-heading"><h2 id="notice-title">更新日志</h2><button id="close" aria-label="关闭弹窗">×</button></div><p id="notice-meta"></p><ul id="notes"></ul><div id="update-actions" hidden><button id="later">暂不更新</button><button id="download" class="primary">立即更新</button></div></dialog>
+  <dialog id="source-dialog" aria-labelledby="source-title"><h2 id="source-title">更新源设置</h2><p>填写独立服务器提供的更新清单地址。留空则关闭启动检查。</p><form id="source-form"><label for="source">HTTPS 更新清单地址</label><input id="source" type="url" placeholder="https://你的域名/noname-update.json" autocomplete="off"><p id="source-error" role="alert"></p><div><button id="source-cancel" type="button">取消</button><button class="primary" type="submit">保存并检查</button></div></form></dialog>
+  <script type="module" src="launcher.mjs"></script>
+</body>
+</html>

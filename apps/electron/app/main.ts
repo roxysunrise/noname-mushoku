@@ -2,11 +2,13 @@
 import { app, BrowserWindow, crashReporter, dialog, Menu, shell } from "electron";
 import fs from "fs";
 import path from "path";
+import { pathToFileURL } from "node:url";
 import remote from "@electron/remote/main/index.js";
 import createApp from "@noname/fs";
 remote.initialize();
 const dirname = path.join(import.meta.dirname, "../");
 let gameUrl = "http://localhost:8089/index.html";
+let gameUpdater: { showLogs: (win: BrowserWindow) => unknown } | undefined;
 const dataRoot = path.join(app.getPath("appData"), "noname-mushoku");
 fs.mkdirSync(dataRoot, { recursive: true });
 app.setPath("userData", path.join(dataRoot, "UserData"));
@@ -100,7 +102,7 @@ function createMainWindow() {
 	if (import.meta.env.DEV) {
 		win.loadURL(`http://localhost:8080`);
 	} else {
-		win.loadURL(gameUrl);
+		win.loadURL(new URL('/updater/launcher.html', gameUrl).href);
 	}
 	remote.enable(win.webContents);
 	const menuTemplate: Electron.MenuItemConstructorOptions[] = [
@@ -111,6 +113,17 @@ function createMainWindow() {
 					label: "打开无名杀目录",
 					click: () => {
 						shell.openPath(app.getAppPath());
+					},
+				},
+				{
+					label: "更新日志",
+					click: () => { gameUpdater?.showLogs(win); },
+				},
+				{
+					label: "检查游戏更新",
+					click: async () => {
+						const answer = await dialog.showMessageBox(win, { title: "检查更新", message: "返回启动页检查更新？请先结束当前对局。", buttons: ["取消", "返回启动页"], defaultId: 0, cancelId: 0 });
+						if (answer.response === 1) win.loadURL(new URL('/updater/launcher.html', gameUrl).href);
 					},
 				},
 			],
@@ -181,6 +194,11 @@ app.whenReady().then(async () => {
 			address = await server.listen({ port: 0, host: "127.0.0.1" });
 		}
 		gameUrl = `${address}/index.html`;
+	}
+	if (!import.meta.env.DEV) {
+		const updaterModuleUrl = pathToFileURL(path.join(dirname, "updater/electron.mjs")).href;
+		const { installUpdater } = await import(/* @vite-ignore */ updaterModuleUrl);
+		gameUpdater = installUpdater({ dataRoot, appRoot: dirname, getGameUrl: () => gameUrl });
 	}
 	createWindow();
 	app.on("activate", () => {

@@ -1,0 +1,5 @@
+{
+  "manifestUrl": "https://noname-updates-d3gpg961xc497eb27-1510703983.tcloudbaseapp.com/noname-update.json",
+  "checkTimeoutMs": 8000,
+  "comment": "填入独立服务器或对象存储的 HTTPS 地址，例如 https://你的域名/game/noname-update.json；不使用 GitHub 更新源。"
+}

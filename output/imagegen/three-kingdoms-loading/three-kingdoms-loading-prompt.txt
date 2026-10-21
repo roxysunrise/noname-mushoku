@@ -1,0 +1,8 @@
+Model: gpt-image-2
+Mode: official imagegen skill CLI; conda run -n imagegen
+Requested size: 2048x1152; quality: high
+Observed returned size: 1672x941 (third-party endpoint response)
+Original: three-kingdoms-loading-original.png
+Game asset: 无名杀/game/resources/app/image/background/three-kingdoms-loading.jpg
+
+Use case: stylized-concept. Asset type: full-screen loading background for a Three Kingdoms Chinese strategy card game. Epic original Chinese historical fantasy digital painting with traditional ink wash atmosphere and richly painted armor. A majestic armored general holding a long guandao on a black horse at the right third, a calm robed strategist holding a feather fan at the left third; ancient fortress, distant banners, river and misty mountains at dusk. Muted jade teal, ink blue and aged gold, sunset light through storm clouds, cinematic depth, elegant brushwork, premium polished game key art. Landscape 16:9. Central upper area has spacious pale atmospheric mist for game title overlay; bottom quarter is naturally dark and quiet for a progress bar and download statistics. No text, no lettering, no logos, no watermark, no UI, no progress bar, no modern elements, no gore.
