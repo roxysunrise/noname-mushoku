@@ -12,6 +12,23 @@
 .accessibility-backgrounds { position: relative; display: grid; grid-template-columns: repeat(auto-fill,minmax(130px,1fr)); gap: 8px; }
 .accessibility-backgrounds button { min-height: 86px; margin: 0; background-size: cover; background-position: center; text-shadow: 0 1px 3px black; }
 .accessibility-backgrounds .selected { border: 3px solid #70dbbb; }
+.accessibility-avatar-tabs { position: relative; display: flex; flex-wrap: wrap; margin: 10px 0; }
+.accessibility-avatar-tabs [aria-pressed=true] { border-color: #70dbbb; background: #1f6052; }
+.accessibility-avatar-grid { position: relative; display: grid; grid-template-columns: repeat(auto-fill,minmax(96px,1fr)); gap: 10px; }
+.accessibility-avatar-grid .accessibility-avatar-card { display: flex; flex-direction: column; align-items: stretch; padding: 0; margin: 0; min-width: 0; overflow: hidden; }
+.accessibility-avatar-card[hidden] { display: none; }
+.accessibility-avatar-card[aria-pressed=true] { outline: 3px solid #70dbbb; outline-offset: -3px; }
+.accessibility-avatar-card img { position: relative; display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; pointer-events: none; }
+.accessibility-avatar-card span { position: relative; display: block; padding: 7px 3px; font-size: 14px; line-height: 1.4; overflow-wrap: anywhere; pointer-events: none; }
+@media (max-height: 500px) {
+  .accessibility-avatar-panel { padding: 10px; max-height: 100%; }
+  .accessibility-avatar-panel h2 { min-height: 44px; margin-bottom: 8px; font-size: 20px; }
+  .accessibility-avatar-panel input[type=text] { height: 38px; }
+  .accessibility-avatar-tabs { margin: 6px 0; }
+  .accessibility-avatar-tabs button { min-height: 36px; padding: 4px 10px; }
+  .accessibility-avatar-card img { height: 100px; aspect-ratio: auto; object-position: top; }
+  .accessibility-avatar-card span { padding: 4px 3px; }
+}
 /* Details must have a readable width and an opaque, independently scrolling surface. */
 #window > .dialog.popped#nodeintro { width: min(440px,calc(100% - 24px)); max-height: calc(100% - 24px); background: rgba(20,25,32,.97); overflow: hidden; transform: none; }
 #window > .dialog.popped#nodeintro > .content-container { overflow-y: auto; overscroll-behavior: contain; }

@@ -163,7 +163,12 @@ export const NonameConfig = {
 					// 显示当前配置的武将名称（直接使用翻译，不额外添加前缀）
 					const currentId = lib.config.connect_avatar || config.init || "caocao";
 					input.innerHTML = lib.translate[currentId] || "曹操";
-					input.onblur = config.onblur;
+					input.contentEditable = false;
+					input.dataset.editConnectAvatar = "true";
+					input.tabIndex = 0;
+					input.setAttribute("role", "button");
+					input.addEventListener("keydown", event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); event.stopPropagation(); ui.openConnectAvatarPicker?.(); } });
+					this.$refs.node.onclick = event => { event.stopPropagation(); ui.openConnectAvatarPicker?.(); };
 				} else if (config.name == "联机大厅") {
 					input.innerHTML = config.init || lib.hallURL;
 					input.onblur = function () {

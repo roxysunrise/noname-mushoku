@@ -92,7 +92,7 @@
     "path": "index.html"
   },
   {
-    "sha256": "306248933B8AAF6BD4B7685845D78743D378824506C22E17B9A0EE2701C58C91",
+    "sha256": "A00AE86F56E872D72CC34C7B914BAE433C6BEB20896DFB61355B55F2C5AEE6CB",
     "path": "layout/default/accessibility.css"
   },
   {
@@ -116,11 +116,11 @@
     "path": "noname/init/mushoku-compatibility.js"
   },
   {
-    "sha256": "57615266EEAD256E437738039962D332458F793EF3E35EB8105FEF3F3BE42EDA",
+    "sha256": "2BFC58FBBFDD65B1238479122666EC343BAB48C024219F85FA4F9D5D7336FFBC",
     "path": "noname/init/mushoku-online-modes.js"
   },
   {
-    "sha256": "E5E6BA3AFBD24D7392D2B8EF3904DE6425F741EF5BB3DEEB3125682B8E74E4D7",
+    "sha256": "95D985A12061E745BC3A35C20A63FEE3185D0FBB996E5104E8C4468CC0E8CEF0",
     "path": "noname/init/mushoku-online.js"
   },
   {
@@ -140,7 +140,7 @@
     "path": "noname/ui/create/index.js"
   },
   {
-    "sha256": "FCC105D2DBE13D2C80EBB5212810DA063CC5D25DBFB7EFF792405C0BC6DB912E",
+    "sha256": "1FC040B809C07FF31BC7D825F5AB646B4F5956634290FBE404E1EB71E1B78125",
     "path": "noname/ui/create/menu/index.js"
   },
   {
@@ -148,7 +148,7 @@
     "path": "noname/ui/create/menu/pages/startMenu.js"
   },
   {
-    "sha256": "A0D75C105C51C64CE9306D12F7F1D89981778371F9C1E951CFF2A00C934FB7AF",
+    "sha256": "25766E89E8182B969443C39988B45B69B551E8907982CE49DE1E122DB3A275B9",
     "path": "noname/ui/mobile-accessibility.js"
   },
   {
@@ -244,11 +244,11 @@
     "path": "src/noname/init/mushoku-compatibility.js"
   },
   {
-    "sha256": "57615266EEAD256E437738039962D332458F793EF3E35EB8105FEF3F3BE42EDA",
+    "sha256": "2BFC58FBBFDD65B1238479122666EC343BAB48C024219F85FA4F9D5D7336FFBC",
     "path": "src/noname/init/mushoku-online-modes.js"
   },
   {
-    "sha256": "E5E6BA3AFBD24D7392D2B8EF3904DE6425F741EF5BB3DEEB3125682B8E74E4D7",
+    "sha256": "95D985A12061E745BC3A35C20A63FEE3185D0FBB996E5104E8C4468CC0E8CEF0",
     "path": "src/noname/init/mushoku-online.js"
   },
   {
@@ -268,11 +268,11 @@
     "path": "src/noname/ui/create/index.js"
   },
   {
-    "sha256": "172B083E001C012E4867DEB1B2A536157F182DEA9A5357AE40313BB874BA665B",
+    "sha256": "BA352BE54AFAA3A32BCE8366C157CC401EA63509638F8C3A74794252E73AA877",
     "path": "src/noname/ui/create/menu/index.js"
   },
   {
-    "sha256": "0A10B0E0E6C00B71965F6B4A9B1C64FC7862917803493B8B9188288D65DF6866",
+    "sha256": "269543073AC13921BAF757B07A73357DD794DAD392D13636695AFB6761C669CC",
     "path": "src/noname/ui/create/menu/nonameConfig.js"
   },
   {
@@ -280,7 +280,15 @@
     "path": "src/noname/ui/create/menu/pages/startMenu.js"
   },
   {
-    "sha256": "A0D75C105C51C64CE9306D12F7F1D89981778371F9C1E951CFF2A00C934FB7AF",
+    "sha256": "25766E89E8182B969443C39988B45B69B551E8907982CE49DE1E122DB3A275B9",
     "path": "src/noname/ui/mobile-accessibility.js"
+  },
+  {
+    "sha256": "9FE0AE35587476BA37AB6F4C125AAAEEA260459779E9BBB04AD7E18607778343",
+    "path": "mode/identity.js"
+  },
+  {
+    "sha256": "3DC3420E7FC3635B493F7378DD13B8B4959A4C89963FDDA6F97B40861541345F",
+    "path": "src/mode/identity.js"
   }
 ]

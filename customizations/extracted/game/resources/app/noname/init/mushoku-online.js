@@ -4,10 +4,11 @@ import { bossCharacters } from "./mushoku-boss.js";
 import { onlineModes, roomSeats, configureOnlineMenus } from "./mushoku-online-modes.js";
 
 export function roomError(lib, config = lib.configOL) {
-  if (!onlineModes.includes(config.mode)) return "当前联机支持标准身份、休闲斗地主、2对2和Boss挑战。";
+  if (!onlineModes.includes(config.mode)) return "当前联机支持标准身份、休闲斗地主、1对1、2对2和Boss挑战。";
   if (config.mode === "identity" && (config.identity_mode || "normal") !== "normal") return "身份联机仅支持标准身份局。";
   if (config.mode === "doudizhu" && (config.doudizhu_mode || "normal") !== "normal") return "斗地主联机仅支持休闲玩法。";
-  if (config.mode === "versus" && (config.versus_mode || "2v2") !== "2v2") return "对决联机仅支持2对2。";
+  if (config.mode === "versus" && !["1v1", "2v2"].includes(config.versus_mode || "2v2")) return "对决联机支持1对1和2对2。";
+  if (config.team_mode && !["random", "free"].includes(config.team_mode)) return "请选择随机分配或自由选择阵营。";
   if (config.mode === "boss" && config.boss_character && !bossCharacters[config.boss_character]) return "请选择本版已注册的Boss。";
   const number = roomSeats(config);
   if (!Number.isInteger(number) || number < 2 || number > 8) return "房间人数须为2至8人（含AI）。";
@@ -21,12 +22,12 @@ export function roomError(lib, config = lib.configOL) {
 }
 
 export function findAiSeat(game) {
-  return game.players.find(player => player !== game.me && player !== game.boss && player.isIn() && (!player.ws || player.ws.closed));
+  return game.players.find(player => player !== game.me && player.isIn() && (!player.ws || player.ws.closed));
 }
 
 export function installMushokuOnline(lib, game, ui, get, status) {
   // Use a distinct protocol version: vanilla clients must not inject a different roster/skill set.
-  lib.versionOL = 27111730;
+  lib.versionOL = 27112101;
   game.mushokuOnlineContext = { ui, status };
   if (game.mushokuOnlineInstalled) return;
   game.mushokuOnlineInstalled = true;
@@ -53,10 +54,6 @@ export function installMushokuOnline(lib, game, ui, get, status) {
     if (lib.configOL.mushokuAiRoom) {
       const seats = game.connectPlayers || [];
       for (const seat of seats) if (!seat.playerid && !seat.classList?.contains("unselectable2")) seat.node.nameol.textContent = "AI（玩家加入后替换）";
-      if (lib.configOL.mode === "boss" && seats.length) {
-        seats.at(-1).node.nameol.textContent = "Boss（固定AI）";
-        seats.at(-1).classList?.add("unselectable2");
-      }
     }
   };
   ui.create.connectPlayers = function (...args) {
@@ -81,8 +78,8 @@ export function installMushokuOnline(lib, game, ui, get, status) {
       (!get.config("check_versionLocal", "connect") || config.versionLocal === lib.version) &&
       (!get.config("check_extension", "connect") || !config.extension);
     const reconnect = config?.id && lib.playerOL?.[config.id];
-    if (lib.configOL.mode === "boss" && status.waitingForPlayer && valid && !reconnect &&
-      (lib.node.clients || []).filter(client => client !== this && (client.inited || client.mushokuAccepted) && !client.closed).length >= 2) {
+    if (lib.configOL.mushokuAiRoom && status.waitingForPlayer && valid && !reconnect &&
+      (lib.node.clients || []).filter(client => client !== this && (client.inited || client.mushokuAccepted) && !client.closed).length >= roomSeats(lib.configOL) - 1) {
       this.send("denied", "number"); this.close(); return;
     }
     if (reconnect && reconnect.ws && !reconnect.ws.closed && reconnect.ws !== this) {
@@ -118,7 +115,8 @@ export function installMushokuOnline(lib, game, ui, get, status) {
   };
   const change = server.changeRoomConfig;
   server.changeRoomConfig = function (config) {
-    if (lib.configOL.mushokuAiRoom && ((config.mode && config.mode !== lib.configOL.mode) || roomError(lib, { ...lib.configOL, ...config }))) return;
+    // Native lobby keeps its existing seat nodes; changing capacity requires a new room.
+    if (lib.configOL.mushokuAiRoom && ((config.mode && config.mode !== lib.configOL.mode) || roomSeats({ ...lib.configOL, ...config }) !== roomSeats(lib.configOL) || roomError(lib, { ...lib.configOL, ...config }))) return;
     return change.call(this, config);
   };
 }

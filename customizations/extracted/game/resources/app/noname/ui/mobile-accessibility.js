@@ -1,3 +1,6 @@
+import characters from "../init/mushoku-characters.js";
+import { packForCharacter } from "../init/mushoku-rosters.js";
+
 /** Touch-friendly preferences; deliberately independent of game/event state. */
 export function installMobileAccessibility({ lib, game, ui, get }) {
 	if (ui.openDisplaySettings) return;
@@ -62,6 +65,50 @@ export function installMobileAccessibility({ lib, game, ui, get }) {
 		input.addEventListener("keydown", event => { if (event.key === "Enter" && !event.isComposing) save(); });
 		input.focus(); input.select();
 	};
+	ui.openConnectAvatarPicker = () => {
+		const { box, close, addButton } = panel("选择联机头像");
+		box.classList.add("accessibility-avatar-panel");
+		const search = document.createElement("input"); search.type = "text";
+		search.placeholder = "搜索角色名称"; search.setAttribute("aria-label", "搜索联机头像角色名称"); box.append(search);
+		const tabs = document.createElement("div"); tabs.className = "accessibility-avatar-tabs"; box.append(tabs);
+		const grid = document.createElement("div"); grid.className = "accessibility-avatar-grid"; box.append(grid);
+		const message = document.createElement("p"); message.textContent = "点击角色卡片保存；下次加入房间时使用。"; box.append(message);
+		let category = "all", saving = false;
+		const cards = [];
+		const filter = () => {
+			const query = search.value.trim().toLocaleLowerCase();
+			for (const { id, name, card } of cards) card.hidden = (category !== "all" && packForCharacter(id) !== category) || !name.toLocaleLowerCase().includes(query);
+			message.textContent = cards.some(({ card }) => !card.hidden) ? "点击角色卡片保存；下次加入房间时使用。" : "没有找到角色，可切换分类或清空搜索。";
+		};
+		for (const [key, label] of [["all", "全部"], ["mushoku", "二次元"], ["ai", "AI"], ["minecraft", "Minecraft"]]) {
+			const tab = addButton(label, () => {
+				category = key;
+				for (const button of tabs.children) button.setAttribute("aria-pressed", String(button === tab));
+				filter();
+			}, tabs);
+			tab.setAttribute("aria-pressed", String(key === category));
+		}
+		for (const id of Object.keys(characters)) {
+			const name = get.plainText(lib.translate[id] || id);
+			const card = addButton("", async () => {
+				if (saving) return;
+				saving = true;
+				try {
+					await game.promises.saveConfig("connect_avatar", id);
+					await game.promises.saveConfig("connect_avatar", id, "connect");
+					for (const element of document.querySelectorAll("[data-edit-connect-avatar]")) element.textContent = name;
+					close();
+				} catch { saving = false; message.textContent = "保存失败，请重试。"; }
+			}, grid);
+			card.dataset.connectAvatar = id; card.className = "accessibility-avatar-card";
+			card.setAttribute("aria-label", `选择${name}作为联机头像`);
+			card.setAttribute("aria-pressed", String(id === lib.config.connect_avatar));
+			const portrait = document.createElement("img"); portrait.src = `${lib.assetURL || ""}image/character/${id}.jpg`; portrait.alt = name; portrait.draggable = false;
+			const caption = document.createElement("span"); caption.textContent = name;
+			card.append(portrait, caption); cards.push({ id, name, card });
+		}
+		search.addEventListener("input", filter);
+	};
 	ui.openBackgroundSettings = () => {
 		const { box, close, addButton } = panel("选择游戏背景");
 		const grid = document.createElement("div"); grid.className = "accessibility-backgrounds"; box.append(grid);
@@ -87,6 +134,7 @@ export function installMobileAccessibility({ lib, game, ui, get }) {
 	ui.openDisplaySettings = () => {
 		const { overlay, box, close, addButton } = panel("显示与操作");
 		addButton("修改联机昵称", ui.editConnectNickname);
+		addButton("选择联机头像", ui.openConnectAvatarPicker);
 		addButton("选择游戏背景", ui.openBackgroundSettings);
 		const addRange = (label, value, min, max, onInput) => {
 			const row = document.createElement("label"); row.className = "accessibility-range";

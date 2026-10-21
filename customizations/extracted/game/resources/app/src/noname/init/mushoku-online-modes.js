@@ -5,7 +5,8 @@ import { bossCharacters, bossTranslate } from "./mushoku-boss.js";
 export const onlineModes = ["identity", "doudizhu", "versus", "boss"];
 export function roomSeats(config) {
   if (config.mode === "doudizhu") return 3;
-  if (config.mode === "versus" || config.mode === "boss") return 4;
+  if (config.mode === "versus") return config.versus_mode === "1v1" ? 2 : 4;
+  if (config.mode === "boss") return 4;
   return Number(config.player_number || config.number || 8);
 }
 export function availableCharacters(config) {
@@ -25,6 +26,25 @@ export function allocateChoices(ids, seatIds, random = Math.random) {
   return result;
 }
 
+// Shuffle claimants before honoring preferences: neither host nor seat order wins a tie.
+export function allocateRoles(seatIds, slots, preferences = {}, random = Math.random) {
+  if (seatIds.length !== slots.length || new Set(seatIds).size !== seatIds.length) throw new Error("席位与阵营人数不匹配。");
+  const shuffle = list => {
+    for (let i = list.length - 1; i > 0; i--) {
+      const j = Math.floor(random() * (i + 1));
+      [list[i], list[j]] = [list[j], list[i]];
+    }
+    return list;
+  };
+  const remaining = shuffle([...slots]), order = shuffle([...seatIds]), assigned = {};
+  for (const id of order) {
+    const index = remaining.indexOf(preferences[id]);
+    if (index >= 0) assigned[id] = remaining.splice(index, 1)[0];
+  }
+  for (const id of order) if (!(id in assigned)) assigned[id] = remaining.pop();
+  return assigned;
+}
+
 export function configureOnlineMenus(lib, game) {
   if (!lib.mode) return;
   const ddz = lib.mode.doudizhu?.connect;
@@ -37,9 +57,17 @@ export function configureOnlineMenus(lib, game) {
   }
   const vs = lib.mode.versus?.connect;
   if (vs) {
-    vs.connect_versus_mode.item = { "2v2": "2对2" };
+    vs.connect_versus_mode.item = { "1v1": "1对1（单将对决）", "2v2": "2对2" };
     vs.connect_versus_mode.init = "2v2";
-    game.saveConfig("connect_versus_mode", "2v2", "versus");
+    const saved = lib.config?.mode_config?.versus?.connect_versus_mode;
+    if (!["1v1", "2v2"].includes(saved)) game.saveConfig("connect_versus_mode", "2v2", "versus");
+    vs.update = (config, map) => {
+      for (const key of ["connect_choice_num", "connect_replace_number"]) map[key]?.hide();
+      for (const key of ["connect_replace_handcard", "connect_olfeiyang_four"]) {
+        if (config.connect_versus_mode === "2v2") map[key]?.show();
+        else map[key]?.hide();
+      }
+    };
   }
   if (lib.mode.boss) lib.mode.boss.connect = {
     connect_boss_character: {
@@ -47,20 +75,46 @@ export function configureOnlineMenus(lib, game) {
       item: Object.fromEntries(Object.keys(bossCharacters).map(id => [id, bossTranslate[id]])),
     },
   };
+  for (const name of onlineModes) if (lib.mode[name]?.connect) {
+    lib.mode[name].connect.connect_team_mode = {
+      name: "阵营分配", init: "random", frequent: true,
+      item: { random: "随机分配", free: "自由选择" },
+      intro: "自由选择时先选择身份或队伍，人数超额则随机抽签，其余席位自动补齐；随机模式中真人也可能成为Boss。",
+    };
+  }
 }
 
 export function prepareOnlineMode(mode, lib, get, game) {
-  if (!onlineModes.includes(mode.name) || mode.name === "identity" || !game.mushokuOnlineContext) return mode;
+  if (!onlineModes.includes(mode.name) || !game?.mushokuOnlineContext) return mode;
   const { ui, status: _status } = game.mushokuOnlineContext;
   const modeName = mode.name;
   const result = { ...mode, game: { ...mode.game } };
+  const chooseRoles = async slots => {
+    const preferences = {};
+    if (lib.configOL.team_mode === "free") {
+      const labels = modeName === "identity" ? { zhu: "主公", zhong: "忠臣", fan: "反贼", nei: "内奸", commoner: "平民" }
+        : modeName === "boss" ? { zhu: "Boss", fan: "挑战者" }
+        : modeName === "doudizhu" ? { zhu: "地主", fan: "农民" } : { zhu: "甲队", fan: "乙队" };
+      const options = [["random", "随机"], ...[...new Set(slots)].map(role => [role, `${labels[role] || role}（${slots.filter(s => s === role).length}人）`])];
+      const humans = game.players.filter(p => p === game.me || p.isOnline());
+      const choices = humans.map(p => [p, { createDialog: ["选择阵营（超额随机抽签，空缺自动补位）", [options, "textbutton"]], selectButton: 1, forced: true }]);
+      const selected = await game.me.chooseButtonOL(choices).forResult();
+      for (const p of humans) preferences[p.playerid] = selected?.[p.playerid]?.links?.[0];
+    }
+    return allocateRoles(game.players.map(p => p.playerid), slots, preferences);
+  };
+  // Native identity selection retains its private role messages, special identities and lord rules.
+  if (modeName === "identity") {
+    result.game.chooseMushokuRoles = chooseRoles;
+    return result;
+  }
   const state = () => Object.fromEntries([...game.players, ...game.dead].map(p => [p.playerid, { identity: p.identity, side: p.side, boss: p === game.boss }]));
   result.game.getState = state;
   result.game.updateState = function (snapshot) {
+    for (const id in snapshot) if (lib.playerOL[id]) Object.assign(lib.playerOL[id], { side: snapshot[id].side, identity: snapshot[id].identity, identityShown: true });
     for (const id in snapshot) {
       const p = lib.playerOL[id];
       if (!p) continue;
-      Object.assign(p, { side: snapshot[id].side, identity: snapshot[id].identity, identityShown: true });
       if (snapshot[id].boss) { game.boss = p; game.zhu = p; }
       else if (p.identity === "zhu") game.zhu = p;
       if (lib.configOL.mode === "versus") {
@@ -74,20 +128,17 @@ export function prepareOnlineMode(mode, lib, get, game) {
     next.setContent(async () => {
       let boss;
       const players = game.players;
+      const slots = modeName === "versus" ? players.map((p, i) => i < players.length / 2 ? "zhu" : "fan") : players.map((p, i) => i === 0 ? "zhu" : "fan");
+      const roles = await chooseRoles(slots);
+      for (const p of players) { p.identity = roles[p.playerid]; p.side = p.identity === "zhu"; }
       if (modeName === "boss") {
-        boss = players.find(p => p !== game.me && (!p.ws || p.ws.closed));
-        if (!boss) throw new Error("Boss挑战须保留一个AI席位。");
+        boss = players.find(p => p.side);
         const bossName = lib.configOL.boss_character || "boss_mt_roxy";
         boss.init(bossName);
         game.boss = game.zhu = boss;
-        for (const p of players) { p.side = p === boss; p.identity = p === boss ? "zhu" : "fan"; }
       } else if (modeName === "doudizhu") {
-        const landlord = players[Math.floor(Math.random() * players.length)];
-        game.zhu = landlord;
-        for (const p of players) { p.identity = p === landlord ? "zhu" : "fan"; p.side = p === landlord; }
+        game.zhu = players.find(p => p.side);
       } else {
-        const offset = Math.random() < 0.5;
-        players.forEach((p, i) => { p.side = (i % 2 === 0) === offset; p.identity = p.side ? "zhu" : "fan"; });
         _status.firstAct = players[Math.floor(Math.random() * players.length)];
       }
       const selecting = players.filter(p => p !== boss);
@@ -96,6 +147,9 @@ export function prepareOnlineMode(mode, lib, get, game) {
         for (const id in snapshot) {
           const p = lib.playerOL[id];
           p.side = snapshot[id].side; p.identity = snapshot[id].identity; p.identityShown = true; p.ai.shown = 1;
+        }
+        for (const id in snapshot) {
+          const p = lib.playerOL[id];
           if (snapshot[id].boss) {
             if (!p.name) p.init(bossName);
             game.boss = game.zhu = p;
@@ -126,22 +180,34 @@ export function prepareOnlineMode(mode, lib, get, game) {
     });
     return next;
   };
-  if (modeName === "boss") {
-    Object.assign(lib.character, bossCharacters);
+  if (modeName === "boss" || modeName === "versus") {
+    if (modeName === "boss") Object.assign(lib.character, bossCharacters);
     result.start = [
       async () => { game.waitForPlayer(); },
       async () => { game.randomMapOL(); },
       async event => {
         game.syncState();
         await event.trigger("gameStart");
-        game.gameDraw(game.boss, 4);
-        game.phaseLoop(game.boss);
+        let first = modeName === "boss" ? game.boss : _status.firstAct;
+        if (modeName === "versus") {
+          _status.first_less = true;
+          if (lib.configOL.versus_mode !== "1v1" && first.next.side === first.side) first = first.next;
+          _status.firstAct = first;
+          if (lib.configOL.versus_mode === "2v2") {
+            if (lib.configOL.olfeiyang_four) first.previousSeat.addSkill("olfeiyang");
+            game.addGlobalSkill("versus_viewHandcard");
+          }
+        }
+        game.gameDraw(first, p => modeName === "versus" && lib.configOL.versus_mode === "2v2" && lib.configOL.replace_handcard && p === first.previousSeat ? 5 : 4);
+        game.phaseLoop(first);
       },
     ];
-    result.game.getRoomInfo = intro => intro.add('<div class="text chat">三名挑战者合作对抗AI Boss；不足人数由AI补位。</div>');
-    result.game.checkOnlineResult = player => !!game.boss && (player.side ? game.boss.isAlive() : !game.boss.isAlive());
+    result.game.getRoomInfo = intro => intro.add(`<div class="text chat">${modeName === "boss" ? "一名Boss对抗三名挑战者，真人可以担任Boss" : lib.configOL.versus_mode === "1v1" ? "1对1单将对决，无替补" : "2对2团队对决"}；${lib.configOL.team_mode === "free" ? "自由选择阵营" : "随机分配阵营"}；不足人数由AI补位。</div>`);
+    result.game.checkOnlineResult = player => modeName === "boss" ? !!game.boss && (player.side ? game.boss.isAlive() : !game.boss.isAlive()) : game.hasPlayer(p => p.side === player.side);
     result.game.checkResult = () => {
-      if (!game.boss.isAlive() || !game.hasPlayer(p => !p.side)) game.over(!game.boss.isAlive());
+      if (modeName === "boss") {
+        if (!game.boss.isAlive() || !game.hasPlayer(p => !p.side)) game.over(game.me.side === game.boss.isAlive());
+      } else if (!game.hasPlayer(p => p.side) || !game.hasPlayer(p => !p.side)) game.over(game.hasPlayer(p => p.side === game.me.side));
     };
     result.element = { ...mode.element, player: { ...mode.element?.player, dieAfter() { game.checkResult(); } } };
   }

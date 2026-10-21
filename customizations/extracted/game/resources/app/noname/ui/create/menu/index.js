@@ -332,7 +332,13 @@ function createConfig(config, position) {
     } else if (config.name == "联机头像") {
       const currentId = lib.config.connect_avatar || config.init || "caocao";
       input.innerHTML = lib.translate[currentId] || "曹操";
-      input.onblur = config.onblur;
+      input.contentEditable = false;
+      input.dataset.editConnectAvatar = "true";
+      input.tabIndex = 0;
+      input.setAttribute("role", "button");
+      input.title = "点击角色卡片选择联机头像";
+      input.onkeydown = event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); event.stopPropagation(); ui.openConnectAvatarPicker?.(); } };
+      node.addEventListener("click", event => { event.stopPropagation(); ui.openConnectAvatarPicker?.(); });
     } else if (config.name == "联机大厅") {
       input.innerHTML = config.init || lib.hallURL;
       input.onblur = function() {
