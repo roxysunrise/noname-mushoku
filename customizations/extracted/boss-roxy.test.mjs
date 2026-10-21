@@ -17,7 +17,7 @@ function fixture() {
 test('boss is separate from nineteen normal characters, opens 3v1 sequential challenge only',()=>{
  const lib={config:{mode:'boss',characters:['mushoku','minecraft','ai']},character:{},characterPack:{standard:{}},group:[]};
  installMushokuCompatibility(lib);
- assert.ok(Object.keys(lib.character).length > 0);
+ assert.equal(Object.keys(lib.character).length,19);
  assert.deepEqual(Object.keys(lib.characterPack.mode_boss),['boss_alucard','boss_mt_roxy']);
  assert.equal(bossCharacters.boss_mt_roxy.hp,10);
  assert.equal(getMushokuRestriction(lib,{config:()=>false},'boss'),null);

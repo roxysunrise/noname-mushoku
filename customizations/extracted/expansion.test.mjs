@@ -7,7 +7,8 @@ const root = new URL('./game/resources/app/', import.meta.url);
 const lib = {skill:{},translate:{},filter:{cardDiscardable:c=>!c.protected}};
 const get={suit:c=>c.suit,color:c=>c.color,type:c=>c.type,value:()=>1,attitude:()=>-1};
 const game={players:[],dead:[],hasPlayer:fn=>game.players.some(fn),import(type,fn){const p=fn();Object.assign(lib.skill,p.skill);Object.assign(lib.translate,p.translate);}};
-for(const pack of ['mushoku','minecraft']) {
+get.infoFuncOL = info => vm.runInNewContext(`(${info.slice(13)})`, {lib,get,_status:{}});
+for(const pack of ['mushoku','minecraft','ai']) {
  const source=(await readFile(new URL(`character/${pack}.js`,root),'utf8')).replace(/^import \{(.*?)\} from "noname";/gm,(_,names)=>`const {${names.replace(/ as /g,': ')}}=runtime;`);
  vm.runInNewContext(source,{runtime:{lib,game,get,ui:{selected:{cards:[]}},_status:{}}});
 }

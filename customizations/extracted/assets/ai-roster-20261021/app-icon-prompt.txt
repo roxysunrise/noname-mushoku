@@ -1,0 +1,3 @@
+Use case: logo-brand
+Asset type: Android fantasy card game launcher icon, square raster.
+An original polished emblem for a personal anime fantasy tactical card game: a large elegant pale-blue dragon curling around three ivory playing-card silhouettes, one central luminous azure gem, understated warm gold border detail on a deep navy background. Bold simple readable silhouette, premium hand-painted enamel and metallic highlights, crisp distinct central shapes at very small size. The main emblem must remain inside the middle 65 percent of the square for adaptive icon masks. Fill the full square with dark navy; no baked rounded corners. No text, no letters, no numbers, no logos of existing apps, no watermark. Avoid a crowded scene, tiny people, and excessive ornaments.

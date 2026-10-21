@@ -25,7 +25,7 @@ function fixture() {
 test('room validates mode, single-general, seat count, bans and enabled roster',()=>{
  const f=fixture(); const c=f.lib.configOL;
  assert.equal(roomError(f.lib),null);
- for(const bad of [{mode:'boss'},{identity_mode:'purple'},{double_character:true},{number:9},{number:1},{number:2.5},{characterPack:['standard']},{number:8,banned:['th_mokou','ac_yuu','mc_dream','mt_rudeus','ac_yumeko','ac_kaito','ac_chatgpt','mc_netherite']}]) assert.ok(roomError(f.lib,{...c,...bad}));
+ for(const bad of [{mode:'stone'},{identity_mode:'purple'},{double_character:true},{number:9},{number:1},{number:2.5},{characterPack:['standard']},{number:8,banned:['th_mokou','ac_yuu','mc_dream','mt_rudeus','ac_yumeko','ac_kaito','ac_chatgpt','mc_netherite']}]) assert.ok(roomError(f.lib,{...c,...bad}));
  assert.equal(getMushokuRestriction({}, {config:()=>false}, 'connect'),null);
 });
 test('online mode loading defers room checks until switchMode has populated configOL',()=>{

@@ -1,158 +1,286 @@
 [
   {
-    "path": "character/minecraft.js",
-    "sha256": "6EAFC05FE680AF4FE741E561002EF45252044C9F12FC75D231E560C6477078C3"
+    "sha256": "5E6AC084F01FD92AF98A544FFF6EB0D97EB11EF0AC35B52D684708E9FAF714B2",
+    "path": "character/ai.js"
   },
   {
-    "path": "character/mushoku.js",
-    "sha256": "B707EB8A99948B21703D51B1AB20912BBD54491EFA91D7B3ECCEFC785D820F00"
+    "sha256": "9CC65DFDE49F5583F666E55E393D733F254AE07ACB5DA9EB030B502186840A14",
+    "path": "character/minecraft.js"
   },
   {
-    "path": "game/config.json",
-    "sha256": "8A336F158F2763CF103EDEBBD0B370B63827383ACE62A66B93F4DF22C1BE9BE0"
+    "sha256": "1D278A88775649B5632B302E597A61396328545961B7397F08C55F144C2A812C",
+    "path": "character/mushoku.js"
   },
   {
-    "path": "image/character/ac_chatgpt.jpg",
-    "sha256": "CC2425E83C365E8649821CCB926D3EB389DE0EB04FF2F2E813B04F1F8DD8B792"
+    "sha256": "53D0A57BCDE98ABA832FB0B05AD2DEDBBC5BCC7812F1C185AA32925DA465012F",
+    "path": "docs/online-ai-room.md"
   },
   {
-    "path": "image/character/ac_kaito.jpg",
-    "sha256": "A2440D58A231D8D8E4F77EFBED86B6684E832B52AA885414C79534CA760F4948"
+    "sha256": "8A336F158F2763CF103EDEBBD0B370B63827383ACE62A66B93F4DF22C1BE9BE0",
+    "path": "game/config.json"
   },
   {
-    "path": "image/character/ac_yumeko.jpg",
-    "sha256": "7DA83959B7FB5363C4C04C369B3BBAF1F8E5C946013BCCB0A07B5A349757F842"
+    "sha256": "75AEB93A6CF38F5095680EE2741E2C5309F8BBFCF4EC8AEB7F587D8310006450",
+    "path": "game/package.js"
   },
   {
-    "path": "image/character/ac_yuu.jpg",
-    "sha256": "5959704FA047F2C976252EEBA668BC711787E1BF93CFF1A183069605850167C8"
+    "sha256": "FE9929B8338ACC742B7007B7847D506CB3E947B6F7C2735A769BF35ED14AFC7A",
+    "path": "image/character/ac_chatgpt.jpg"
   },
   {
-    "path": "image/character/ac_yuu.svg",
-    "sha256": "795BA162E4B99B921E94F0FE34479E80F019EE7E34BF1EDD40547583E3D1F9FF"
+    "sha256": "A2440D58A231D8D8E4F77EFBED86B6684E832B52AA885414C79534CA760F4948",
+    "path": "image/character/ac_kaito.jpg"
   },
   {
-    "path": "image/character/boss_alucard.jpg",
-    "sha256": "6E2C97C183E9D6915C451626816979497E861E1BF2CCC5DF64FDB1C44F6B4923"
+    "sha256": "7DA83959B7FB5363C4C04C369B3BBAF1F8E5C946013BCCB0A07B5A349757F842",
+    "path": "image/character/ac_yumeko.jpg"
   },
   {
-    "path": "image/character/boss_mt_roxy.jpg",
-    "sha256": "DA93E8A55548B45138F3CA80FC4D230073C6F8D01823AD35EDEB1B017EC484DB"
+    "sha256": "5959704FA047F2C976252EEBA668BC711787E1BF93CFF1A183069605850167C8",
+    "path": "image/character/ac_yuu.jpg"
   },
   {
-    "path": "image/character/mc_dream.svg",
-    "sha256": "856DDA170D36350DE4B7CECBC51F7F085F5DC281CA49F0412830DC1AB53A0766"
+    "sha256": "795BA162E4B99B921E94F0FE34479E80F019EE7E34BF1EDD40547583E3D1F9FF",
+    "path": "image/character/ac_yuu.svg"
   },
   {
-    "path": "image/character/mc_netherite.jpg",
-    "sha256": "A93141E189622836E98007EC2F9EB2071344BCBC18EED863362F7B7159D14735"
+    "sha256": "298F3FF08890676A75996848FF5E6A5E23C3FFD45975FB78BA085A0B1F2C60E6",
+    "path": "image/character/ai_claude.jpg"
   },
   {
-    "path": "image/character/th_mokou.jpg",
-    "sha256": "CAFEE8DB0F295374D4EBCC5F0686A0BC59E14E2EEAC0161B99936DED6BE0DAE0"
+    "sha256": "36A9C21327F123785FC53F8473446292DDE08CB438FBFA25EE2FD9913EFBBB69",
+    "path": "image/character/ai_deepseek.jpg"
   },
   {
-    "path": "image/mode/boss/character/boss_alucard.jpg",
-    "sha256": "6E2C97C183E9D6915C451626816979497E861E1BF2CCC5DF64FDB1C44F6B4923"
+    "sha256": "82B09E4105C7F7706C05C123352CE7A70D8C192C4D74170E27566E07B3EF7988",
+    "path": "image/character/ai_doubao.jpg"
   },
   {
-    "path": "image/mode/boss/character/boss_mt_roxy.jpg",
-    "sha256": "DA93E8A55548B45138F3CA80FC4D230073C6F8D01823AD35EDEB1B017EC484DB"
+    "sha256": "F0F16AD35EF5A29D2A3D1F471F13D6A2291F011E8A10C33ED68C032C581D0672",
+    "path": "image/character/ai_grok.jpg"
   },
   {
-    "path": "index.html",
-    "sha256": "0EC2D398BF9630E13D47DD2C192508E95ED89BAD4B29B24FDC5D6384298E4B52"
+    "sha256": "6E2C97C183E9D6915C451626816979497E861E1BF2CCC5DF64FDB1C44F6B4923",
+    "path": "image/character/boss_alucard.jpg"
   },
   {
-    "path": "noname/init/mushoku-alucard.js",
-    "sha256": "0B8CAEA1581DD6A6B89D5184A32D2882BC341B63ECF933EC919155EBEC9ABA80"
+    "sha256": "DA93E8A55548B45138F3CA80FC4D230073C6F8D01823AD35EDEB1B017EC484DB",
+    "path": "image/character/boss_mt_roxy.jpg"
   },
   {
-    "path": "noname/init/mushoku-boss.js",
-    "sha256": "1A538437F8BC2CF6DA054A0D4E4ECFF24EE81E27BA4DB4F214F2EE2C9A601DF1"
+    "sha256": "856DDA170D36350DE4B7CECBC51F7F085F5DC281CA49F0412830DC1AB53A0766",
+    "path": "image/character/mc_dream.svg"
   },
   {
-    "path": "noname/init/mushoku-characters.js",
-    "sha256": "03BB1FF33681A654B7B61C04E04C9010180A23D5700F3B07CB59C632575D553C"
+    "sha256": "A93141E189622836E98007EC2F9EB2071344BCBC18EED863362F7B7159D14735",
+    "path": "image/character/mc_netherite.jpg"
   },
   {
-    "path": "noname/init/mushoku-compatibility.js",
-    "sha256": "3CF8E01609EC685C73AEBAC8CCF8DDB2748258396FEFF604379E18F5494245AE"
+    "sha256": "CAFEE8DB0F295374D4EBCC5F0686A0BC59E14E2EEAC0161B99936DED6BE0DAE0",
+    "path": "image/character/th_mokou.jpg"
   },
   {
-    "path": "noname/init/mushoku-online.js",
-    "sha256": "B0F0B49E3D27F2AB630B70A49B39AA329C67404E330D0F75689FF16401B00D8E"
+    "sha256": "6E2C97C183E9D6915C451626816979497E861E1BF2CCC5DF64FDB1C44F6B4923",
+    "path": "image/mode/boss/character/boss_alucard.jpg"
   },
   {
-    "path": "src/character/minecraft/character.js",
-    "sha256": "9AF8B226AE01F6F6341C7FB089DB131178A180DED2A57D25A8DF8CE741708E1C"
+    "sha256": "DA93E8A55548B45138F3CA80FC4D230073C6F8D01823AD35EDEB1B017EC484DB",
+    "path": "image/mode/boss/character/boss_mt_roxy.jpg"
   },
   {
-    "path": "src/character/minecraft/index.js",
-    "sha256": "356F1DA6ED83C01D6E2E56397C16EAE6AC704E96BEF77A2EA55197A831BC5F0A"
+    "sha256": "0EC2D398BF9630E13D47DD2C192508E95ED89BAD4B29B24FDC5D6384298E4B52",
+    "path": "index.html"
   },
   {
-    "path": "src/character/minecraft/skill.js",
-    "sha256": "831F7CFEB058B42F35710D4BC826E81499FB5ECF8A10E2416268B8B041F3099F"
+    "sha256": "306248933B8AAF6BD4B7685845D78743D378824506C22E17B9A0EE2701C58C91",
+    "path": "layout/default/accessibility.css"
   },
   {
-    "path": "src/character/minecraft/translate.js",
-    "sha256": "8F3C2D032B3DB27DFA7E0040E353A908CB11B1866296372E421F7CFA62767FCC"
+    "sha256": "B542402A4841E8916173630CC71EA0DFD06AE781862269F5C95F09EFE7F17428",
+    "path": "noname/init/index.js"
   },
   {
-    "path": "src/character/mushoku/character.js",
-    "sha256": "42984133228BD88A058E2CEFEB95698CBD3521098F27A4E0CCEA1B1E5A6F31D2"
+    "sha256": "0B8CAEA1581DD6A6B89D5184A32D2882BC341B63ECF933EC919155EBEC9ABA80",
+    "path": "noname/init/mushoku-alucard.js"
   },
   {
-    "path": "src/character/mushoku/crossover.js",
-    "sha256": "0A020A0B31C06170DF389499DA503BFB926832E0B953578B0537F9327C7EB986"
+    "sha256": "1A538437F8BC2CF6DA054A0D4E4ECFF24EE81E27BA4DB4F214F2EE2C9A601DF1",
+    "path": "noname/init/mushoku-boss.js"
   },
   {
-    "path": "src/character/mushoku/expansion-translate.js",
-    "sha256": "91275DF8C620B9007044163B92FB92F5D8B33F5E529A27144983FF6C2BBDD975"
+    "sha256": "6AB50FEDDFEC22BBDAD7E2CE34E5BCE361EE2DDB67712110D2D1DF2D69A60A7A",
+    "path": "noname/init/mushoku-characters.js"
   },
   {
-    "path": "src/character/mushoku/expansion.js",
-    "sha256": "4692010B6A68514948B4B21927C247904795DBB4E1B824C99A37FD4F92DE9786"
+    "sha256": "E5366CBA49EADC7E754EE6EC020A1CE03E551E5371302C35333096474D7704BF",
+    "path": "noname/init/mushoku-compatibility.js"
   },
   {
-    "path": "src/character/mushoku/index.js",
-    "sha256": "9F2B404D48CAF4311F62F16B6B954AC3D78A00D8AB2F8EF1B9B497D6EB3B13F2"
+    "sha256": "57615266EEAD256E437738039962D332458F793EF3E35EB8105FEF3F3BE42EDA",
+    "path": "noname/init/mushoku-online-modes.js"
   },
   {
-    "path": "src/character/mushoku/intro.js",
-    "sha256": "64A59BE44FAD8B2BC61B2953DAA8D4084F43478B113D904B635160C59D29C2D1"
+    "sha256": "E5E6BA3AFBD24D7392D2B8EF3904DE6425F741EF5BB3DEEB3125682B8E74E4D7",
+    "path": "noname/init/mushoku-online.js"
   },
   {
-    "path": "src/character/mushoku/mokou.js",
-    "sha256": "0F7757AECD87BAA584DD56399B0906C00743C5B02EF7623270384EFCB1094DA1"
+    "sha256": "7E7242A1954D2C9D8F7B28903825AFE40DE4FFCA682CA8685197A3367F014664",
+    "path": "noname/init/mushoku-rosters.js"
   },
   {
-    "path": "src/character/mushoku/skill.js",
-    "sha256": "45A84DD583F6DF8757EAEBA26EB49819208F57A81D8A5BD6D0DF129F89FAB739"
+    "sha256": "1E021B4A56E8691ABA865B784DDB4AD37D4DB3F923EF6766FEB17F8A243ACE70",
+    "path": "noname/library/index.js"
   },
   {
-    "path": "src/character/mushoku/translate.js",
-    "sha256": "397129111A751591CD4E34D1BD75F452D88E5510CADA9D07423567A1394D6F76"
+    "sha256": "906AB1349A698673139E69D800AE5190A8AAD6AF6C3E76E8472B0F2F88730FEB",
+    "path": "noname/ui/click/index.js"
   },
   {
-    "path": "src/noname/init/mushoku-alucard.js",
-    "sha256": "0B8CAEA1581DD6A6B89D5184A32D2882BC341B63ECF933EC919155EBEC9ABA80"
+    "sha256": "D76504CCED7A77FA9C4232F4EBB916282B66F9F5D9CD40179BE0DD5442B96534",
+    "path": "noname/ui/create/index.js"
   },
   {
-    "path": "src/noname/init/mushoku-boss.js",
-    "sha256": "1A538437F8BC2CF6DA054A0D4E4ECFF24EE81E27BA4DB4F214F2EE2C9A601DF1"
+    "sha256": "FCC105D2DBE13D2C80EBB5212810DA063CC5D25DBFB7EFF792405C0BC6DB912E",
+    "path": "noname/ui/create/menu/index.js"
   },
   {
-    "path": "src/noname/init/mushoku-characters.js",
-    "sha256": "03BB1FF33681A654B7B61C04E04C9010180A23D5700F3B07CB59C632575D553C"
+    "sha256": "F74136D7A6CC02161ABF77BEDBC8B27C290213DB632354191B1A8833CAF4C890",
+    "path": "noname/ui/create/menu/pages/startMenu.js"
   },
   {
-    "path": "src/noname/init/mushoku-compatibility.js",
-    "sha256": "3CF8E01609EC685C73AEBAC8CCF8DDB2748258396FEFF604379E18F5494245AE"
+    "sha256": "A0D75C105C51C64CE9306D12F7F1D89981778371F9C1E951CFF2A00C934FB7AF",
+    "path": "noname/ui/mobile-accessibility.js"
   },
   {
-    "path": "src/noname/init/mushoku-online.js",
-    "sha256": "B0F0B49E3D27F2AB630B70A49B39AA329C67404E330D0F75689FF16401B00D8E"
+    "sha256": "62FB534BAC455DD4FE3FBCD70E5400233FA5FBE20CFF3D6B719A5CB54DE30A03",
+    "path": "src/character/ai/character.js"
+  },
+  {
+    "sha256": "E045E33A78EC6345A62B17C952B9312EF428AD2179FF2D1AC81444049D1AE842",
+    "path": "src/character/ai/index.js"
+  },
+  {
+    "sha256": "B1FC8C2DA74773100F33C07DC8DC9B80B753AC33C71E1AB643A5108C10B9FA05",
+    "path": "src/character/ai/mechanics.js"
+  },
+  {
+    "sha256": "E0480C36C40658EEAD13799470F983078E3817EBB874E48AA10D8614FC0E9A5B",
+    "path": "src/character/ai/skill.js"
+  },
+  {
+    "sha256": "53FDAE05FB2A26F871143DB368EBCA8AFF8920B8CC9500403181E551864948AB",
+    "path": "src/character/ai/translate.js"
+  },
+  {
+    "sha256": "9AF8B226AE01F6F6341C7FB089DB131178A180DED2A57D25A8DF8CE741708E1C",
+    "path": "src/character/minecraft/character.js"
+  },
+  {
+    "sha256": "511C1A71FD1CF24531F7695EF815266DB99D424ED0CBF43E0F1C42D4BE4624AA",
+    "path": "src/character/minecraft/index.js"
+  },
+  {
+    "sha256": "831F7CFEB058B42F35710D4BC826E81499FB5ECF8A10E2416268B8B041F3099F",
+    "path": "src/character/minecraft/skill.js"
+  },
+  {
+    "sha256": "8F3C2D032B3DB27DFA7E0040E353A908CB11B1866296372E421F7CFA62767FCC",
+    "path": "src/character/minecraft/translate.js"
+  },
+  {
+    "sha256": "6F45581389C53326004892A32A70F60C8E715D117F877DCB49DFC1E305B0A7C9",
+    "path": "src/character/mushoku/character.js"
+  },
+  {
+    "sha256": "800A5C629C115C5F7D3030E62B33A76DE3024B90CA044C8F8EFD5DB893BC055E",
+    "path": "src/character/mushoku/crossover.js"
+  },
+  {
+    "sha256": "91275DF8C620B9007044163B92FB92F5D8B33F5E529A27144983FF6C2BBDD975",
+    "path": "src/character/mushoku/expansion-translate.js"
+  },
+  {
+    "sha256": "F83F74F893CF486A974C06DF6AB87E143D8A7E557712EB68159B87E8236C42E4",
+    "path": "src/character/mushoku/expansion.js"
+  },
+  {
+    "sha256": "402DBCD71735F77A4F1A77FBF2B2BAB72750EDF8202A7076E9DE93308A53C6F2",
+    "path": "src/character/mushoku/index.js"
+  },
+  {
+    "sha256": "64A59BE44FAD8B2BC61B2953DAA8D4084F43478B113D904B635160C59D29C2D1",
+    "path": "src/character/mushoku/intro.js"
+  },
+  {
+    "sha256": "0F7757AECD87BAA584DD56399B0906C00743C5B02EF7623270384EFCB1094DA1",
+    "path": "src/character/mushoku/mokou.js"
+  },
+  {
+    "sha256": "63448E539B53A7DE23A1DCBD17FA43DADFDDA7D23AEDD80DE6400A8292D07A08",
+    "path": "src/character/mushoku/skill.js"
+  },
+  {
+    "sha256": "5940A8CF93951F3A2AFE7EC4C9650DDEB89FBA026CE99C8A6CA54E4B1DCA2767",
+    "path": "src/character/mushoku/translate.js"
+  },
+  {
+    "sha256": "2492E8E106420A8AA69B3110D55E33FD6F5B36D4152E14B369531FD63CAEC795",
+    "path": "src/noname/init/index.ts"
+  },
+  {
+    "sha256": "0B8CAEA1581DD6A6B89D5184A32D2882BC341B63ECF933EC919155EBEC9ABA80",
+    "path": "src/noname/init/mushoku-alucard.js"
+  },
+  {
+    "sha256": "1A538437F8BC2CF6DA054A0D4E4ECFF24EE81E27BA4DB4F214F2EE2C9A601DF1",
+    "path": "src/noname/init/mushoku-boss.js"
+  },
+  {
+    "sha256": "6AB50FEDDFEC22BBDAD7E2CE34E5BCE361EE2DDB67712110D2D1DF2D69A60A7A",
+    "path": "src/noname/init/mushoku-characters.js"
+  },
+  {
+    "sha256": "E5366CBA49EADC7E754EE6EC020A1CE03E551E5371302C35333096474D7704BF",
+    "path": "src/noname/init/mushoku-compatibility.js"
+  },
+  {
+    "sha256": "57615266EEAD256E437738039962D332458F793EF3E35EB8105FEF3F3BE42EDA",
+    "path": "src/noname/init/mushoku-online-modes.js"
+  },
+  {
+    "sha256": "E5E6BA3AFBD24D7392D2B8EF3904DE6425F741EF5BB3DEEB3125682B8E74E4D7",
+    "path": "src/noname/init/mushoku-online.js"
+  },
+  {
+    "sha256": "7E7242A1954D2C9D8F7B28903825AFE40DE4FFCA682CA8685197A3367F014664",
+    "path": "src/noname/init/mushoku-rosters.js"
+  },
+  {
+    "sha256": "F080CD61C8D08CE2C69B13A1CE283D6031180B04C648FC8B352ECB27C1366B46",
+    "path": "src/noname/library/index.js"
+  },
+  {
+    "sha256": "E92422E05CD277E8FF0AC1958B6431AD7BBF5219D8FFC8F8F576F4D89B04DC76",
+    "path": "src/noname/ui/click/index.js"
+  },
+  {
+    "sha256": "D3692D40D7FC244301981C22003CA518877F80B1153031A2E0207DCCC96939E6",
+    "path": "src/noname/ui/create/index.js"
+  },
+  {
+    "sha256": "172B083E001C012E4867DEB1B2A536157F182DEA9A5357AE40313BB874BA665B",
+    "path": "src/noname/ui/create/menu/index.js"
+  },
+  {
+    "sha256": "0A10B0E0E6C00B71965F6B4A9B1C64FC7862917803493B8B9188288D65DF6866",
+    "path": "src/noname/ui/create/menu/nonameConfig.js"
+  },
+  {
+    "sha256": "274DD5EAF0C69AEDD26043F9A9AD482CB3427B321F1FDA3774DCA6A873F9C6A3",
+    "path": "src/noname/ui/create/menu/pages/startMenu.js"
+  },
+  {
+    "sha256": "A0D75C105C51C64CE9306D12F7F1D89981778371F9C1E951CFF2A00C934FB7AF",
+    "path": "src/noname/ui/mobile-accessibility.js"
   }
 ]

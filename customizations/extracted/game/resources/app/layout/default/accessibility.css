@@ -1,0 +1,25 @@
+/* Fixed overlays are appended to documentElement, outside the scaled body. */
+.accessibility-overlay { position: fixed; inset: 0; z-index: 100000; background: rgba(0,0,0,.65); display: flex; align-items: center; justify-content: center; padding: max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left)); box-sizing: border-box; }
+.accessibility-panel { position: relative; width: min(580px,100%); max-height: 90%; overflow: auto; box-sizing: border-box; padding: 18px; background: #202a35; color: #fff; border: 1px solid #9aa6b4; border-radius: 12px; font: 16px/1.5 sans-serif; text-align: left; -webkit-user-select: text; }
+.accessibility-panel h2 { margin: 0 60px 16px 0; font-size: 22px; }
+.accessibility-panel p { margin: 12px 0; color: #d5dfeb; }
+.accessibility-panel button { position: relative; min-height: 44px; padding: 8px 14px; margin: 4px; border: 1px solid #8c9caf; border-radius: 6px; background: #354b62; color: white; font: inherit; cursor: pointer; touch-action: manipulation; }
+.accessibility-panel .accessibility-close { position: absolute; top: 10px; right: 10px; }
+.accessibility-panel input[type=text] { position: relative; display: block; box-sizing: border-box; width: 100%; height: 46px; padding: 8px; font: inherit; color: #111; background: white; border-radius: 5px; -webkit-user-select: text; }
+.accessibility-range { position: relative; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 18px 4px; }
+.accessibility-range output { margin-left: auto; }
+.accessibility-range input { position: relative; width: 100%; height: 36px; touch-action: pan-x; }
+.accessibility-backgrounds { position: relative; display: grid; grid-template-columns: repeat(auto-fill,minmax(130px,1fr)); gap: 8px; }
+.accessibility-backgrounds button { min-height: 86px; margin: 0; background-size: cover; background-position: center; text-shadow: 0 1px 3px black; }
+.accessibility-backgrounds .selected { border: 3px solid #70dbbb; }
+/* Details must have a readable width and an opaque, independently scrolling surface. */
+#window > .dialog.popped#nodeintro { width: min(440px,calc(100% - 24px)); max-height: calc(100% - 24px); background: rgba(20,25,32,.97); overflow: hidden; transform: none; }
+#window > .dialog.popped#nodeintro > .content-container { overflow-y: auto; overscroll-behavior: contain; }
+#nodeintro .text, #nodeintro .skill { overflow-wrap: anywhere; }
+/* CSS zoom scales contents and their hit areas together, preserving existing transforms. */
+:root[data-compact-characters=true] .button.character { zoom: var(--character-size); }
+:root[data-compact-characters=true] #arena > .player { zoom: var(--character-size); }
+:root[data-compact-handcards=true] #handcards1, :root[data-compact-handcards=true] #handcards2 { zoom: var(--handcard-size); width: calc(100% / var(--handcard-size)); }
+.intro-close { position:absolute;right:6px;top:4px;z-index:3;padding:4px 8px;min-width:36px;min-height:32px;color:white;background:#354b62;border:1px solid #8c9caf;border-radius:4px;cursor:pointer; }
+#nodeintro:has(.intro-close) > .content-container { top:34px; height:calc(100% - 34px); }
+.popup-container > .menu { max-width: calc(100% - 20px); overflow-y: auto; overscroll-behavior: contain; }

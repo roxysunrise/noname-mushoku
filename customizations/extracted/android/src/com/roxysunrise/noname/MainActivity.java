@@ -5,6 +5,10 @@ import android.content.*;
 import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Build;
+import android.view.*;
+import android.graphics.Insets;
+import android.widget.FrameLayout;
 import android.webkit.*;
 import java.io.*;
 import java.net.*;
@@ -16,6 +20,7 @@ import org.json.*;
 /** Offline game assets with the same HTTP filesystem contract as the desktop browser build. */
 public final class MainActivity extends Activity {
     private WebView web;
+    private FrameLayout gameFrame;
     private LocalServer server;
     private static final int PORT = 18765;
     @Override public void onCreate(Bundle state) {
@@ -28,7 +33,10 @@ public final class MainActivity extends Activity {
             return;
         }
         web = new WebView(this);
-        setContentView(web);
+        gameFrame = new FrameLayout(this);
+        gameFrame.addView(web, new FrameLayout.LayoutParams(-1,-1));
+        setContentView(gameFrame);
+        configureGameWindow();
         WebSettings settings = web.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
@@ -52,6 +60,42 @@ public final class MainActivity extends Activity {
             }
         });
         web.loadUrl("http://127.0.0.1:"+PORT+"/index.html");
+    }
+    /** Keep web hit areas inside visible system/cutout bounds, including Android 15 edge-to-edge. */
+    private void configureGameWindow() {
+        if (Build.VERSION.SDK_INT >= 30) {
+            getWindow().setDecorFitsSystemWindows(false);
+            WindowInsetsController controller = getWindow().getInsetsController();
+            if (controller != null) {
+                controller.hide(WindowInsets.Type.systemBars());
+                controller.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+            }
+        } else {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        }
+        gameFrame.setOnApplyWindowInsetsListener((view, windowInsets) -> {
+            int left=0, top=0, right=0, bottom=0;
+            if (Build.VERSION.SDK_INT >= 30) {
+                Insets safe = windowInsets.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout() | WindowInsets.Type.ime());
+                left=safe.left; top=safe.top; right=safe.right; bottom=safe.bottom;
+            } else {
+                left=windowInsets.getSystemWindowInsetLeft(); top=windowInsets.getSystemWindowInsetTop();
+                right=windowInsets.getSystemWindowInsetRight(); bottom=windowInsets.getSystemWindowInsetBottom();
+                if (Build.VERSION.SDK_INT >= 28 && windowInsets.getDisplayCutout()!=null) {
+                    DisplayCutout cutout=windowInsets.getDisplayCutout();
+                    left=Math.max(left,cutout.getSafeInsetLeft()); top=Math.max(top,cutout.getSafeInsetTop());
+                    right=Math.max(right,cutout.getSafeInsetRight()); bottom=Math.max(bottom,cutout.getSafeInsetBottom());
+                }
+            }
+            view.setPadding(left,top,right,bottom);
+            return windowInsets;
+        });
+        gameFrame.requestApplyInsets();
+    }
+    @Override public void onWindowFocusChanged(boolean focused) {
+        super.onWindowFocusChanged(focused);
+        if (focused && web!=null) configureGameWindow();
     }
     @Override public void onBackPressed() {
         new AlertDialog.Builder(this).setMessage("返回桌面？联机时请保持游戏在前台。").setPositiveButton("返回桌面",(d,w)->moveTaskToBack(true)).setNegativeButton("继续游戏",null).show();

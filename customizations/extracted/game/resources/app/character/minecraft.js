@@ -5,7 +5,11 @@ import { game as game3 } from "noname";
 var characters = {
   ac_yumeko: { sex: "female", group: "huan", hp: 4, maxHp: 4, skills: ["ac_haodu", "ac_xuju"], img: "image/character/ac_yumeko.jpg" },
   ac_kaito: { sex: "male", group: "huan", hp: 4, maxHp: 4, skills: ["ac_zhangyan"], img: "image/character/ac_kaito.jpg" },
-  ac_chatgpt: { sex: "none", group: "xu", hp: 4, maxHp: 4, skills: ["ac_tuiyan"], img: "image/character/ac_chatgpt.jpg" },
+  ac_chatgpt: { sex: "female", group: "xu", hp: 4, maxHp: 4, skills: ["ac_tuiyan"], img: "image/character/ac_chatgpt.jpg" },
+  ai_doubao: { sex: "female", group: "xu", hp: 3, skills: ["ai_qiaoda", "ai_banxing"], img: "image/character/ai_doubao.jpg" },
+  ai_deepseek: { sex: "female", group: "xu", hp: 3, skills: ["ai_tuili", "ai_yansuan"], img: "image/character/ai_deepseek.jpg" },
+  ai_claude: { sex: "female", group: "xu", hp: 3, skills: ["ai_bianyi", "ai_tiaoshi"], img: "image/character/ai_claude.jpg" },
+  ai_grok: { sex: "female", group: "xu", hp: 4, skills: ["ai_dongcha", "ai_zhiyan"], img: "image/character/ai_grok.jpg" },
   mc_netherite: { sex: "none", group: "qi", hp: 4, maxHp: 4, skills: ["mc_fengcang", "mc_xiejia", "mc_rongzhu"], img: "image/character/mc_netherite.jpg" },
   th_mokou: { sex: "female", group: "shen", hp: 2, maxHp: 2, skills: ["th_penglai", "th_fengyi"], img: "image/character/th_mokou.jpg" },
   ac_yuu: { sex: "male", group: "huan", hp: 3, maxHp: 3, skills: ["ac_heyun", "ac_yinhui"], img: "image/character/ac_yuu.jpg" },
@@ -140,6 +144,7 @@ import { lib, game as game2, get as get2, _status } from "noname";
 var discardable = (card, player) => lib.filter.cardDiscardable(card, player, "ac_haodu");
 var suits = (cards) => new Set(cards.map((card) => get2.suit(card, false)).filter((suit) => ["heart", "diamond", "club", "spade"].includes(suit))).size;
 var replayTargets = (player) => player.getStorage("ac_xuju");
+var remoteChoice = (source) => get2.infoFuncOL("_noname_func:" + source);
 var expansion_default = {
   ac_haodu: {
     enable: "phaseUse",
@@ -149,7 +154,7 @@ var expansion_default = {
     },
     async content(event, trigger, player) {
       const target = event.target;
-      const results = await player.chooseCardOL([player, target], "he", [0, Infinity], true, "\u8C6A\u8D4C\uFF1A\u79D8\u5BC6\u9009\u62E9\u8981\u5F03\u7F6E\u7684\u724C\uFF0C\u53EF\u9009\u62E9\u96F6\u5F20", discardable).set("ai", (card) => 4 - get2.value(card)).forResult();
+      const results = await player.chooseCardOL([player, target], "he", [0, Infinity], true, "\u8C6A\u8D4C\uFF1A\u79D8\u5BC6\u9009\u62E9\u8981\u5F03\u7F6E\u7684\u724C\uFF0C\u53EF\u9009\u62E9\u96F6\u5F20", remoteChoice('(card, owner) => lib.filter.cardDiscardable(card, owner, "ac_haodu")')).set("ai", remoteChoice("card => 4 - get.value(card)")).forResult();
       const chosen = [player, target].map((who, i) => [who, (results[i]?.cards || []).filter((card) => who.getCards("he").includes(card) && discardable(card, who))]);
       const counts = chosen.map(([, cards]) => ({ count: cards.length, suits: suits(cards) }));
       if (chosen.some(([, cards]) => cards.length)) await game2.loseAsync({ lose_list: chosen.filter(([, cards]) => cards.length) }).setContent("discardMultiple");
@@ -160,7 +165,7 @@ var expansion_default = {
       for (let i = 0; i < limit && player.isIn(); i++) {
         const options = remaining.filter((option) => option !== "\u4F24\u5BB3" || target.isIn());
         if (!options.length) break;
-        const result = await player.chooseControl([...options, "cancel2"]).set("prompt", `\u8C6A\u8D4C\uFF1A\u8FD8\u53EF\u4F9D\u6B21\u6267\u884C${limit - i}\u9879\uFF08\u4F24\u5BB3\uFF1A\u5BF9\u76EE\u6807\u9020\u62101\u70B9\u4F24\u5BB3\uFF1B\u6478\u724C\uFF1A\u81EA\u5DF1\u6478\u4E09\u5F20\u724C\uFF09`).set("ai", () => options.includes("\u4F24\u5BB3") && get2.attitude(player, target) < 0 ? "\u4F24\u5BB3" : "\u6478\u724C").forResult();
+        const result = await player.chooseControl([...options, "cancel2"]).set("prompt", `\u8C6A\u8D4C\uFF1A\u8FD8\u53EF\u4F9D\u6B21\u6267\u884C${limit - i}\u9879\uFF08\u4F24\u5BB3\uFF1A\u5BF9\u76EE\u6807\u9020\u62101\u70B9\u4F24\u5BB3\uFF1B\u6478\u724C\uFF1A\u81EA\u5DF1\u6478\u4E09\u5F20\u724C\uFF09`).set("acHaoduPreferred", options.includes("\u4F24\u5BB3") && get2.attitude(player, target) < 0 ? "\u4F24\u5BB3" : "\u6478\u724C").set("ai", remoteChoice("() => _status.event.acHaoduPreferred")).forResult();
         if (!options.includes(result.control)) break;
         remaining.splice(remaining.indexOf(result.control), 1);
         player.storage.ac_haodu_last.last = result.control === "\u4F24\u5BB3" ? "damage" : "draw";
@@ -227,14 +232,14 @@ var expansion_default = {
       if (!player.hasSkill("ac_tuiyan_draw")) choices.push("\u8865\u5145\u624B\u724C");
       if (!player.hasSkill("ac_tuiyan_give") && player.countCards("h") > player.hp && game2.hasPlayer((target) => target !== player)) choices.push("\u4EA4\u4ED8\u624B\u724C");
       if (!choices.length) return;
-      const result = await player.chooseControl(choices).set("prompt", "\u63A8\u6F14\uFF1A\u6BCF\u9879\u6BCF\u51FA\u724C\u9636\u6BB5\u9650\u4E00\u6B21").set("ai", () => choices[0]).forResult();
+      const result = await player.chooseControl(choices).set("prompt", "\u63A8\u6F14\uFF1A\u6BCF\u9879\u6BCF\u51FA\u724C\u9636\u6BB5\u9650\u4E00\u6B21").set("ai", remoteChoice("() => _status.event.controls[0]")).forResult();
       if (result.control === "\u8865\u5145\u624B\u724C") {
         player.addTempSkill("ac_tuiyan_draw", { player: "phaseUseAfter" });
         await player.drawTo(player.maxHp);
       } else if (result.control === "\u4EA4\u4ED8\u624B\u724C") {
         const num = player.countCards("h") - player.hp;
         if (num <= 0) return;
-        const selected = await player.chooseTarget("\u63A8\u6F14\uFF1A\u9009\u62E9\u63A5\u6536\u624B\u724C\u7684\u5176\u4ED6\u89D2\u8272", true, (card, source, target) => target !== source).set("ai", (target) => get2.attitude(player, target)).forResult();
+        const selected = await player.chooseTarget("\u63A8\u6F14\uFF1A\u9009\u62E9\u63A5\u6536\u624B\u724C\u7684\u5176\u4ED6\u89D2\u8272", true, (card, source, target) => target !== source).set("ai", remoteChoice("target => get.attitude(_status.event.player, target)")).forResult();
         if (!selected.bool) return;
         const given = await player.chooseToGive(selected.targets[0], "h", num, true).forResult();
         if (given.bool) player.addTempSkill("ac_tuiyan_give", { player: "phaseUseAfter" });
@@ -344,6 +349,33 @@ var expansion_translate_default = {
   mc_rongzhu_info: "\u4F60\u53EF\u4EE5\u5C06\u4E00\u5F20\u88C5\u5907\u724C\u5F53\u9152\u4F7F\u7528\u3002\u4F60\u7684\u624B\u724C\u4E0A\u9650+X\uFF08X\u4E3A\u4F60\u88C5\u5907\u533A\u91CC\u7684\u724C\u6570\uFF09\u3002"
 };
 
+// game/resources/app/src/noname/init/mushoku-rosters.js
+var packForCharacter = (id) => id === "ac_chatgpt" || id.startsWith("ai_") ? "ai" : id.startsWith("mc_") ? "minecraft" : "mushoku";
+var badge = (text, color) => `<span style="display:inline-block;color:${color};border:1px solid currentColor;border-radius:5px;padding:1px 5px;margin:2px 3px;line-height:1.5;font-size:.9em">${text}</span>`;
+var labels = {
+  th_mokou: [["\u4E0D\u706D\u7684\u70DF\u706B", "#ff8d72"], ["\u84EC\u83B1\u4E0D\u6B7B", "#ffd284"]],
+  ac_yumeko: [["\u6DF1\u6E0A\u8D4C\u5F92", "#e898ac"], ["\u547D\u8FD0\u8C6A\u8D4C", "#d0a5ff"]],
+  ac_kaito: [["\u6708\u4E0B\u9B54\u672F\u5E08", "#a4d8ff"], ["\u5343\u9762\u5E7B\u5F71", "#d3c3ff"]],
+  ac_yuu: [["\u661F\u9699\u56DE\u58F0", "#adc5ff"], ["\u9006\u65F6\u97F3\u5F8B", "#a2e4e5"]],
+  mt_rudeus: [["\u65E0\u58F0\u548F\u5531", "#a0d5fa"], ["\u9B54\u672F\u65B0\u751F", "#d5b0f5"]],
+  mt_roxy: [["\u6C34\u8272\u5BFC\u5E08", "#94d4fa"], ["\u8FFD\u77E5\u4E4B\u65C5", "#b9c8ff"]],
+  mt_sylphie: [["\u9759\u98CE\u5B88\u671B", "#a6e5bb"], ["\u6E29\u67D4\u63F4\u62A4", "#c2e6ed"]],
+  mt_eris: [["\u8D64\u5203\u51B3\u610F", "#ff9d96"], ["\u5251\u5FC3\u4E0D\u9000", "#ffc582"]],
+  mt_orsted: [["\u9F99\u795E", "#e5c887"], ["\u8F6E\u56DE\u5B64\u65C5", "#b6c8ea"]],
+  mt_ruijerd: [["\u989D\u773C\u5B88\u62A4", "#9be0c8"], ["\u4E0D\u5C48\u6218\u58EB", "#e5c194"]],
+  mt_paul: [["\u4E09\u6D41\u6D3E\u5251\u58EB", "#d7bf92"], ["\u820D\u8EAB\u6551\u63F4", "#f6b0a0"]],
+  mt_ghislaine: [["\u5251\u738B", "#f3b36f"], ["\u6388\u5251\u4E4B\u5E08", "#c4dba7"]],
+  mc_dream: [["\u9010\u730E\u5E7B\u8E2A", "#a8e887"], ["\u7EDD\u5883\u9003\u751F", "#8fe0d7"]],
+  mc_netherite: [["\u4F59\u70EC\u4E4B\u950B", "#d7a4ef"], ["\u7194\u94F8\u653B\u5B88", "#efba8a"]],
+  ac_chatgpt: [["\u4E07\u8A00\u4E4B\u955C", "#9ce0ca"], ["\u661F\u6D77\u9F99\u541F", "#dbb7ff"]],
+  ai_doubao: [["\u4E07\u8C61\u5DE7\u7B54", "#ffc49d"], ["\u6696\u5FC3\u4F34\u884C", "#ffadca"]],
+  ai_deepseek: [["\u6DF1\u6D77\u6C42\u7D22", "#9acfff"], ["\u6B65\u6B65\u6C42\u8BC1", "#93e4e2"]],
+  ai_claude: [["\u4EE3\u7801\u7EC7\u5320", "#efbf9c"], ["\u5BA1\u614E\u6C42\u8BC1", "#cfb7ef"]],
+  ai_grok: [["\u5B9E\u65F6\u6D1E\u5BDF", "#c1d3f7"], ["\u950B\u8292\u76F4\u8A00", "#f1a4ca"]]
+};
+var characterTitles = Object.fromEntries(Object.entries(labels).map(([id, values]) => [id, values.map(([text, color]) => badge(text, color)).join(" ")]));
+var titlesForPack = (pack) => Object.fromEntries(Object.entries(characterTitles).filter(([id]) => packForCharacter(id) === pack));
+
 // game/resources/app/src/character/minecraft/index.js
 game3.import("character", () => ({
   name: "minecraft",
@@ -351,6 +383,6 @@ game3.import("character", () => ({
   character: character_default,
   skill: { ...skill_default, ...Object.fromEntries(Object.entries(expansion_default).filter(([id]) => id.startsWith("mc_"))) },
   translate: { ...translate_default, ...Object.fromEntries(Object.entries(expansion_translate_default).filter(([id]) => id.startsWith("mc_"))) },
-  characterTitle: { mc_dream: "\u9010\u730E\u5E7B\u8E2A", mc_netherite: "\u4F59\u70EC\u4E4B\u950B" },
+  characterTitle: titlesForPack("minecraft"),
   characterIntro: { mc_dream: "Dream\uFF0C\u730E\u4EBA\u6E38\u620F\u4F20\u5947\u3002\u7B79\u8C0B\u79EF\u84C4\u7269\u8D44\uFF0C\u9669\u9038\u5728\u7EDD\u5883\u4E2D\u5BFB\u627E\u8F6C\u673A\uFF0C\u8854\u8FFD\u6301\u7EED\u8FFD\u730E\u3002", mc_netherite: "\u4F59\u70EC\u4E4B\u950B\u3002\u81EA\u4E0B\u754C\u70C8\u7130\u4E2D\u7194\u94F8\u800C\u751F\u7684\u5229\u5203\uFF0C\u653B\u5B88\u968F\u9634\u9633\u8F6C\u6362\u3002" }
 }));
