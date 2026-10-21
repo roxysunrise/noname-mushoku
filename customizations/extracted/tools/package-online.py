@@ -9,17 +9,20 @@ project = Path(__file__).resolve().parents[1]
 runtime = project / 'game'
 parser = argparse.ArgumentParser()
 parser.add_argument('--output', type=Path, default=project / 'releases/noname-windows-latest.zip')
-destination = parser.parse_args().output.resolve()
+parser.add_argument('--verify-only', action='store_true', help='Verify an existing archive without recreating it')
+arguments = parser.parse_args()
+destination = arguments.output.resolve()
 prefix = '无名杀联机版/'
 files = sorted(p for p in runtime.rglob('*') if p.is_file()
                and not any('backup' in part.lower() or part == '__pycache__'
                            for part in p.relative_to(runtime).parts))
 destination.parent.mkdir(parents=True, exist_ok=True)
-with zipfile.ZipFile(destination, 'x', compression=zipfile.ZIP_DEFLATED, compresslevel=1) as archive:
-    for index, path in enumerate(files, 1):
-        archive.write(path, prefix + path.relative_to(runtime).as_posix())
-        if index % 3000 == 0:
-            print(f'Packaged {index}/{len(files)} files', flush=True)
+if not arguments.verify_only:
+    with zipfile.ZipFile(destination, 'x', compression=zipfile.ZIP_DEFLATED, compresslevel=1) as archive:
+        for index, path in enumerate(files, 1):
+            archive.write(path, prefix + path.relative_to(runtime).as_posix())
+            if index % 3000 == 0:
+                print(f'Packaged {index}/{len(files)} files', flush=True)
 
 with zipfile.ZipFile(destination) as archive:
     assert len(archive.infolist()) == len(files)
@@ -34,7 +37,7 @@ with zipfile.ZipFile(destination) as archive:
         assert archive.read(prefix + relative) == (runtime / relative).read_bytes(), relative
 
 digest = hashlib.file_digest(destination.open('rb'), 'sha256').hexdigest()
-destination.with_suffix('.zip.sha256').write_text(f'{digest}  {destination.name}\n', encoding='ascii')
+destination.with_suffix('.zip.sha256').write_text(f'{digest}  {destination.name}\n', encoding='utf-8')
 print(json.dumps({'archive': str(destination), 'files': len(files),
                   'bytes': destination.stat().st_size, 'sha256': digest,
                   'crc_verified': True}, ensure_ascii=False), flush=True)
