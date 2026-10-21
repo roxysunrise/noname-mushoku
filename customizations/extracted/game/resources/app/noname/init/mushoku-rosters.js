@@ -17,10 +17,10 @@ const labels = {
  mc_dream: [["逐猎幻踪", "#a8e887"], ["绝境逃生", "#8fe0d7"]],
  mc_netherite: [["余烬之锋", "#d7a4ef"], ["熔铸攻守", "#efba8a"]],
  ac_chatgpt: [["万言之镜", "#9ce0ca"], ["星海龙吟", "#dbb7ff"]],
- ai_doubao: [["云间伴语", "#ffc49d"], ["暖心共鸣", "#ffadca"]],
- ai_deepseek: [["深海求索", "#9acfff"], ["澄澈推理", "#93e4e2"]],
- ai_claude: [["长卷织语", "#efbf9c"], ["审慎守望", "#cfb7ef"]],
- ai_grok: [["星际锐问", "#c1d3f7"], ["逆风追问", "#f1a4ca"]],
+ ai_doubao: [["万象巧答", "#ffc49d"], ["暖心伴行", "#ffadca"]],
+ ai_deepseek: [["深海求索", "#9acfff"], ["步步求证", "#93e4e2"]],
+ ai_claude: [["代码织匠", "#efbf9c"], ["审慎求证", "#cfb7ef"]],
+ ai_grok: [["实时洞察", "#c1d3f7"], ["锋芒直言", "#f1a4ca"]],
 };
 export const characterTitles = Object.fromEntries(Object.entries(labels).map(([id, values]) => [id, values.map(([text, color]) => badge(text, color)).join(" ")]));
 export const titlesForPack = pack => Object.fromEntries(Object.entries(characterTitles).filter(([id]) => packForCharacter(id) === pack));

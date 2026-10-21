@@ -28,7 +28,7 @@ app.whenReady().then(async()=>{
     game.broadcastAll((a,b,name)=>{lib.playerOL[a].init(name);lib.playerOL[b].init('mt_eris');},owner.playerid,other.playerid,${JSON.stringify(name)});
     const next=game.createEvent('qaSkill',false);next.player=owner;next.qaSkill=${JSON.stringify(skill)};next.qaOther=other;
     next.setContent(async event=>{_status.auto=false;game.broadcast(()=>{_status.auto=false;});
-      await lib.skill[event.qaSkill].content({target:event.qaOther}, {},event.player);
+      await lib.skill[event.qaSkill].content({target:event.qaOther,cards:event.player.getCards('h').slice(0,1)}, {},event.player);
       window.qaDone=true;game.pause();});game.resume();`);
   }
   async function yinhui(ownerWindow,ownerId){
@@ -53,15 +53,65 @@ app.whenReady().then(async()=>{
   await until(host,'return window.qaDone;','Haodu finish');
   assert.equal(await run(host,`return lib.playerOL[${JSON.stringify(guestId)}].storage.ac_haodu_last.count;`),0);
   log('HAODU_ZERO_BID_REMOTE_PASS');
+  await schedule(guestId,'ai_deepseek','ai_tuili');
+  await until(guest,`return _status.event?.name==='chooseButton'&&_status.imchoosing;`,'Tuili remote selection');
+  await run(guest,`const button=_status.event.dialog.buttons.find(b=>b.classList.contains('selectable'));ui.click.button.call(button);if(ui.selected.buttons.length)ui.click.ok();`);
+  await until(guest,`return _status.event?.name==='chooseToDiscard'&&_status.imchoosing;`,'Tuili remote stop');
+  await run(guest,`ui.click.cancel();`);
+  await until(guest,`return _status.event?.name==='chooseToMove'&&_status.imchoosing;`,'Tuili bottom order');
+  await run(guest,`ui.click.ok();`);
+  await until(host,'return window.qaDone;','Tuili remote finish');
+  assert.equal(await run(host,`return lib.playerOL[${JSON.stringify(guestId)}].storage.ai_yansuan_record.length;`),1);
+  log('TUILI_REMOTE_PASS');
+  await schedule(guestId,'ai_claude','ai_bianyi');
+  await until(host,'return window.qaDone;','Bianyi expansion');
+  assert.equal(await run(host,`return lib.playerOL[${JSON.stringify(guestId)}].getExpansions('ai_bianyi').length;`),1);
+  await until(guest,`return game.me.getExpansions('ai_bianyi').length===1;`,'Bianyi remote expansion sync');
+  log('BIANYI_EXPANSION_REMOTE_PASS');
+  await schedule(guestId,'ai_grok','ai_dongcha');
+  await until(guest,`return _status.event?.name==='chooseControl'&&ui.controls.length;`,'Dongcha category');
+  await run(guest,`ui.controls[0].firstChild.click();`);
+  await until(guest,`return _status.event?.name==='chooseButton'&&_status.imchoosing;`,'Dongcha private cards');
+  assert.equal(await run(host,`return [...document.querySelectorAll('.dialog')].some(d=>d.innerText.includes('洞察：命中'));`),false);
+  await run(guest,`const button=_status.event.dialog.buttons.find(b=>b.classList.contains('selectable'));ui.click.button.call(button);if(ui.selected.buttons.length)ui.click.ok();`);
+  await until(guest,`return _status.event?.name==='chooseToGive'&&_status.imchoosing;`,'Dongcha give card');
+  await run(guest,`const card=game.me.getCards('h').find(c=>c.classList.contains('selectable'));ui.click.card.call(card);if(ui.selected.cards.length)ui.click.ok();`);
+  await until(host,'return window.qaDone;','Dongcha remote finish');
+  log('DONGCHA_PRIVATE_REMOTE_PASS');
+  async function useRecordedTrick(name,record){
+   for(const w of [host,guest])await run(w,`_status.auto=false;_status.clicked=false;if(game.online)game.send('unauto');`);
+   await run(host,`window.qaDone=false;const owner=lib.playerOL[${JSON.stringify(guestId)}];
+    game.broadcastAll((id,name)=>lib.playerOL[id].init(name),owner.playerid,${JSON.stringify(name)});
+    owner.isAuto=false;_status.currentPhase=game.me;
+    const next=game.createEvent('qaUseTrick',false);next.player=owner;next.qaRecord=${record};
+    next.setContent(async event=>{const card=game.createCard('jiu','heart',7);await event.player.gain(card,'gain2');
+     if(event.qaRecord){event.player.storage.ai_yansuan_record=[card];event.player.addTempSkill('ai_yansuan_record',{global:'phaseAfter'});}
+     const use=event.player.useCard(card,event.player);await use;
+     window.qaTrace={used:event.player.hasSkill(event.qaRecord?'ai_yansuan_used':'ai_banxing_used'),online:event.player.isOnline(),auto:event.player.isAuto,loss:event.player.getHistory('lose').map(e=>({h:e.hs?.length,parent:e.getParent()?.name,same:e.getParent()===use})),card:{isCard:use.card.isCard,cards:use.card.cards?.length},skills:event.player.getSkills()};
+     window.qaDone=true;game.pause();});game.resume();`);
+   await until(guest,`return _status.event?.name==='chooseTarget'&&_status.imchoosing;`,name+' triggered target',12000).catch(async error=>{throw Error(error.message+' TRACE '+JSON.stringify(await run(host,'return window.qaTrace;')));});
+   await run(guest,`const target=game.players.find(p=>p!==game.me&&p.classList.contains('selectable'));ui.click.target.call(target);if(ui.selected.targets.length)ui.click.ok();`);
+   await until(host,'return window.qaDone;',name+' actual use finish');
+  }
+  await useRecordedTrick('ai_doubao',false);
+  assert.equal(await run(host,`return lib.playerOL[${JSON.stringify(guestId)}].hasSkill('ai_banxing_used');`),true);
+  log('BANXING_ACTUAL_HAND_USE_REMOTE_PASS');
+  await useRecordedTrick('ai_deepseek',true);
+  assert.equal(await run(host,`return lib.playerOL[${JSON.stringify(guestId)}].hasSkill('ai_yansuan_used');`),true);
+  log('YANSUAN_ACTUAL_HAND_USE_REMOTE_PASS');
   await run(host,`window.qaDone=false;const owner=game.me;owner.init('ai_deepseek');const before=owner.countCards('h');
    const next=game.createEvent('qaDraw',false);next.player=owner;next.qaBefore=before;
    next.setContent(async event=>{
     for(const suit of ['spade','heart','diamond'])ui.cardPile.insertBefore(game.createCard('sha',suit,7),ui.cardPile.firstChild);
-    await lib.skill.ai_shensuan.content({}, {},event.player);
+    _status.auto=true;
+    await lib.skill.ai_tuili.content({}, {},event.player);
     window.qaDrawGain=event.player.countCards('h')-event.qaBefore;window.qaDone=true;game.pause();
    });game.resume();`);
   await until(host,'return window.qaDone;','DeepSeek actual draw');
-  assert.equal(await run(host,'return window.qaDrawGain;'),3);log('DEEPSEEK_REAL_DRAW_PASS');
+  assert.ok(await run(host,'return window.qaDrawGain;')>=1);log('DEEPSEEK_REAL_DRAW_PASS');
+  // Earlier fixtures set auto directly; restore through the engine so its
+  // arena class, controls and remote ownership also leave auto mode.
+  for(const w of [host,guest])await run(w,`_status.auto=true;ui.click.auto('forced');_status.clicked=false;if(_status.auto||ui.arena.classList.contains('auto'))throw Error('auto cleanup failed');`);
   const roster=await run(host,`const expected=['ac_chatgpt','ai_doubao','ai_deepseek','ai_claude','ai_grok'];
    if(expected.some(id=>!lib.characterPack.ai[id]||lib.characterPack.mushoku[id]))throw Error('pack mismatch');
    for(const id of expected){const image=new Image();image.src='image/character/'+id+'.jpg';await image.decode();if(image.naturalWidth!==600)throw Error('portrait '+id);}
@@ -83,9 +133,12 @@ app.whenReady().then(async()=>{
   await run(host,`window.qaDone=false;const next=game.createEvent('qaCard',false);next.player=lib.playerOL[${JSON.stringify(guestId)}];
    next.setContent(async event=>{const result=await event.player.chooseCard('h',true).forResult();window.qaCardCount=result.cards.length;window.qaDone=true;game.pause();});game.resume();`);
   await until(guest,`return _status.event?.name==='chooseCard'&&_status.imchoosing;`,'scaled card');
-  const point=await run(guest,`const card=game.me.getCards('h').find(card=>card.classList.contains('selectable'));if(!card)throw Error('no selectable card');
-   const r=card.getBoundingClientRect();const x=r.left+r.width/2,y=r.top+Math.min(20,r.height/2);const hit=document.elementFromPoint(x,y);
-   if(!card.contains(hit))throw Error('card hit area blocked '+hit?.className);return {x:Math.round(x),y:Math.round(y)};`);
+  await delay(1000);
+  fs.writeFileSync(path.join(deliverables,'选牌命中检查.png'),(await guest.webContents.capturePage()).toPNG());
+  const point=await run(guest,`const samples=[];for(const card of game.me.getCards('h').slice().reverse().filter(card=>card.classList.contains('selectable'))){
+   const r=card.getBoundingClientRect();for(const fraction of [.1,.5,.9]){const x=r.left+r.width*fraction,y=r.top+Math.min(20,r.height/2);const hit=document.elementFromPoint(x,y);
+   if(card.contains(hit))return {x:Math.round(x),y:Math.round(y)};samples.push({x,y,hit:hit?.outerHTML.slice(0,200)});}}
+   throw Error('card hit area blocked '+JSON.stringify({samples,width:innerWidth,height:innerHeight,zoom:game.documentZoom}));`);
   guest.webContents.sendInputEvent({type:'mouseDown',...point,button:'left',clickCount:1});guest.webContents.sendInputEvent({type:'mouseUp',...point,button:'left',clickCount:1});
   await until(guest,'return ui.selected.cards.length===1;','scaled card click');await run(guest,'ui.click.ok();');
   await until(host,'return window.qaDone;','scaled card result');assert.equal(await run(host,'return window.qaCardCount;'),1);

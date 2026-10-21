@@ -6,10 +6,10 @@ var characters = {
   ac_yumeko: { sex: "female", group: "huan", hp: 4, maxHp: 4, skills: ["ac_haodu", "ac_xuju"], img: "image/character/ac_yumeko.jpg" },
   ac_kaito: { sex: "male", group: "huan", hp: 4, maxHp: 4, skills: ["ac_zhangyan"], img: "image/character/ac_kaito.jpg" },
   ac_chatgpt: { sex: "female", group: "xu", hp: 4, maxHp: 4, skills: ["ac_tuiyan"], img: "image/character/ac_chatgpt.jpg" },
-  ai_doubao: { sex: "female", group: "xu", hp: 3, skills: ["ai_banda", "ai_qingyu"], img: "image/character/ai_doubao.jpg" },
-  ai_deepseek: { sex: "female", group: "xu", hp: 3, skills: ["ai_shensuan", "ai_chengsi"], img: "image/character/ai_deepseek.jpg" },
-  ai_claude: { sex: "female", group: "xu", hp: 3, skills: ["ai_shenshen", "ai_chengzhang"], img: "image/character/ai_claude.jpg" },
-  ai_grok: { sex: "female", group: "xu", hp: 4, skills: ["ai_ruiwen", "ai_zhuiwen"], img: "image/character/ai_grok.jpg" },
+  ai_doubao: { sex: "female", group: "xu", hp: 3, skills: ["ai_qiaoda", "ai_banxing"], img: "image/character/ai_doubao.jpg" },
+  ai_deepseek: { sex: "female", group: "xu", hp: 3, skills: ["ai_tuili", "ai_yansuan"], img: "image/character/ai_deepseek.jpg" },
+  ai_claude: { sex: "female", group: "xu", hp: 3, skills: ["ai_bianyi", "ai_tiaoshi"], img: "image/character/ai_claude.jpg" },
+  ai_grok: { sex: "female", group: "xu", hp: 4, skills: ["ai_dongcha", "ai_zhiyan"], img: "image/character/ai_grok.jpg" },
   mc_netherite: { sex: "none", group: "qi", hp: 4, maxHp: 4, skills: ["mc_fengcang", "mc_xiejia", "mc_rongzhu"], img: "image/character/mc_netherite.jpg" },
   th_mokou: { sex: "female", group: "shen", hp: 2, maxHp: 2, skills: ["th_penglai", "th_fengyi"], img: "image/character/th_mokou.jpg" },
   ac_yuu: { sex: "male", group: "huan", hp: 3, maxHp: 3, skills: ["ac_heyun", "ac_yinhui"], img: "image/character/ac_yuu.jpg" },
@@ -45,10 +45,10 @@ var labels = {
   mc_dream: [["\u9010\u730E\u5E7B\u8E2A", "#a8e887"], ["\u7EDD\u5883\u9003\u751F", "#8fe0d7"]],
   mc_netherite: [["\u4F59\u70EC\u4E4B\u950B", "#d7a4ef"], ["\u7194\u94F8\u653B\u5B88", "#efba8a"]],
   ac_chatgpt: [["\u4E07\u8A00\u4E4B\u955C", "#9ce0ca"], ["\u661F\u6D77\u9F99\u541F", "#dbb7ff"]],
-  ai_doubao: [["\u4E91\u95F4\u4F34\u8BED", "#ffc49d"], ["\u6696\u5FC3\u5171\u9E23", "#ffadca"]],
-  ai_deepseek: [["\u6DF1\u6D77\u6C42\u7D22", "#9acfff"], ["\u6F84\u6F88\u63A8\u7406", "#93e4e2"]],
-  ai_claude: [["\u957F\u5377\u7EC7\u8BED", "#efbf9c"], ["\u5BA1\u614E\u5B88\u671B", "#cfb7ef"]],
-  ai_grok: [["\u661F\u9645\u9510\u95EE", "#c1d3f7"], ["\u9006\u98CE\u8FFD\u95EE", "#f1a4ca"]]
+  ai_doubao: [["\u4E07\u8C61\u5DE7\u7B54", "#ffc49d"], ["\u6696\u5FC3\u4F34\u884C", "#ffadca"]],
+  ai_deepseek: [["\u6DF1\u6D77\u6C42\u7D22", "#9acfff"], ["\u6B65\u6B65\u6C42\u8BC1", "#93e4e2"]],
+  ai_claude: [["\u4EE3\u7801\u7EC7\u5320", "#efbf9c"], ["\u5BA1\u614E\u6C42\u8BC1", "#cfb7ef"]],
+  ai_grok: [["\u5B9E\u65F6\u6D1E\u5BDF", "#c1d3f7"], ["\u950B\u8292\u76F4\u8A00", "#f1a4ca"]]
 };
 var characterTitles = Object.fromEntries(Object.entries(labels).map(([id, values]) => [id, values.map(([text, color]) => badge(text, color)).join(" ")]));
 var titlesForPack = (pack) => Object.fromEntries(Object.entries(characterTitles).filter(([id]) => packForCharacter(id) === pack));
@@ -57,125 +57,234 @@ var titlesForPack = (pack) => Object.fromEntries(Object.entries(characterTitles)
 var character_default = Object.fromEntries(Object.entries(mushoku_characters_default).filter(([id]) => packForCharacter(id) === "ai"));
 
 // game/resources/app/src/character/ai/skill.js
-import { game, get, lib } from "noname";
+import { game, get, lib, ui, _status } from "noname";
 
 // game/resources/app/src/character/ai/mechanics.js
-function createAiSkills(game4, get3, lib3) {
-  const remoteChoice2 = (source) => get3.infoFuncOL("_noname_func:" + source);
+function createAiSkills(game4, get3, lib3, ui2, status) {
+  const remote = (source) => get3.infoFuncOL("_noname_func:" + source);
+  const conversion = (card) => ({ basic: "shan", trick: "tao", equip: "sha" })[get3.type2(card)];
+  const program = (player) => player.getExpansions("ai_bianyi")[0];
+  const colored = (card) => ["red", "black"].includes(get3.color(card));
   return {
-    ai_banda: {
-      trigger: { global: "gainAfter" },
-      usable: 1,
-      filter: (event, player) => event.player !== player && event.player.isIn() && event.cards?.length >= 2,
-      check: (event, player) => get3.attitude(player, event.player) > 0,
-      async content(event, trigger, player) {
-        await trigger.player.draw();
-        if (player.isIn() && player.countCards("h") < trigger.player.countCards("h")) await player.draw();
-      }
+    ai_qiaoda: {
+      enable: ["chooseToUse", "chooseToRespond"],
+      position: "h",
+      selectCard: 1,
+      filter(event, player) {
+        return !player.hasSkill("ai_qiaoda_used") && player.getCards("h").some((card) => {
+          const name = conversion(card);
+          return name && event.filterCard(get3.autoViewAs({ name }, "unsure"), player, event);
+        });
+      },
+      viewAs(cards) {
+        const name = cards.length && conversion(cards[0]);
+        return name ? { name } : null;
+      },
+      filterCard(card, player, event) {
+        event ||= status.event;
+        const name = conversion(card);
+        return !!name && event._backup.filterCard(get3.autoViewAs({ name }, "unsure"), player, event);
+      },
+      hiddenCard(player, name) {
+        return !player.hasSkill("ai_qiaoda_used") && player.getCards("h").some((card) => conversion(card) === name);
+      },
+      precontent(event, trigger, player) {
+        player.addTempSkill("ai_qiaoda_used", { global: "phaseAfter" });
+      },
+      check: (card) => 8 - get3.value(card),
+      ai: { order: 5, respondSha: true, respondShan: true, save: true, skillTagFilter(player, tag) {
+        const name = { respondSha: "sha", respondShan: "shan", save: "tao" }[tag];
+        return !!name && !player.hasSkill("ai_qiaoda_used") && player.getCards("h").some((card) => conversion(card) === name);
+      } },
+      subSkill: { used: { charlotte: true, mark: true, marktext: "\u7B54", intro: { content: "\u672C\u56DE\u5408\u5DF2\u53D1\u52A8\u5DE7\u7B54\u3002" } } }
     },
-    ai_qingyu: {
+    ai_banxing: {
+      trigger: { player: ["useCardAfter", "respondAfter"] },
+      direct: true,
+      filter(event, player) {
+        return status.currentPhase !== player && !player.hasSkill("ai_banxing_used") && event.cards?.some((card) => player.getHistory("lose").some((loss) => loss.hs?.includes(card) && loss.getParent() === event)) && game4.hasPlayer((target) => target !== player);
+      },
+      async content(event, trigger, player) {
+        const result = await player.chooseTarget("\u4F34\u884C\uFF1A\u9009\u62E9\u4E00\u540D\u5176\u4ED6\u89D2\u8272\uFF0C\u624B\u724C\u8F83\u5C11\u7684\u4E00\u65B9\u6478\u4E00\u5F20\uFF08\u76F8\u7B49\u5219\u4F60\u6478\uFF09", (card, source, target2) => source !== target2).set("ai", remote("target => get.attitude(_status.event.player,target)")).forResult();
+        if (!result.bool) return;
+        const target = result.targets[0];
+        player.logSkill("ai_banxing", target);
+        player.addTempSkill("ai_banxing_used", { global: "phaseAfter" });
+        if (target.countCards("h") < player.countCards("h")) await target.draw();
+        else await player.draw();
+      },
+      subSkill: { used: { charlotte: true } }
+    },
+    ai_tuili: {
+      enable: "phaseUse",
+      usable: 1,
+      async content(event, trigger, player) {
+        const remaining = get3.cards(3);
+        await game4.cardsGotoOrdering(remaining);
+        player.addTempSkill("ai_yansuan_record", { global: "phaseAfter" });
+        player.storage.ai_yansuan_record ||= [];
+        for (let step = 0; step < 3 && remaining.length && player.isIn(); step++) {
+          let paid;
+          if (step) {
+            const result = await player.chooseToDiscard("h", `\u63A8\u7406\uFF1A\u5F03\u7F6E\u4E00\u5F20\u624B\u724C\uFF0C\u7EE7\u7EED\u7B2C${step + 1}\u6B65\uFF1B\u53D6\u6D88\u5219\u7ED3\u675F`).set("ai", remote("card => 6-get.value(card)")).forResult();
+            if (!result.bool) break;
+            paid = result.cards[0];
+          }
+          const choice = await player.chooseButton(["\u63A8\u7406\uFF1A\u9009\u62E9\u83B7\u5F97\u4E00\u5F20\u724C", remaining], true).set("aiTuiliColor", step === 2 ? get3.color(paid, false) : null).set("ai", remote("button => get.value(button.link)+(get.color(button.link,false)===_status.event.aiTuiliColor?3:0)")).forResult();
+          const card = choice.links?.[0] || remaining[0];
+          remaining.splice(remaining.indexOf(card), 1);
+          player.storage.ai_yansuan_record.push(card);
+          player.syncStorage("ai_yansuan_record");
+          await player.gain(card, "gain2");
+          if (step === 2 && colored(paid) && get3.color(paid, false) === get3.color(card, false)) await player.draw();
+        }
+        if (remaining.length) {
+          let bottom = remaining;
+          if (remaining.length > 1 && player.isIn()) {
+            const result = await player.chooseToMove("\u63A8\u7406\uFF1A\u6392\u5217\u5269\u4F59\u724C\u7F6E\u4E8E\u724C\u5806\u5E95\uFF08\u5DE6\u4FA7\u5148\u88AB\u6478\u5230\uFF09", true).set("list", [["\u724C\u5806\u5E95", remaining]]).set("processAI", remote("list => [list[0][1].slice()]")).forResult();
+            if (result.bool) bottom = result.moved[0];
+          }
+          await game4.cardsGotoPile(bottom);
+        }
+      },
+      ai: { order: 7, result: { player: 1 } }
+    },
+    ai_yansuan: {
+      trigger: { player: "useCardAfter" },
+      direct: true,
+      filter(event, player) {
+        return !player.hasSkill("ai_yansuan_used") && event.cards?.length === 1 && !get3.is.convertedCard(event.card) && !get3.is.virtualCard(event.card) && (player.storage.ai_yansuan_record || []).includes(event.cards[0]) && player.getHistory("lose").some((loss) => loss.hs?.includes(event.cards[0]) && loss.getParent() === event) && !player.getHistory("sourceDamage", (damage) => damage.getParent("useCard") === event).length;
+      },
+      async content(event, trigger, player) {
+        const result = await player.chooseTarget("\u9A8C\u7B97\uFF1A\u4EE4\u4E00\u540D\u89D2\u8272\u6478\u4E00\u5F20\u724C").set("ai", remote("target => get.attitude(_status.event.player,target)")).forResult();
+        if (!result.bool) return;
+        player.logSkill("ai_yansuan", result.targets);
+        player.addTempSkill("ai_yansuan_used", { global: "phaseAfter" });
+        await result.targets[0].draw();
+      },
+      subSkill: { used: { charlotte: true }, record: { charlotte: true, onremove: true } }
+    },
+    ai_bianyi: {
       enable: "phaseUse",
       usable: 1,
       position: "h",
       selectCard: 1,
+      filterCard: true,
       discard: false,
       lose: false,
       delay: false,
-      filterCard: true,
-      filterTarget: (card, player, target) => target !== player,
-      check: (card) => 6 - get3.value(card),
-      async content(event, trigger, player) {
-        await player.give(event.cards, event.target);
-        if (event.target.isIn() && event.target.countCards("h") <= event.target.hp) await event.target.draw();
+      filter(event, player) {
+        return !program(player) && player.countCards("h") > 0;
       },
-      ai: { order: 3, result: { target: 1 } }
-    },
-    ai_shensuan: {
-      enable: "phaseUse",
-      usable: 1,
-      position: "h",
-      selectCard: 1,
-      filterCard: true,
-      check: (card) => 6 - get3.value(card),
+      check: (card) => 7 - get3.value(card),
       async content(event, trigger, player) {
-        const cards = await player.draw(2).forResult();
-        const drawn = Array.isArray(cards) ? cards : cards?.cards;
-        if (drawn?.length === 2 && ["red", "black"].includes(get3.color(drawn[0], false)) && get3.color(drawn[0], false) === get3.color(drawn[1], false)) await player.draw();
+        const next = player.addToExpansion(event.cards, player, "give");
+        next.gaintag.add("ai_bianyi");
+        await next;
       },
-      ai: { order: 5, result: { player: 1 } }
-    },
-    ai_chengsi: {
-      trigger: { player: "phaseJieshuBegin" },
-      direct: true,
-      filter: (event, player) => player.countCards("h") >= 3 && game4.hasPlayer((target) => target !== player),
-      async content(event, trigger, player) {
-        const result = await player.chooseCardTarget({
-          prompt: "\u6F84\u601D\uFF1A\u4EA4\u7ED9\u4E00\u540D\u5176\u4ED6\u89D2\u8272\u4E00\u5F20\u624B\u724C\uFF0C\u82E5\u5176\u5DF2\u53D7\u4F24\u5219\u56DE\u590D1\u70B9\u4F53\u529B",
-          position: "h",
-          selectCard: 1,
-          filterCard: true,
-          filterTarget: (card, source, target2) => source !== target2,
-          ai1: remoteChoice2("card => 6 - get.value(card)"),
-          ai2: remoteChoice2("target => get.attitude(_status.event.player, target) * (target.isDamaged() ? 2 : 1)")
-        }).forResult();
-        if (!result.bool) return;
-        const target = result.targets[0];
-        player.logSkill("ai_chengsi", target);
-        await player.give(result.cards, target);
-        if (target.isIn() && target.isDamaged()) await target.recover();
+      marktext: "\u7801",
+      intro: { content: "expansion", markcount: "expansion" },
+      onremove(player, skill) {
+        const cards = player.getExpansions(skill);
+        if (cards.length) player.loseToDiscardpile(cards);
+      },
+      ai: { order: 8, result: { player: 1 } },
+      group: "ai_bianyi_execute",
+      subSkill: {
+        execute: {
+          trigger: { player: "useCardAfter" },
+          filter(event, player) {
+            const card = program(player);
+            return !!card && get3.type2(event.card) === get3.type2(card);
+          },
+          prompt: "\u7F16\u8BD1\uFF1A\u6D88\u8017\u7A0B\u5E8F\uFF0C\u6478\u4E24\u5F20\u724C\u5E76\u6267\u884C\u5BF9\u5E94\u6548\u679C\uFF1F",
+          async content(event, trigger, player) {
+            const card = program(player);
+            if (!card) return;
+            const type = get3.type2(card);
+            await player.loseToDiscardpile(card);
+            await player.draw(2);
+            if (type === "basic") {
+              player.addTempSkill("ai_bianyi_sha", { global: "phaseAfter" });
+              player.addMark("ai_bianyi_sha", 1, false);
+            } else if (type === "trick") {
+              const result = await player.chooseTarget("\u7F16\u8BD1\uFF1A\u53EF\u4EE5\u5F03\u7F6E\u4E00\u540D\u5176\u4ED6\u89D2\u8272\u533A\u57DF\u5185\u7684\u4E00\u5F20\u724C", (card2, source, target) => source !== target && target.countDiscardableCards(source, "hej") > 0).set("ai", remote("target => -get.attitude(_status.event.player,target)")).forResult();
+              if (result.bool) await player.discardPlayerCard(result.targets[0], "hej", true);
+            } else if (type === "equip") {
+              const result = await player.chooseTarget("\u7F16\u8BD1\uFF1A\u53EF\u4EE5\u4EE4\u4E00\u540D\u89D2\u8272\u56DE\u590D1\u70B9\u4F53\u529B", (card2, source, target) => target.isDamaged()).set("ai", remote("target => get.attitude(_status.event.player,target)")).forResult();
+              if (result.bool) await result.targets[0].recover();
+            }
+          }
+        },
+        sha: { charlotte: true, onremove: true, mark: true, marktext: "\u8BD1", intro: { content: "\u672C\u56DE\u5408\u4F7F\u7528\u6740\u7684\u6B21\u6570\u4E0A\u9650+#\u3002" }, mod: { cardUsable(card, player, num) {
+          if (card.name === "sha") return num + player.countMark("ai_bianyi_sha");
+        } } }
       }
     },
-    ai_shenshen: {
+    ai_tiaoshi: {
       trigger: { global: "damageBegin4" },
       usable: 1,
       filter(event, player) {
-        const color = get3.color(event.card);
-        return event.num > 0 && ["red", "black"].includes(color) && player.countCards("h", (card) => get3.color(card) === color && lib3.filter.cardDiscardable(card, player, "ai_shenshen")) > 0;
+        const card = program(player);
+        return event.num > 0 && !!card && colored(event.card) && get3.color(card) === get3.color(event.card);
       },
-      async cost(event, trigger, player) {
-        event.result = await player.chooseToDiscard("h", "\u5BA1\u614E\uFF1A\u5F03\u7F6E\u540C\u989C\u8272\u624B\u724C\uFF0C\u4EE4\u4F24\u5BB3-1", remoteChoice2("card => get.color(card) === _status.event.aiDamageColor")).set("aiDamageColor", get3.color(trigger.card)).set("aiProtect", get3.attitude(player, trigger.player) > 0).set("chooseonly", true).set("ai", remoteChoice2("card => _status.event.aiProtect ? 8 - get.value(card) : 0")).forResult();
+      check(event, player) {
+        return get3.attitude(player, event.player) > 0;
       },
+      prompt: "\u8C03\u8BD5\uFF1A\u6D88\u8017\u540C\u989C\u8272\u7A0B\u5E8F\uFF0C\u4EE4\u6B64\u4F24\u5BB3\uFF0D1\uFF1F",
       async content(event, trigger, player) {
-        await player.discard(event.cards);
+        const card = program(player);
+        if (!card) return;
+        await player.loseToDiscardpile(card);
         trigger.num--;
       }
     },
-    ai_chengzhang: {
-      trigger: { player: "phaseJieshuBegin" },
-      forced: true,
-      filter: (event, player) => new Set(player.getHistory("useCard").map((evt) => get3.type2(evt.card)).filter((type) => ["basic", "trick", "equip"].includes(type))).size >= 2,
-      async content(event, trigger, player) {
-        await player.draw(2);
-      }
-    },
-    ai_ruiwen: {
+    ai_dongcha: {
       enable: "phaseUse",
       usable: 1,
-      position: "h",
-      selectCard: 1,
-      filterCard: (card) => ["red", "black"].includes(get3.color(card)),
-      filterTarget: (card, player, target) => target !== player,
-      check: (card) => 6 - get3.value(card),
+      filterTarget: (card, player, target) => target !== player && target.countCards("h") > 0,
       async content(event, trigger, player) {
-        const target = event.target, color = get3.color(event.cards[0], false);
-        const result = await target.chooseToDiscard("h", "\u9510\u95EE\uFF1A\u5F03\u7F6E\u540C\u989C\u8272\u624B\u724C\uFF0C\u5426\u5219\u53D7\u52301\u70B9\u4F24\u5BB3", remoteChoice2("card => get.color(card) === _status.event.aiRuiwenColor")).set("aiRuiwenColor", color).set("ai", remoteChoice2("card => 7 - get.value(card)")).forResult();
-        if (!result.bool && target.isIn()) await target.damage(1, player);
+        const target = event.target;
+        const result = await player.chooseControl("\u57FA\u672C\u724C", "\u9526\u56CA\u724C", "\u88C5\u5907\u724C").set("prompt", "\u6D1E\u5BDF\uFF1A\u58F0\u660E\u4E00\u79CD\u7C7B\u522B\uFF0C\u518D\u89C2\u770B\u968F\u673A\u4E24\u5F20\u624B\u724C").set("ai", remote("() => 0")).forResult();
+        const type = ["basic", "trick", "equip"][result.index], cards = target.getCards("h").randomGets(2);
+        const shown = await player.chooseButton(["\u6D1E\u5BDF\uFF1A\u547D\u4E2D\u58F0\u660E\u5219\u9009\u62E9\u83B7\u5F97\u5BF9\u5E94\u724C", cards], true).set("aiDongchaType", type).set("filterButton", remote("button => {const cards=_status.event.dialog.buttons.map(button=>button.link);return !cards.some(card=>get.type2(card)===_status.event.aiDongchaType)||get.type2(button.link)===_status.event.aiDongchaType;}")).set("ai", remote("button => get.value(button.link)")).forResult();
+        const selected = shown.links?.[0];
+        if (selected && get3.type2(selected) === type && target.getCards("h").includes(selected)) await player.gain(selected, target, "giveAuto");
+        else await player.draw();
+        if (target.isIn() && player.countCards("h")) await player.chooseToGive(target, "h", 1, true);
       },
-      ai: { order: 6, result: { target: -1 } }
+      ai: { order: 6, result: { player: 1, target: -0.3 } }
     },
-    ai_zhuiwen: {
-      trigger: { player: "shaMiss" },
-      usable: 1,
-      frequent: true,
+    ai_zhiyan: {
+      trigger: { player: "useCardToPlayered" },
+      direct: true,
+      filter(event, player) {
+        return event.card.name === "sha" && !player.hasSkill("ai_zhiyan_used") && event.target !== player && event.target.isIn() && player.getCards("h").some(colored);
+      },
       async content(event, trigger, player) {
-        await player.draw();
-      }
+        const shown = await player.chooseCard("h", "\u76F4\u8A00\uFF1A\u5C55\u793A\u4E00\u5F20\u6709\u989C\u8272\u7684\u624B\u724C\uFF0C\u4EE4\u76EE\u6807\u5F03\u540C\u8272\u724C\u6216\u6B64\u6740\u5BF9\u5176\u4F24\u5BB3\uFF0B1", remote("card => ['red','black'].includes(get.color(card))")).set("ai", remote("card => 6-get.value(card)")).forResult();
+        if (!shown.bool) return;
+        player.logSkill("ai_zhiyan", trigger.target);
+        player.addTempSkill("ai_zhiyan_used", { global: "phaseAfter" });
+        await player.showCards(shown.cards, "\u76F4\u8A00");
+        const result = await trigger.target.chooseToDiscard("h", "\u76F4\u8A00\uFF1A\u5F03\u7F6E\u540C\u989C\u8272\u624B\u724C\uFF0C\u5426\u5219\u6B64\u6740\u5BF9\u4F60\u7684\u4F24\u5BB3\uFF0B1", remote("card => get.color(card)===_status.event.aiZhiyanColor")).set("chooseonly", true).set("aiZhiyanColor", get3.color(shown.cards[0])).set("ai", remote("card => 8-get.value(card)")).forResult();
+        if (result.bool) {
+          await trigger.target.showCards(result.cards, "\u76F4\u8A00\uFF1A\u5C55\u793A\u5E76\u5F03\u7F6E");
+          await trigger.target.discard(result.cards);
+        } else {
+          const use = trigger.getParent();
+          use.customArgs ||= {};
+          const args = use.customArgs[trigger.target.playerid] ||= {};
+          args.extraDamage = (args.extraDamage || 0) + 1;
+        }
+      },
+      subSkill: { used: { charlotte: true } }
     }
   };
 }
 
 // game/resources/app/src/character/ai/skill.js
-var skill_default = createAiSkills(game, get, lib);
+var skill_default = createAiSkills(game, get, lib, ui, _status);
 
 // game/resources/app/src/character/ai/translate.js
 var translate_default = {
@@ -187,26 +296,29 @@ var translate_default = {
   ai_grok: "Grok",
   ac_tuiyan: "\u63A8\u6F14",
   ac_tuiyan_info: "\u51FA\u724C\u9636\u6BB5\uFF0C\u4F60\u53EF\u4EE5\u9009\u62E9\u4E00\u9879\uFF0C\u6BCF\u9879\u6BCF\u9636\u6BB5\u9650\u4E00\u6B21\uFF1A\u2460\u5C06\u624B\u724C\u6478\u81F3\u4F53\u529B\u4E0A\u9650\uFF0C\u7136\u540E\u76F4\u5230\u672C\u9636\u6BB5\u7ED3\u675F\uFF0C\u4F60\u4E0D\u80FD\u5BF9\u5176\u4ED6\u89D2\u8272\u4F7F\u7528\u724C\uFF1B\u2461\u5C06X\u5F20\u624B\u724C\u4EA4\u7ED9\u4E00\u540D\u5176\u4ED6\u89D2\u8272\uFF08X\u4E3A\u4F60\u7684\u624B\u724C\u6570\u51CF\u53BB\u4F60\u7684\u4F53\u529B\u503C\uFF0C\u4E14\u987B\u5927\u4E8E0\uFF09\u3002",
-  ai_banda: "\u4F34\u7B54",
-  ai_banda_info: "\u6BCF\u56DE\u5408\u9650\u4E00\u6B21\uFF0C\u5176\u4ED6\u89D2\u8272\u4E00\u6B21\u83B7\u5F97\u81F3\u5C11\u4E24\u5F20\u724C\u540E\uFF0C\u4F60\u53EF\u4EE5\u4EE4\u5176\u6478\u4E00\u5F20\u724C\u3002\u7136\u540E\uFF0C\u82E5\u4F60\u7684\u624B\u724C\u6570\u5C0F\u4E8E\u5176\u624B\u724C\u6570\uFF0C\u4F60\u6478\u4E00\u5F20\u724C\u3002",
-  ai_qingyu: "\u8F7B\u8BED",
-  ai_qingyu_info: "\u51FA\u724C\u9636\u6BB5\u9650\u4E00\u6B21\uFF0C\u4F60\u53EF\u4EE5\u4EA4\u7ED9\u4E00\u540D\u5176\u4ED6\u89D2\u8272\u4E00\u5F20\u624B\u724C\u3002\u4EA4\u724C\u540E\uFF0C\u82E5\u5176\u624B\u724C\u6570\u4E0D\u5927\u4E8E\u5176\u4F53\u529B\u503C\uFF0C\u5176\u6478\u4E00\u5F20\u724C\u3002",
-  ai_shensuan: "\u6DF1\u7B97",
-  ai_shensuan_info: "\u51FA\u724C\u9636\u6BB5\u9650\u4E00\u6B21\uFF0C\u4F60\u53EF\u4EE5\u5F03\u7F6E\u4E00\u5F20\u624B\u724C\u5E76\u6478\u4E24\u5F20\u724C\u3002\u82E5\u6478\u5230\u7684\u4E24\u5F20\u724C\u989C\u8272\u76F8\u540C\uFF0C\u4F60\u989D\u5916\u6478\u4E00\u5F20\u724C\u3002",
-  ai_chengsi: "\u6F84\u601D",
-  ai_chengsi_info: "\u7ED3\u675F\u9636\u6BB5\uFF0C\u82E5\u4F60\u7684\u624B\u724C\u6570\u81F3\u5C11\u4E3A\u4E09\uFF0C\u4F60\u53EF\u4EE5\u4EA4\u7ED9\u4E00\u540D\u5176\u4ED6\u89D2\u8272\u4E00\u5F20\u624B\u724C\u3002\u7136\u540E\uFF0C\u82E5\u5176\u5DF2\u53D7\u4F24\uFF0C\u5176\u56DE\u590D1\u70B9\u4F53\u529B\u3002",
-  ai_shenshen: "\u5BA1\u614E",
-  ai_shenshen_info: "\u6BCF\u56DE\u5408\u9650\u4E00\u6B21\uFF0C\u4E00\u540D\u89D2\u8272\u53D7\u5230\u6709\u989C\u8272\u7684\u724C\u9020\u6210\u7684\u4F24\u5BB3\u65F6\uFF0C\u4F60\u53EF\u4EE5\u5F03\u7F6E\u4E00\u5F20\u4E0E\u6B64\u724C\u989C\u8272\u76F8\u540C\u7684\u624B\u724C\uFF0C\u4EE4\u6B64\u4F24\u5BB3-1\u3002",
-  ai_chengzhang: "\u6210\u7AE0",
-  ai_chengzhang_info: "\u7ED3\u675F\u9636\u6BB5\uFF0C\u82E5\u4F60\u672C\u56DE\u5408\u4F7F\u7528\u8FC7\u81F3\u5C11\u4E24\u79CD\u7C7B\u522B\u7684\u724C\uFF0C\u4F60\u6478\u4E24\u5F20\u724C\u3002\uFF08\u57FA\u672C\u724C\u3001\u666E\u901A\u9526\u56CA\u4E0E\u5EF6\u65F6\u9526\u56CA\u5408\u8BA1\u7684\u9526\u56CA\u724C\u3001\u88C5\u5907\u724C\u4E3A\u4E09\u7C7B\u3002\uFF09",
-  ai_ruiwen: "\u9510\u95EE",
-  ai_ruiwen_info: "\u51FA\u724C\u9636\u6BB5\u9650\u4E00\u6B21\uFF0C\u4F60\u53EF\u4EE5\u5F03\u7F6E\u4E00\u5F20\u6709\u989C\u8272\u7684\u624B\u724C\uFF0C\u4EE4\u4E00\u540D\u5176\u4ED6\u89D2\u8272\u5F03\u7F6E\u4E00\u5F20\u540C\u989C\u8272\u624B\u724C\uFF0C\u5426\u5219\u4F60\u5BF9\u5176\u9020\u62101\u70B9\u4F24\u5BB3\u3002",
-  ai_zhuiwen: "\u8FFD\u95EE",
-  ai_zhuiwen_info: "\u6BCF\u56DE\u5408\u9650\u4E00\u6B21\uFF0C\u4F60\u4F7F\u7528\u7684\u3010\u6740\u3011\u88AB\u3010\u95EA\u3011\u62B5\u6D88\u540E\uFF0C\u4F60\u6478\u4E00\u5F20\u724C\u3002"
+  ai_qiaoda: "\u5DE7\u7B54",
+  ai_qiaoda_info: "\u6BCF\u56DE\u5408\u9650\u4E00\u6B21\uFF0C\u5F53\u4F60\u9700\u8981\u4F7F\u7528\u6216\u6253\u51FA\u6740\u3001\u95EA\u6216\u6843\u65F6\uFF0C\u4F60\u53EF\u4EE5\u5C06\u4E00\u5F20\u624B\u724C\u8F6C\u5316\uFF1A\u57FA\u672C\u724C\u5F53\u95EA\uFF0C\u9526\u56CA\u724C\u5F53\u6843\uFF0C\u88C5\u5907\u724C\u5F53\u666E\u901A\u6740\u3002\u4ECD\u987B\u7B26\u5408\u6B63\u5E38\u4F7F\u7528\u6761\u4EF6\u3002",
+  ai_qiaoda_used: "\u5DE7\u7B54",
+  ai_banxing: "\u4F34\u884C",
+  ai_banxing_info: "\u6BCF\u56DE\u5408\u9650\u4E00\u6B21\uFF0C\u5F53\u4F60\u4E8E\u56DE\u5408\u5916\u4F7F\u7528\u6216\u6253\u51FA\u624B\u724C\u7ED3\u7B97\u7ED3\u675F\u540E\uFF0C\u4F60\u53EF\u4EE5\u9009\u62E9\u4E00\u540D\u5176\u4ED6\u89D2\u8272\uFF1A\u82E5\u5176\u624B\u724C\u6570\u5C0F\u4E8E\u4F60\uFF0C\u5176\u6478\u4E00\u5F20\u724C\uFF1B\u5426\u5219\uFF0C\u4F60\u6478\u4E00\u5F20\u724C\u3002",
+  ai_tuili: "\u63A8\u7406",
+  ai_tuili_info: "\u51FA\u724C\u9636\u6BB5\u9650\u4E00\u6B21\uFF0C\u4F60\u53EF\u4EE5\u89C2\u770B\u724C\u5806\u9876\u4E09\u5F20\u724C\uFF0C\u4F9D\u6B21\u6267\u884C\uFF1A\u2460\u83B7\u5F97\u5176\u4E2D\u4E00\u5F20\uFF1B\u2461\u53EF\u4EE5\u5F03\u7F6E\u4E00\u5F20\u624B\u724C\uFF0C\u518D\u83B7\u5F97\u5176\u4E2D\u4E00\u5F20\uFF1B\u2462\u82E5\u6267\u884C\u4E86\u2461\uFF0C\u53EF\u4EE5\u518D\u5F03\u7F6E\u4E00\u5F20\u624B\u724C\uFF0C\u83B7\u5F97\u6700\u540E\u4E00\u5F20\uFF0C\u82E5\u6B64\u6B21\u5F03\u724C\u4E0E\u83B7\u5F97\u724C\u989C\u8272\u76F8\u540C\uFF0C\u4F60\u6478\u4E00\u5F20\u724C\u3002\u5269\u4F59\u724C\u7531\u4F60\u4EE5\u4EFB\u610F\u987A\u5E8F\u7F6E\u4E8E\u724C\u5806\u5E95\u3002",
+  ai_yansuan: "\u9A8C\u7B97",
+  ai_yansuan_info: "\u6BCF\u56DE\u5408\u9650\u4E00\u6B21\uFF0C\u5F53\u4F60\u4F7F\u7528\u5B9E\u4F53\u624B\u724C\u7ED3\u7B97\u7ED3\u675F\u540E\uFF0C\u82E5\u6B64\u724C\u662F\u4F60\u672C\u56DE\u5408\u901A\u8FC7\u63A8\u7406\u83B7\u5F97\u7684\u724C\uFF0C\u4E14\u672A\u9020\u6210\u4F24\u5BB3\uFF0C\u4F60\u53EF\u4EE5\u4EE4\u4E00\u540D\u89D2\u8272\u6478\u4E00\u5F20\u724C\u3002",
+  ai_bianyi: "\u7F16\u8BD1",
+  ai_bianyi_info: "\u51FA\u724C\u9636\u6BB5\u9650\u4E00\u6B21\uFF0C\u82E5\u4F60\u6CA1\u6709\u7A0B\u5E8F\uFF0C\u4F60\u53EF\u4EE5\u5C06\u4E00\u5F20\u624B\u724C\u6B63\u9762\u7F6E\u4E8E\u6B66\u5C06\u724C\u4E0A\uFF0C\u79F0\u4E3A\u7A0B\u5E8F\uFF08\u81F3\u591A\u4E00\u5F20\uFF0C\u4FDD\u7559\u81F3\u88AB\u6D88\u8017\uFF09\u3002\u4F60\u4F7F\u7528\u4E0E\u7A0B\u5E8F\u7C7B\u522B\u76F8\u540C\u7684\u724C\u7ED3\u7B97\u7ED3\u675F\u540E\uFF0C\u53EF\u4EE5\u5C06\u7A0B\u5E8F\u7F6E\u5165\u5F03\u724C\u5806\uFF0C\u6478\u4E24\u5F20\u724C\uFF0C\u5E76\u6309\u5176\u7C7B\u522B\u6267\u884C\uFF1A\u57FA\u672C\u724C\uFF0C\u672C\u56DE\u5408\u4F7F\u7528\u6740\u7684\u6B21\u6570\u4E0A\u9650+1\uFF1B\u9526\u56CA\u724C\uFF0C\u53EF\u4EE5\u5F03\u7F6E\u4E00\u540D\u5176\u4ED6\u89D2\u8272\u533A\u57DF\u5185\u7684\u4E00\u5F20\u724C\uFF1B\u88C5\u5907\u724C\uFF0C\u53EF\u4EE5\u4EE4\u4E00\u540D\u89D2\u8272\u56DE\u590D1\u70B9\u4F53\u529B\u3002\u666E\u901A\u9526\u56CA\u4E0E\u5EF6\u65F6\u9526\u56CA\u89C6\u4E3A\u540C\u7C7B\u3002",
+  ai_bianyi_execute: "\u7F16\u8BD1",
+  ai_bianyi_sha: "\u7F16\u8BD1",
+  ai_tiaoshi: "\u8C03\u8BD5",
+  ai_tiaoshi_info: "\u6BCF\u56DE\u5408\u9650\u4E00\u6B21\uFF0C\u4E00\u540D\u89D2\u8272\u53D7\u5230\u6709\u989C\u8272\u7684\u724C\u9020\u6210\u7684\u4F24\u5BB3\u65F6\uFF0C\u4F60\u53EF\u4EE5\u5C06\u4E0E\u8BE5\u724C\u989C\u8272\u76F8\u540C\u7684\u7A0B\u5E8F\u7F6E\u5165\u5F03\u724C\u5806\uFF0C\u4EE4\u6B64\u4F24\u5BB3-1\u3002",
+  ai_dongcha: "\u6D1E\u5BDF",
+  ai_dongcha_info: "\u51FA\u724C\u9636\u6BB5\u9650\u4E00\u6B21\uFF0C\u4F60\u53EF\u4EE5\u9009\u62E9\u4E00\u540D\u6709\u624B\u724C\u7684\u5176\u4ED6\u89D2\u8272\uFF0C\u58F0\u660E\u57FA\u672C\u724C\u3001\u9526\u56CA\u724C\u6216\u88C5\u5907\u724C\uFF0C\u7136\u540E\u89C2\u770B\u5176\u968F\u673A\u4E24\u5F20\u624B\u724C\uFF08\u4E0D\u8DB3\u5219\u5168\u90E8\uFF09\u3002\u82E5\u5176\u4E2D\u6709\u58F0\u660E\u7C7B\u522B\uFF0C\u4F60\u83B7\u5F97\u5176\u4E2D\u4E00\u5F20\u8BE5\u7C7B\u522B\u7684\u724C\uFF0C\u7136\u540E\u4EA4\u7ED9\u5176\u4E00\u5F20\u624B\u724C\uFF1B\u5426\u5219\uFF0C\u4F60\u6478\u4E00\u5F20\u724C\uFF0C\u7136\u540E\u4EA4\u7ED9\u5176\u4E00\u5F20\u624B\u724C\u3002\u666E\u901A\u9526\u56CA\u4E0E\u5EF6\u65F6\u9526\u56CA\u89C6\u4E3A\u540C\u7C7B\u3002",
+  ai_zhiyan: "\u76F4\u8A00",
+  ai_zhiyan_info: "\u6BCF\u56DE\u5408\u9650\u4E00\u6B21\uFF0C\u5F53\u4F60\u5BF9\u5176\u4ED6\u89D2\u8272\u4F7F\u7528\u6740\u6307\u5B9A\u76EE\u6807\u540E\uFF0C\u4F60\u53EF\u4EE5\u5C55\u793A\u4E00\u5F20\u6709\u989C\u8272\u7684\u624B\u724C\uFF0C\u4EE4\u5176\u9009\u62E9\uFF1A\u5C55\u793A\u5E76\u5F03\u7F6E\u4E00\u5F20\u540C\u989C\u8272\u624B\u724C\uFF1B\u6216\u4EE4\u6B64\u6740\u5BF9\u5176\u9020\u6210\u7684\u4F24\u5BB3+1\u3002"
 };
 
 // game/resources/app/src/character/mushoku/expansion.js
-import { lib as lib2, game as game2, get as get2, _status } from "noname";
+import { lib as lib2, game as game2, get as get2, _status as _status2 } from "noname";
 var discardable = (card, player) => lib2.filter.cardDiscardable(card, player, "ac_haodu");
 var suits = (cards) => new Set(cards.map((card) => get2.suit(card, false)).filter((suit) => ["heart", "diamond", "club", "spade"].includes(suit))).size;
 var replayTargets = (player) => player.getStorage("ac_xuju");

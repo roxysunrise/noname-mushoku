@@ -1,3 +1,3 @@
-import { game, get, lib } from "noname";
+import { game, get, lib, ui, _status } from "noname";
 import { createAiSkills } from "./mechanics.js";
-export default createAiSkills(game, get, lib);
+export default createAiSkills(game, get, lib, ui, _status);

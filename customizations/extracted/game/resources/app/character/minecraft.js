@@ -6,10 +6,10 @@ var characters = {
   ac_yumeko: { sex: "female", group: "huan", hp: 4, maxHp: 4, skills: ["ac_haodu", "ac_xuju"], img: "image/character/ac_yumeko.jpg" },
   ac_kaito: { sex: "male", group: "huan", hp: 4, maxHp: 4, skills: ["ac_zhangyan"], img: "image/character/ac_kaito.jpg" },
   ac_chatgpt: { sex: "female", group: "xu", hp: 4, maxHp: 4, skills: ["ac_tuiyan"], img: "image/character/ac_chatgpt.jpg" },
-  ai_doubao: { sex: "female", group: "xu", hp: 3, skills: ["ai_banda", "ai_qingyu"], img: "image/character/ai_doubao.jpg" },
-  ai_deepseek: { sex: "female", group: "xu", hp: 3, skills: ["ai_shensuan", "ai_chengsi"], img: "image/character/ai_deepseek.jpg" },
-  ai_claude: { sex: "female", group: "xu", hp: 3, skills: ["ai_shenshen", "ai_chengzhang"], img: "image/character/ai_claude.jpg" },
-  ai_grok: { sex: "female", group: "xu", hp: 4, skills: ["ai_ruiwen", "ai_zhuiwen"], img: "image/character/ai_grok.jpg" },
+  ai_doubao: { sex: "female", group: "xu", hp: 3, skills: ["ai_qiaoda", "ai_banxing"], img: "image/character/ai_doubao.jpg" },
+  ai_deepseek: { sex: "female", group: "xu", hp: 3, skills: ["ai_tuili", "ai_yansuan"], img: "image/character/ai_deepseek.jpg" },
+  ai_claude: { sex: "female", group: "xu", hp: 3, skills: ["ai_bianyi", "ai_tiaoshi"], img: "image/character/ai_claude.jpg" },
+  ai_grok: { sex: "female", group: "xu", hp: 4, skills: ["ai_dongcha", "ai_zhiyan"], img: "image/character/ai_grok.jpg" },
   mc_netherite: { sex: "none", group: "qi", hp: 4, maxHp: 4, skills: ["mc_fengcang", "mc_xiejia", "mc_rongzhu"], img: "image/character/mc_netherite.jpg" },
   th_mokou: { sex: "female", group: "shen", hp: 2, maxHp: 2, skills: ["th_penglai", "th_fengyi"], img: "image/character/th_mokou.jpg" },
   ac_yuu: { sex: "male", group: "huan", hp: 3, maxHp: 3, skills: ["ac_heyun", "ac_yinhui"], img: "image/character/ac_yuu.jpg" },
@@ -368,10 +368,10 @@ var labels = {
   mc_dream: [["\u9010\u730E\u5E7B\u8E2A", "#a8e887"], ["\u7EDD\u5883\u9003\u751F", "#8fe0d7"]],
   mc_netherite: [["\u4F59\u70EC\u4E4B\u950B", "#d7a4ef"], ["\u7194\u94F8\u653B\u5B88", "#efba8a"]],
   ac_chatgpt: [["\u4E07\u8A00\u4E4B\u955C", "#9ce0ca"], ["\u661F\u6D77\u9F99\u541F", "#dbb7ff"]],
-  ai_doubao: [["\u4E91\u95F4\u4F34\u8BED", "#ffc49d"], ["\u6696\u5FC3\u5171\u9E23", "#ffadca"]],
-  ai_deepseek: [["\u6DF1\u6D77\u6C42\u7D22", "#9acfff"], ["\u6F84\u6F88\u63A8\u7406", "#93e4e2"]],
-  ai_claude: [["\u957F\u5377\u7EC7\u8BED", "#efbf9c"], ["\u5BA1\u614E\u5B88\u671B", "#cfb7ef"]],
-  ai_grok: [["\u661F\u9645\u9510\u95EE", "#c1d3f7"], ["\u9006\u98CE\u8FFD\u95EE", "#f1a4ca"]]
+  ai_doubao: [["\u4E07\u8C61\u5DE7\u7B54", "#ffc49d"], ["\u6696\u5FC3\u4F34\u884C", "#ffadca"]],
+  ai_deepseek: [["\u6DF1\u6D77\u6C42\u7D22", "#9acfff"], ["\u6B65\u6B65\u6C42\u8BC1", "#93e4e2"]],
+  ai_claude: [["\u4EE3\u7801\u7EC7\u5320", "#efbf9c"], ["\u5BA1\u614E\u6C42\u8BC1", "#cfb7ef"]],
+  ai_grok: [["\u5B9E\u65F6\u6D1E\u5BDF", "#c1d3f7"], ["\u950B\u8292\u76F4\u8A00", "#f1a4ca"]]
 };
 var characterTitles = Object.fromEntries(Object.entries(labels).map(([id, values]) => [id, values.map(([text, color]) => badge(text, color)).join(" ")]));
 var titlesForPack = (pack) => Object.fromEntries(Object.entries(characterTitles).filter(([id]) => packForCharacter(id) === pack));
