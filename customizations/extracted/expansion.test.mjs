@@ -24,6 +24,7 @@ function person(){
   syncStorage(){},logSkill(){},markSkill(){},line(){},
   countMark(id){return this.marks[id]||0;},addMark(id,n){this.marks[id]=(this.marks[id]||0)+n;},removeMark(id,n){this.marks[id]-=n;},
   async draw(n){this.drawn+=n;},async drawTo(n){this.drawn+=Math.max(0,n-this.hand.length);},
+  async recover(n=1){this.hp=Math.min(this.maxHp,this.hp+n);},
   async damage(n,source){this.hits+=n;this.source=source;},
   async loseMaxHp(n){this.maxHp=Math.max(0,this.maxHp-n);this.hp=Math.min(this.hp,this.maxHp);},async gainMaxHp(n){this.maxHp+=n;},
   awakenSkill(id){this.storage[id]=true;},canUse:()=>true};return p;
@@ -73,27 +74,49 @@ test('disarm reduces even a one-point hit to zero and gains equipment; forge acc
  const p=person(),t=person();t.equip=[{}];const event={player:t,num:1};assert.equal(s.mc_xiejia.filter(event,p),true);let stolen=false;p.gainPlayerCard=async()=>stolen=true;await s.mc_xiejia.content({},event,p);assert.equal(event.num,0);assert.ok(stolen);
  p.equip=[{},{}];assert.equal(s.mc_rongzhu.mod.maxHandcard(p,4),6);assert.equal(s.mc_rongzhu.filterCard({type:'equip'}),true);assert.equal(s.mc_rongzhu.filterCard({type:'basic'}),false);assert.equal(s.mc_rongzhu.viewAs.name,'jiu');
 });
-test('Alucard is 1/1: immune to non-Sha damage and HP loss, permits all elemental Sha',async()=>{
- const {p,b}=bloodFixture();assert.equal(alucardCharacters.boss_alucard.hp,1);for(const nature of [undefined,'fire','thunder']) assert.equal(b.al_immortal.filter({name:'damage',card:{name:'sha',nature}}),false);
+test('Alucard is 3/3: immune to non-Sha damage and HP loss, permits all elemental Sha',async()=>{
+ const {p,b}=bloodFixture();assert.equal(alucardCharacters.boss_alucard.hp,3);for(const nature of [undefined,'fire','thunder']) assert.equal(b.al_immortal.filter({name:'damage',card:{name:'sha',nature}}),false);
  for(const event of [{name:'loseHp'},{name:'damage'},{name:'damage',card:{name:'juedou'}}]){assert.equal(b.al_immortal.filter(event),true);let canceled=false;event.cancel=()=>canceled=true;await b.al_immortal.content({},event,p);assert.ok(canceled);}
 });
-test('blood initializes only once, regenerates below two each own prep, one blood cancels entire Sha hit',async()=>{
- const {p,b}=bloodFixture();b.al_king.init(p);b.al_king.init(p);assert.equal(p.countMark('al_blood'),2);assert.equal(b.al_king.filter({},p),false);
- let canceled=false;await b.al_king.subSkill.shield.content({}, {num:7,card:{name:'sha'},cancel(){canceled=true;}},p);assert.ok(canceled);assert.equal(p.countMark('al_blood'),1);assert.equal(b.al_king.filter({},p),true);await b.al_king.content({}, {},p);assert.equal(p.countMark('al_blood'),2);
+test('blood initializes once, gains only on own Sha damage once per turn, and caps at four',async()=>{
+ const {p,b}=bloodFixture(),t=person();b.al_king.init(p);b.al_king.init(p);assert.equal(p.countMark('al_blood'),2);
+ const hit={num:1,card:{name:'sha'},player:t,getParent:()=>({player:p})};
+ assert.equal(b.al_king.filter({...hit,num:0},p),false);assert.equal(b.al_king.filter({...hit,card:{name:'juedou'}},p),false);
+ assert.equal(b.al_king.filter({...hit,getParent:()=>({player:t})},p),false);
+ assert.equal(b.al_king.filter(hit,p),true);await b.al_king.content({},hit,p);assert.equal(p.countMark('al_blood'),3);assert.equal(b.al_king.filter(hit,p),false);
+ p.skills.delete('al_king_fed');await b.al_king.content({},hit,p);assert.equal(p.countMark('al_blood'),4);
+ p.skills.delete('al_king_fed');await b.al_king.content({},hit,p);assert.equal(p.countMark('al_blood'),4);
+ let canceled=false;await b.al_king.subSkill.shield.content({}, {num:7,card:{name:'sha'},cancel(){canceled=true;}},p);assert.ok(canceled);assert.equal(p.countMark('al_blood'),3);
 });
 test('each distinct fallen character permanently amplifies Sha, never trick or skill damage',async()=>{
- const {p,b}=bloodFixture(),t=person();b.al_king.init(p);await b.al_king.subSkill.death.content({}, {player:t},p);assert.equal(b.al_king.subSkill.death.filter({player:t},p),false);game.dead=[];const event={card:{name:'sha'},num:1};await b.al_king.subSkill.damage.content({},event,p);assert.equal(event.num,2);assert.equal(b.al_king.subSkill.damage.filter({card:{name:'juedou'}},p),false);
+ const {p,b}=bloodFixture(),t=person();b.al_king.init(p);await b.al_king.subSkill.death.content({}, {player:t},p);assert.equal(b.al_king.subSkill.death.filter({player:t},p),false);assert.equal(b.al_king.subSkill.death.filter({player:person()},p),false);game.dead=[];const event={card:{name:'sha'},num:1};await b.al_king.subSkill.damage.content({},event,p);assert.equal(event.num,2);assert.equal(b.al_king.subSkill.damage.filter({card:{name:'juedou'}},p),false);
 });
-test('erosion permanently lowers target max HP and raises own without healing, doubles only during river turn',async()=>{
- const {p,b}=bloodFixture(),t=person();p.hp=p.maxHp=1;await b.al_erosion.content({}, {num:1,player:t},p);assert.equal(t.maxHp,3);assert.equal(p.maxHp,2);assert.equal(p.hp,1);p.skills.add('al_river_turn');await b.al_erosion.content({}, {num:2,player:t},p);assert.equal(t.maxHp,1);assert.equal(p.maxHp,4);
+test('erosion once per victim on own turn, HP floor two, own cap five and heals once',async()=>{
+ const {p,b}=bloodFixture(),t=person(),u=person();p.hp=p.maxHp=1;
+ const hit={num:1,player:t,getParent:()=>({player:p})};assert.ok(b.al_erosion.filter(hit,p));await b.al_erosion.content({},hit,p);
+ assert.equal(t.maxHp,3);assert.equal(p.maxHp,2);assert.equal(p.hp,2);assert.equal(b.al_erosion.filter(hit,p),false);
+ assert.equal(b.al_erosion.filter({...hit,player:u,getParent:()=>({player:u})},p),false);
+ p.skills.add('al_river_turn');await b.al_erosion.content({}, {...hit,player:u},p);assert.equal(u.maxHp,3);assert.equal(p.maxHp,3);assert.equal(p.hp,2);
+ p.skills.delete('al_erosion_turn');delete p.storage.al_erosion_turn;p.maxHp=5;t.maxHp=3;await b.al_erosion.content({},hit,p);assert.equal(t.maxHp,2);assert.equal(p.maxHp,5);assert.equal(b.al_erosion.filter(hit,p),false);
 });
-test('dual guns flags only chosen Sha, adds one legal target, direct hit at two blood and steals at max HP four',async()=>{
+test('dual guns spends one blood to direct-hit one target and steals only once per activation',async()=>{
  const {p,b}=bloodFixture(),t=person(),extra=person();game.players=[p,t,extra];b.al_king.init(p);p.chooseBool=()=>choice({bool:true});p.chooseTarget=()=>choice({bool:true,targets:[extra]});const targets=[t],direct=[];targets.addArray=items=>targets.push(...items);direct.addArray=items=>direct.push(...items);
- const event={card:{name:'sha'},targets,directHit:direct,getParent:()=>({player:p})};assert.equal(b.al_dualguns.filter(event,p),true);await b.al_dualguns.content({},event,p);assert.equal(targets.length,2);assert.equal(direct.length,3);assert.equal(event.al_dualguns,true);assert.equal(b.al_dualguns.filter(event,p),false);assert.equal(p.expiry.player,'phaseUseAfter');
- p.maxHp=4;t.hand=[{}];const hit={card:{name:'sha'},player:t,getParent:()=>event};assert.equal(b.al_dualguns.subSkill.steal.filter(hit,p),true);p.maxHp=3;assert.equal(b.al_dualguns.subSkill.steal.filter(hit,p),false);
+ const event={card:{name:'sha'},targets,directHit:direct,getParent:()=>({player:p})};assert.equal(b.al_dualguns.filter(event,p),true);await b.al_dualguns.content({},event,p);assert.equal(targets.length,2);assert.equal(direct.length,1);assert.equal(p.countMark('al_blood'),1);assert.equal(event.al_dualguns,true);assert.equal(b.al_dualguns.filter(event,p),false);assert.equal(p.expiry.player,'phaseUseAfter');
+ p.maxHp=4;t.hand=[{}];const hit={card:{name:'sha'},player:t,getParent:()=>event};assert.equal(b.al_dualguns.subSkill.steal.filter(hit,p),true);p.gainPlayerCard=async()=>{};await b.al_dualguns.subSkill.steal.content({},hit,p);assert.equal(b.al_dualguns.subSkill.steal.filter(hit,p),false);p.maxHp=3;assert.equal(b.al_dualguns.subSkill.steal.filter(hit,p),false);
 });
 test('dead river clears blood, permanently forbids regain, damages all others; turn bonus expires with turn',async()=>{
- const {p,b}=bloodFixture(),t=person(),u=person();b.al_king.init(p);game.filterPlayer=fn=>{const list=[p,t,u].filter(fn);list.sortBySeat=()=>list;return list;};await b.al_river.content({}, {},p);assert.equal(p.countMark('al_blood'),0);assert.equal(t.hits,2);assert.equal(u.hits,2);assert.equal(b.al_river.filter({},p),false);assert.equal(b.al_king.filter({},p),false);assert.equal(p.expiry.player,'phaseAfter');
- assert.equal(b.al_river.subSkill.turn.mod.cardUsable({name:'sha'}),Infinity);assert.equal(b.al_river.subSkill.turn.mod.targetInRange({name:'sha'}),true);assert.equal(b.al_river.subSkill.turn.mod.targetInRange({name:'juedou'}),undefined);
+ const {p,b}=bloodFixture(),t=person(),u=person();b.al_king.init(p);game.roundNumber=2;assert.equal(b.al_river.filter({},p),false);game.roundNumber=3;assert.equal(b.al_river.filter({},p),true);game.filterPlayer=fn=>{const list=[p,t,u].filter(fn);list.sortBySeat=()=>list;return list;};await b.al_river.content({}, {},p);assert.equal(p.countMark('al_blood'),0);assert.equal(t.hits,1);assert.equal(u.hits,1);assert.equal(b.al_river.filter({},p),false);assert.equal(b.al_king.filter({num:0},p),false);assert.equal(p.expiry.player,'phaseAfter');
+ assert.equal(b.al_river.subSkill.turn.mod.cardUsable({name:'sha'},p,1),3);assert.equal(b.al_river.subSkill.turn.mod.targetInRange({name:'sha'}),true);assert.equal(b.al_river.subSkill.turn.mod.targetInRange({name:'juedou'}),undefined);
  p.addMark('al_blood',5);assert.equal(b.al_king.subSkill.seal.filter({markName:'al_blood'},p),true);await b.al_king.subSkill.seal.content({}, {},p);assert.equal(p.countMark('al_blood'),0);
+});
+test('last stand prevents a lethal hit once, honors armor and cannot restore blood after river',async()=>{
+ for(const released of [false,true]) {const {p,b}=bloodFixture();p.hp=1;p.hujia=1;p.storage.al_released=released;const hit={num:1,cancel(){this.canceled=true;}};assert.equal(b.al_king.subSkill.last_stand.filter(hit,p),false);hit.num=2;assert.equal(b.al_king.subSkill.last_stand.filter(hit,p),true);await b.al_king.subSkill.last_stand.content({},hit,p);assert.ok(hit.canceled);assert.equal(p.countMark('al_blood'),released?0:1);assert.equal(b.al_king.subSkill.last_stand.filter(hit,p),false);}
+});
+test('Night Banquet dynamically blocks all tricks for armorless others, including converted and delayed tricks',()=>{
+ const {p,b}=bloodFixture(),t=person();p.skills.add('al_night');game.players=[p,t];p.getVEquip=t.getVEquip=()=>null;
+ const enabled=b.al_night.subSkill.lock.mod.cardEnabled;
+ for(const type of ['trick','delay']) {assert.equal(enabled({type},t),false);assert.equal(enabled({type},p),undefined);}
+ assert.equal(enabled({type:'basic'},t),undefined);assert.equal(enabled({type:'equip'},t),undefined);
+ t.getVEquip=()=>({});assert.equal(enabled({type:'trick'},t),undefined);t.getVEquip=()=>null;assert.equal(enabled({type:'trick'},t),false);
+ p.skills.delete('al_night');assert.equal(enabled({type:'trick'},t),undefined);
 });
