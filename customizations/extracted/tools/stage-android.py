@@ -4,8 +4,11 @@ import json, re, shutil, hashlib
 root = Path(__file__).resolve().parents[1]
 source = root / 'game/resources/app'
 target = root / 'android/build/assets/game'
+# Recreate only the generated staging directory, never runtime sources.
+assert target.resolve() == (root / 'android/build/assets/game').resolve()
+if target.exists(): shutil.rmtree(target)
 target.mkdir(parents=True, exist_ok=True)
-characters = {'ac_yumeko','ac_kaito','ac_chatgpt','mc_netherite','boss_alucard','boss_mt_roxy','ac_yuu','mc_dream','th_mokou',
+characters = {'ai_doubao','ai_deepseek','ai_claude','ai_grok','ac_yumeko','ac_kaito','ac_chatgpt','mc_netherite','boss_alucard','boss_mt_roxy','ac_yuu','mc_dream','th_mokou',
  'mt_rudeus','mt_roxy','mt_sylphie','mt_eris','mt_orsted','mt_ruijerd','mt_paul','mt_ghislaine','caocao'}
 count = size = 0
 for file in source.rglob('*'):
@@ -26,7 +29,7 @@ html,n=re.subn(r'<script type="module">.*?</script>', '', html, count=1, flags=r
 assert n in (0,1), 'Unexpected JIT bootstrap count'
 (target/'index.html').write_text(html,encoding='utf-8')
 manifest={}
-for rel in ['character/mushoku.js','character/minecraft.js','noname/init/mushoku-alucard.js','noname/init/mushoku-online.js','game/config.json']:
+for rel in ['character/mushoku.js','character/minecraft.js','character/ai.js','noname/init/mushoku-rosters.js','noname/init/mushoku-characters.js','LICENSE',*[f'image/character/{name}.jpg' for name in ['ac_chatgpt','ai_doubao','ai_deepseek','ai_claude','ai_grok']],'noname/init/mushoku-alucard.js','noname/init/mushoku-online.js','game/config.json']:
     manifest[rel]=hashlib.sha256((target/rel).read_bytes()).hexdigest()
 (root/'android/build/runtime-manifest.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
 print(json.dumps({'files':count,'bytes':size,'target':str(target)},ensure_ascii=False),flush=True)
