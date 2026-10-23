@@ -1,7 +1,7 @@
-// game/resources/app/src/character/modern/index.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/modern/index.js
 import { game as game4 } from "noname";
 
-// game/resources/app/src/noname/init/mushoku-characters.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/noname/init/mushoku-characters.js
 var characters = {
   ac_hulk: { sex: "male", group: "yi", hp: 5, maxHp: 5, skills: ["ac_rageburst", "ac_gammasteal"], img: "image/character/ac_hulk.jpg" },
   ac_gojo: { sex: "male", group: "huan", hp: 4, maxHp: 4, skills: ["ac_fuki", "ac_jiaozi"], img: "image/character/ac_gojo.jpg" },
@@ -46,7 +46,7 @@ var characters = {
 for (const [id, character] of Object.entries(characters)) character.img ??= `image/character/${id}.${id.startsWith("ac_") || id.startsWith("mc_") ? "svg" : "jpg"}`;
 var mushoku_characters_default = characters;
 
-// game/resources/app/src/noname/init/mushoku-rosters.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/noname/init/mushoku-rosters.js
 var westernCharacterIds = Object.freeze(["ac_hulk", "ac_joker", "ac_spiderman", "ac_wonderwoman", "ac_batman", "ac_captain", "ac_vader"]);
 var modernCharacterIds = Object.freeze(["ac_fighter", "ac_tank", "ac_santa"]);
 var characterGroups = Object.freeze(["huan", "xu", "wang", "qi", "yi"]);
@@ -98,13 +98,13 @@ var labels = {
 var characterTitles = Object.fromEntries(Object.entries(labels).map(([id, values]) => [id, values.map(([text, color]) => badge(text, color)).join(" ")]));
 var titlesForPack = (pack) => Object.fromEntries(Object.entries(characterTitles).filter(([id]) => packForCharacter(id) === pack));
 
-// game/resources/app/src/character/modern/character.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/modern/character.js
 var character_default = Object.fromEntries(Object.entries(mushoku_characters_default).filter(([id]) => packForCharacter(id) === "modern"));
 
-// game/resources/app/src/character/mushoku/skill.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/mushoku/skill.js
 import { lib as lib2, game as game2, get as get2, _status as _status2 } from "noname";
 
-// game/resources/app/src/character/mushoku/sixteen.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/mushoku/sixteen.js
 import { lib, game, get, ui, _status } from "noname";
 var other = (card, player, target) => target !== player;
 var remoteChoice = (source) => get.infoFuncOL("_noname_func:" + source);
@@ -676,7 +676,7 @@ var sixteen_default = {
   }
 };
 
-// game/resources/app/src/character/mushoku/skill.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/mushoku/skill.js
 var attack = (event) => event.card?.name === "sha";
 var level = (player) => Math.min(4, player.countMark("mt_study"));
 var remoteChoice2 = (source) => get2.infoFuncOL("_noname_func:" + source);
@@ -1011,7 +1011,7 @@ var skills = {
 };
 var skill_default = skills;
 
-// game/resources/app/src/character/mushoku/translate.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/mushoku/translate.js
 var translate_default = {
   ac_hulk: "\u7EFF\u5DE8\u4EBA\u6D69\u514B",
   ac_rageburst: "\u6012\u610F\u7206\u53D1",
@@ -1179,7 +1179,7 @@ var translate_default = {
   mt_ghislaine_guard_info: "\u6BCF\u56DE\u5408\u9650\u4E00\u6B21\uFF0C\u5F53\u4F60\u53D7\u5230\u4F24\u5BB3\u65F6\uFF0C\u4F60\u53EF\u4EE5\u9632\u6B62\u6B64\u4F24\u5BB3\uFF0C\u7136\u540E\u5931\u53BB1\u70B9\u4F53\u529B\uFF0C\u5E76\u6478\u4E24\u5F20\u724C\u3002"
 };
 
-// game/resources/app/src/character/mushoku/expansion.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/mushoku/expansion.js
 import { lib as lib3, game as game3, get as get3, ui as ui2, _status as _status3 } from "noname";
 var foreignSkillEffect = (event, player) => {
   let parent = event;
@@ -1645,7 +1645,7 @@ var expansion_default = {
   } }
 };
 
-// game/resources/app/src/character/mushoku/expansion-translate.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/mushoku/expansion-translate.js
 var expansion_translate_default = {
   ac_yumeko: "\u86C7\u55B0\u68A6\u5B50",
   ac_yumeko_ab: "\u68A6\u5B50",
@@ -1709,7 +1709,7 @@ var expansion_translate_default = {
   ac_immunity_info: "\u9501\u5B9A\u6280\uFF0C\u4F60\u514D\u75AB\u5176\u4ED6\u89D2\u8272\u6280\u80FD\u76F4\u63A5\u9020\u6210\u7684\u975E\u96F7\u5C5E\u6027\u4F24\u5BB3\u3001\u4F53\u529B\u6D41\u5931\u548C\u4F53\u529B\u4E0A\u9650\u51CF\u5C11\uFF1B\u4F60\u4E0D\u514D\u75AB\u96F7\u5C5E\u6027\u4F24\u5BB3\uFF08\u724C\u7684\u6548\u679C\u6B63\u5E38\u7ED3\u7B97\uFF09\u3002"
 };
 
-// game/resources/app/src/character/mushoku/intro.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/mushoku/intro.js
 var intro_default = {
   ac_vader: "\u300A\u661F\u7403\u5927\u6218\u300B\u4E2D\u7684\u897F\u65AF\u4EBA\u7269\uFF0C\u4EE5\u539F\u529B\u4E0E\u538B\u8FEB\u611F\u8457\u79F0\u3002\u672C\u7A3F\u901A\u8FC7\u6682\u65F6\u6263\u7F6E\u76EE\u6807\u7684\u724C\u5E76\u5BF9\u8D44\u6E90\u5F31\u52BF\u8005\u589E\u4F24\u3002",
   ac_mustang: "\u300A\u94A2\u4E4B\u70BC\u91D1\u672F\u5E08\u300B\u4E2D\u7684\u7130\u4E4B\u70BC\u91D1\u672F\u5E08\u3002\u672C\u7A3F\u4EE5\u4F24\u5BB3\u79EF\u7D2F\u8D44\u6E90\uFF0C\u518D\u8FDB\u884C\u6218\u672F\u63A7\u5236\u4E0E\u706B\u7130\u7206\u53D1\u3002",
@@ -1744,7 +1744,7 @@ var intro_default = {
   mt_ghislaine: "\u57FA\u5217\u5974\xB7\u6CF0\u5FB7\u8DEF\u8FEA\u4E9A\u3002\u517D\u65CF\u5251\u738B\u3002\u6388\u5251\u901A\u8FC7\u5251\u610F\u652F\u63F4\u5176\u4ED6\u89D2\u8272\u7684\u4E0B\u4E00\u56DE\u5408\u9996\u5F20\u6740\uFF1B\u5B88\u62A4\u5C06\u4F24\u5BB3\u6539\u4E3A\u5931\u53BB\u4F53\u529B\u5E76\u8865\u5145\u624B\u724C\uFF0C\u964D\u4F4E\u4F53\u529B\u53EF\u914D\u5408\u5251\u738B\u7684\u89E6\u53D1\u6761\u4EF6\u3002"
 };
 
-// game/resources/app/src/character/modern/index.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/modern/index.js
 var ids = Object.keys(character_default);
 var skillIds = ids.flatMap((id) => character_default[id].skills);
 var skills2 = { ...skill_default, ...expansion_default };

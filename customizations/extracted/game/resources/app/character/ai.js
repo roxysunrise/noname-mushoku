@@ -1,7 +1,7 @@
-// game/resources/app/src/character/ai/index.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/ai/index.js
 import { game as game3 } from "noname";
 
-// game/resources/app/src/noname/init/mushoku-characters.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/noname/init/mushoku-characters.js
 var characters = {
   ac_hulk: { sex: "male", group: "yi", hp: 5, maxHp: 5, skills: ["ac_rageburst", "ac_gammasteal"], img: "image/character/ac_hulk.jpg" },
   ac_gojo: { sex: "male", group: "huan", hp: 4, maxHp: 4, skills: ["ac_fuki", "ac_jiaozi"], img: "image/character/ac_gojo.jpg" },
@@ -46,7 +46,7 @@ var characters = {
 for (const [id, character] of Object.entries(characters)) character.img ??= `image/character/${id}.${id.startsWith("ac_") || id.startsWith("mc_") ? "svg" : "jpg"}`;
 var mushoku_characters_default = characters;
 
-// game/resources/app/src/noname/init/mushoku-rosters.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/noname/init/mushoku-rosters.js
 var westernCharacterIds = Object.freeze(["ac_hulk", "ac_joker", "ac_spiderman", "ac_wonderwoman", "ac_batman", "ac_captain", "ac_vader"]);
 var modernCharacterIds = Object.freeze(["ac_fighter", "ac_tank", "ac_santa"]);
 var characterGroups = Object.freeze(["huan", "xu", "wang", "qi", "yi"]);
@@ -98,13 +98,13 @@ var labels = {
 var characterTitles = Object.fromEntries(Object.entries(labels).map(([id, values]) => [id, values.map(([text, color]) => badge(text, color)).join(" ")]));
 var titlesForPack = (pack) => Object.fromEntries(Object.entries(characterTitles).filter(([id]) => packForCharacter(id) === pack));
 
-// game/resources/app/src/character/ai/character.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/ai/character.js
 var character_default = Object.fromEntries(Object.entries(mushoku_characters_default).filter(([id]) => packForCharacter(id) === "ai"));
 
-// game/resources/app/src/character/ai/skill.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/ai/skill.js
 import { game, get, lib, ui, _status } from "noname";
 
-// game/resources/app/src/character/ai/mechanics.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/ai/mechanics.js
 function createAiSkills(game4, get3, lib3, ui3, status) {
   const remote = (source) => get3.infoFuncOL("_noname_func:" + source);
   const conversion = (card) => ({ basic: "shan", trick: "tao", equip: "sha" })[get3.type2(card)];
@@ -337,10 +337,10 @@ function createAiSkills(game4, get3, lib3, ui3, status) {
   };
 }
 
-// game/resources/app/src/character/ai/skill.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/ai/skill.js
 var skill_default = createAiSkills(game, get, lib, ui, _status);
 
-// game/resources/app/src/character/ai/translate.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/ai/translate.js
 var translate_default = {
   ac_chatgpt: "ChatGPT",
   ac_chatgpt_ab: "GPT",
@@ -371,7 +371,7 @@ var translate_default = {
   ai_zhiyan_info: "\u6BCF\u56DE\u5408\u9650\u4E00\u6B21\uFF0C\u5F53\u4F60\u5BF9\u5176\u4ED6\u89D2\u8272\u4F7F\u7528\u6740\u6307\u5B9A\u76EE\u6807\u540E\uFF0C\u4F60\u53EF\u4EE5\u5C55\u793A\u4E00\u5F20\u6709\u989C\u8272\u7684\u624B\u724C\uFF0C\u4EE4\u5176\u9009\u62E9\uFF1A\u5C55\u793A\u5E76\u5F03\u7F6E\u4E00\u5F20\u540C\u989C\u8272\u624B\u724C\uFF1B\u6216\u4EE4\u6B64\u6740\u5BF9\u5176\u9020\u6210\u7684\u4F24\u5BB3+1\u3002"
 };
 
-// game/resources/app/src/character/mushoku/expansion.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/mushoku/expansion.js
 import { lib as lib2, game as game2, get as get2, ui as ui2, _status as _status2 } from "noname";
 var foreignSkillEffect = (event, player) => {
   let parent = event;
@@ -837,7 +837,7 @@ var expansion_default = {
   } }
 };
 
-// game/resources/app/src/character/ai/index.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/ai/index.js
 game3.import("character", () => ({
   name: "ai",
   connect: true,

@@ -1,7 +1,7 @@
-// game/resources/app/src/character/minecraft/index.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/minecraft/index.js
 import { game as game3 } from "noname";
 
-// game/resources/app/src/noname/init/mushoku-characters.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/noname/init/mushoku-characters.js
 var characters = {
   ac_hulk: { sex: "male", group: "yi", hp: 5, maxHp: 5, skills: ["ac_rageburst", "ac_gammasteal"], img: "image/character/ac_hulk.jpg" },
   ac_gojo: { sex: "male", group: "huan", hp: 4, maxHp: 4, skills: ["ac_fuki", "ac_jiaozi"], img: "image/character/ac_gojo.jpg" },
@@ -46,10 +46,10 @@ var characters = {
 for (const [id, character] of Object.entries(characters)) character.img ??= `image/character/${id}.${id.startsWith("ac_") || id.startsWith("mc_") ? "svg" : "jpg"}`;
 var mushoku_characters_default = characters;
 
-// game/resources/app/src/character/minecraft/character.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/minecraft/character.js
 var character_default = Object.fromEntries(Object.entries(mushoku_characters_default).filter(([id]) => id.startsWith("mc_")));
 
-// game/resources/app/src/character/minecraft/skill.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/minecraft/skill.js
 import { game, get } from "noname";
 var remoteChoice = (source) => get.infoFuncOL("_noname_func:" + source);
 var skill_default = {
@@ -119,7 +119,7 @@ var skill_default = {
   }
 };
 
-// game/resources/app/src/character/minecraft/translate.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/minecraft/translate.js
 var translate_default = {
   minecraft: "Minecraft",
   mc_dream: "Dream",
@@ -131,7 +131,7 @@ var translate_default = {
   mc_xianyi_info: "\u9501\u5B9A\u6280\uFF0C\u5F53\u4F60\u4E00\u6B21\u6027\u6D88\u8017\u7684\u84C4\u529B\u70B9\u4E0D\u5C0F\u4E8E4/6/8\u65F6\uFF0C\u4F60\u4ECE\u5F03\u724C\u5806\u4E2D\u5206\u522B\u83B7\u5F97\u4E00\u5F20\u3010\u65E0\u4E2D\u751F\u6709\u3011/\u3010\u65E0\u61C8\u53EF\u51FB\u3011/\u3010\u4E94\u8C37\u4E30\u767B\u3011\uFF08\u8FBE\u5230\u66F4\u9AD8\u95E8\u69DB\u65F6\u7D2F\u8BA1\u83B7\u5F97\uFF1B\u7F3A\u5C11\u7684\u724C\u8DF3\u8FC7\uFF09\u3002"
 };
 
-// game/resources/app/src/character/mushoku/expansion.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/mushoku/expansion.js
 import { lib, game as game2, get as get2, ui, _status } from "noname";
 var foreignSkillEffect = (event, player) => {
   let parent = event;
@@ -597,7 +597,7 @@ var expansion_default = {
   } }
 };
 
-// game/resources/app/src/character/mushoku/expansion-translate.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/mushoku/expansion-translate.js
 var expansion_translate_default = {
   ac_yumeko: "\u86C7\u55B0\u68A6\u5B50",
   ac_yumeko_ab: "\u68A6\u5B50",
@@ -661,7 +661,7 @@ var expansion_translate_default = {
   ac_immunity_info: "\u9501\u5B9A\u6280\uFF0C\u4F60\u514D\u75AB\u5176\u4ED6\u89D2\u8272\u6280\u80FD\u76F4\u63A5\u9020\u6210\u7684\u975E\u96F7\u5C5E\u6027\u4F24\u5BB3\u3001\u4F53\u529B\u6D41\u5931\u548C\u4F53\u529B\u4E0A\u9650\u51CF\u5C11\uFF1B\u4F60\u4E0D\u514D\u75AB\u96F7\u5C5E\u6027\u4F24\u5BB3\uFF08\u724C\u7684\u6548\u679C\u6B63\u5E38\u7ED3\u7B97\uFF09\u3002"
 };
 
-// game/resources/app/src/noname/init/mushoku-rosters.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/noname/init/mushoku-rosters.js
 var westernCharacterIds = Object.freeze(["ac_hulk", "ac_joker", "ac_spiderman", "ac_wonderwoman", "ac_batman", "ac_captain", "ac_vader"]);
 var modernCharacterIds = Object.freeze(["ac_fighter", "ac_tank", "ac_santa"]);
 var characterGroups = Object.freeze(["huan", "xu", "wang", "qi", "yi"]);
@@ -713,7 +713,7 @@ var labels = {
 var characterTitles = Object.fromEntries(Object.entries(labels).map(([id, values]) => [id, values.map(([text, color]) => badge(text, color)).join(" ")]));
 var titlesForPack = (pack) => Object.fromEntries(Object.entries(characterTitles).filter(([id]) => packForCharacter(id) === pack));
 
-// game/resources/app/src/character/minecraft/index.js
+// output/github-full-2026.10.23.1/无名杀/game/resources/app/src/character/minecraft/index.js
 game3.import("character", () => ({
   name: "minecraft",
   connect: true,
