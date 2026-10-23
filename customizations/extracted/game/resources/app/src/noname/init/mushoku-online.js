@@ -9,7 +9,7 @@ export function roomError(lib, config = lib.configOL) {
   if (config.mode === "doudizhu" && (config.doudizhu_mode || "normal") !== "normal") return "斗地主联机仅支持休闲玩法。";
   if (config.mode === "versus" && !["1v1", "2v2"].includes(config.versus_mode || "2v2")) return "对决联机支持1对1和2对2。";
   if (config.team_mode && !["random", "free"].includes(config.team_mode)) return "请选择随机分配或自由选择阵营。";
-  if (config.mode === "boss" && config.boss_character && !bossCharacters[config.boss_character]) return "请选择本版已注册的Boss。";
+  if (config.mode === "boss" && config.boss_character && config.boss_character !== "random" && !bossCharacters[config.boss_character]) return "请选择本版已注册的Boss，或选择随机Boss。";
   const number = roomSeats(config);
   if (!Number.isInteger(number) || number < 2 || number > 8) return "房间人数须为2至8人（含AI）。";
   if (config.double_character) return "当前联机仅支持单将，确保角色不重复。";
@@ -44,7 +44,7 @@ export function installMushokuOnline(lib, game, ui, get, status) {
     if (error) throw new Error(error);
     lib.configOL.number = roomSeats(lib.configOL);
     if (lib.configOL.mode !== "identity") lib.configOL.player_number = lib.configOL.number;
-    if (lib.configOL.mode === "boss") lib.configOL.boss_character ||= "boss_mt_roxy";
+    if (lib.configOL.mode === "boss") lib.configOL.boss_character ||= "random";
     lib.configOL.characterPack = (lib.configOL.characterPack || characterPacks).filter(p => characterPacks.includes(p));
     lib.configOL.mushokuAiRoom = true;
     return createServer.apply(this, args);
@@ -53,7 +53,10 @@ export function installMushokuOnline(lib, game, ui, get, status) {
   const labelAiSeats = () => {
     if (lib.configOL.mushokuAiRoom) {
       const seats = game.connectPlayers || [];
-      for (const seat of seats) if (!seat.playerid && !seat.classList?.contains("unselectable2")) seat.node.nameol.textContent = "AI（玩家加入后替换）";
+			for (const seat of seats) if (!seat.playerid && !seat.classList?.contains("unselectable2")) {
+				seat.node.nameol.textContent = "AI（玩家加入后替换）";
+				seat.updateOnlineInfo?.();
+			}
     }
   };
   ui.create.connectPlayers = function (...args) {

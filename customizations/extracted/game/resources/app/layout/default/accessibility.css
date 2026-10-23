@@ -1,5 +1,5 @@
 /* Fixed overlays are appended to documentElement, outside the scaled body. */
-.accessibility-overlay { position: fixed; inset: 0; z-index: 100000; background: rgba(0,0,0,.65); display: flex; align-items: center; justify-content: center; padding: max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left)); box-sizing: border-box; }
+.accessibility-overlay { position: fixed; inset: 0; z-index: 100000; background: rgba(0,0,0,.65); display: flex; align-items: center; justify-content: center; padding: max(12px,var(--device-safe-top,env(safe-area-inset-top))) max(12px,var(--device-safe-right,env(safe-area-inset-right))) max(12px,var(--device-safe-bottom,env(safe-area-inset-bottom))) max(12px,var(--device-safe-left,env(safe-area-inset-left))); box-sizing: border-box; }
 .accessibility-panel { position: relative; width: min(580px,100%); max-height: 90%; overflow: auto; box-sizing: border-box; padding: 18px; background: #202a35; color: #fff; border: 1px solid #9aa6b4; border-radius: 12px; font: 16px/1.5 sans-serif; text-align: left; -webkit-user-select: text; }
 .accessibility-panel h2 { margin: 0 60px 16px 0; font-size: 22px; }
 .accessibility-panel p { margin: 12px 0; color: #d5dfeb; }
@@ -40,3 +40,29 @@
 .intro-close { position:absolute;right:6px;top:4px;z-index:3;padding:4px 8px;min-width:36px;min-height:32px;color:white;background:#354b62;border:1px solid #8c9caf;border-radius:4px;cursor:pointer; }
 #nodeintro:has(.intro-close) > .content-container { top:34px; height:calc(100% - 34px); }
 .popup-container > .menu { max-width: calc(100% - 20px); overflow-y: auto; overscroll-behavior: contain; }
+/* Paint the entire display; reserve cutout space for controls, not the background. */
+:root[data-mobile-game=true] #system {
+  box-sizing: border-box;
+  left: var(--game-safe-left, env(safe-area-inset-left, 0px));
+  width: calc(100% - var(--game-safe-left, 0px) - var(--game-safe-right, 0px));
+}
+:root[data-mobile-game=true] #bosslist {
+  top: max(20px, var(--game-safe-top, 0px));
+  height: calc(var(--mobile-height, 100vh) * .36);
+  left: var(--game-safe-left, 0px);
+  width: calc(100% - var(--game-safe-left, 0px) - var(--game-safe-right, 0px));
+}
+:root[data-mobile-game=true] #bosslist > .player { zoom: var(--mobile-boss-scale, .7); }
+:root[data-mobile-game=true] .dialog.bosscharacter {
+  top: calc(max(20px, var(--game-safe-top, 0px)) + var(--mobile-height, 100vh) * .36) !important;
+  bottom: calc(64px + var(--game-safe-bottom, 0px)) !important;
+  height: auto !important;
+  left: max(5%, var(--game-safe-left, 0px)) !important;
+  width: calc(90% - var(--game-safe-right, 0px)) !important;
+}
+:root[data-mobile-game=true] .dialog.bosscharacter > .content-container {
+  top: 0; height: 100%; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y;
+}
+:root[data-mobile-game=true] #control.bosslist {
+  top: auto !important; bottom: calc(8px + var(--game-safe-bottom, 0px));
+}

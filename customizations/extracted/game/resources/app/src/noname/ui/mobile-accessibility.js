@@ -4,6 +4,7 @@ import { packForCharacter } from "../init/mushoku-rosters.js";
 /** Touch-friendly preferences; deliberately independent of game/event state. */
 export function installMobileAccessibility({ lib, game, ui, get }) {
 	if (ui.openDisplaySettings) return;
+	const root = document.documentElement;
 	const sheet = document.createElement("link");
 	sheet.rel = "stylesheet";
 	sheet.href = `${lib.assetURL || ""}layout/default/accessibility.css`;
@@ -18,10 +19,10 @@ export function installMobileAccessibility({ lib, game, ui, get }) {
 		for (const callback of lib.onresize || []) if (typeof callback === "function") callback();
 	};
 	const apply = () => {
-		document.documentElement.style.setProperty("--character-size", valid(lib.config.character_size) / 100);
-		document.documentElement.dataset.compactCharacters = valid(lib.config.character_size) !== 100 ? "true" : "false";
-		document.documentElement.style.setProperty("--handcard-size", valid(lib.config.handcard_size) / 100);
-		document.documentElement.dataset.compactHandcards = valid(lib.config.handcard_size) !== 100 ? "true" : "false";
+		root.style.setProperty("--character-size", valid(lib.config.character_size) / 100);
+		root.dataset.compactCharacters = valid(lib.config.character_size) !== 100 ? "true" : "false";
+		root.style.setProperty("--handcard-size", valid(lib.config.handcard_size) / 100);
+		root.dataset.compactHandcards = valid(lib.config.handcard_size) !== 100 ? "true" : "false";
 	};
 	apply();
 	let activePanel;

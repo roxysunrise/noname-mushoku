@@ -1,64 +1,63 @@
-# 无名杀定制版覆盖层
+# 无名杀定制版：当前完整项目
 
-## 联机追加更新（2026-10-21）
+整理日期：2026-10-21（Asia/Shanghai）。
 
-标准身份、休闲斗地主、2v2、Boss 联机均支持随机分配或自由选择阵营，新增两人单将 1v1。自由选择超额时随机抽签，身份局保留隐藏身份；Boss 允许房主或访客担任，AI Boss 也可被中途加入玩家接管。联机头像改为角色卡片点选，支持分类和名称筛选，无需输入 ID。当前协议为 **27112101**，所有客户端须使用相同新版资源。85 项规则测试及本机真实双客户端测试通过；未重新打包，也未进行手机实机或公网验证。详情见[本轮说明](docs/online-teams-duel-20261021.md)。
+## 启动
 
-## 当前更新（2026-10-21）
+双击本目录的 `启动无名杀.cmd`，或运行 `game/noname.exe`。
+`game` 是唯一维护的完整 Windows 运行目录，包含 EXE、Electron 依赖、引擎、角色、图片、音效及源码。复制给朋友时请复制整个 `game` 文件夹，不能只复制 EXE。
 
-本轮更新音洄/豪赌真人联机选择、艾莉丝低血决意、手机显示设置和Android安全区/图标；新增独立AI分组及五张正式头像、彩色多称号，联机支持斗地主、2v2和独立3v1 Boss。普通角色19名，当前协议27111730。所有客户端应使用同版资源。GPT保留原推演，四名新AI使用审核后八技能，详见[技能说明](docs/ai-skills-20261021.md)。
+## 目录
 
-审核稿实装后76项规则测试及本机双客户端检查通过，覆盖推理远端选择、程序同步、洞察私密选择、伴行和验算实际手牌触发与缩放后鼠标选牌。Android Java和图标资源编译此前已通过；按用户最新要求制作20261021版Windows便携ZIP和Android APK，成品与仅本地过程报告放在 D:/无名杀；未进行真机或跨设备实战验证。详细边界与复现见 [更新说明](docs/update-20261021.md)。生成原图、提示词和社区来源见 `assets/ai-roster-20261021/`。按用户最终要求单AI分批实施。
+- `game/`：当前完整 Windows 游戏，所有后续游戏修改都在这里进行。
+- `game/resources/app/src/`：游戏源码及角色源码。
+- `game/resources/app/character/`、`noname/`：运行时使用的构建产物。
+- `game/resources/app/image/`：游戏实际使用的图片。
+- `output/imagegen/`：保留的原创素材、生成原图及提示词；本次扩展角色的原图与提示词位于其 `roster-expansion/` 子目录。
+- `tools/`、`build-crossover.ps1`：构建和验证工具；Node/Python 仅在开发和重新打包时需要。
+- `*.test.mjs`：角色、Boss、联机和扩展规则检查。
+- `android/`：Android 端源码及本地签名资料；生成的旧 APK 和重复构建目录移至历史归档。
+- `docs/`：整理清单和项目说明。
 
-应用覆盖层仍使用本文下方的 `apply.ps1`，先运行 `-CheckOnly`。覆盖层依赖完整解压版，不能独立启动。
+## 跨平台交付约定
 
-以下为2026-10-20的历史交付记录，角色数量、联机限制和安装包结论不代表当前源码状态。
+后续新增玩法、界面、资源和更新能力均按 Windows 电脑端与 Android 手机端同步规划。实现时分别接入两端入口和构建流程，保持规则、版本信息和玩家可见功能一致；若某项能力受平台限制暂不能同步，必须在交付说明中明确列出差异，不把仅完成电脑端称为完整交付。
 
-## 历史完整性报告（2026-10-20）
+不要移除运行目录内的 `node_modules`，其中含运行必需的 WebSocket 依赖。
 
-本目录是实际解压版 `game/resources/app` 的更新覆盖层。仓库 `apps/core` 为较旧引擎，未用本次覆盖层替换其历史。
+## 联机
 
-## 已完成
+房主：联机 → 启动服务器 → 标准身份，保持游戏及 Sakura 的「1111」隧道运行。
 
-- 普通角色池15人；新增蛇喰梦子、怪盗基德、ChatGPT、下界合金剑，按用户提供的技能实现。
-- Boss洛琪希与阿卡多，挑战模式为1名Boss对3名挑战者。阿卡多开局2嗜血，每次自己的准备阶段恢复；死河零式后永久不能获得嗜血。
-- Dream 4/4削弱方案；洛琪希水灵消耗2魔力、回复1体力并摸1牌。
-- 新增五张正式API位图头像，保留原图与提示词于 assets/roster-expansion；Boss头像兼容挑战模式路径。
-- 移除背景音乐并关闭播放入口，电脑端保留卡牌音效和人物语音。手机精简包不含原版人物技能/阵亡语音。
-- Windows便携ZIP与Android APK使用相同定制技能、角色池与协议27111727。
+朋友在同版游戏中完整填写：
 
-## Sakura联机
-
-房主在电脑上进入联机，启动服务器，建立标准身份房间。Sakura必须使用TCP隧道：
-
-`frp-use.com:50723 → 127.0.0.1:8080`
-
-手机与电脑加入者均填写 `frp-use.com:50723`。旧安装的保存地址可能覆盖新默认值，请手动修改。房主保持游戏及Sakura运行；人数不足由AI补位。
-
-目前只支持标准身份、单将、2至8个总席位；Boss挑战为单机，不包含Boss多人联机。
-
-## 本次实际验证
-
-- `node --test crossover.test.mjs online-room.test.mjs boss-roxy.test.mjs expansion.test.mjs`：56项全部通过。
-- Electron全新配置目录：房主和3AI开局；第二客户端接替AI，角色/体力/手牌ID一致；断线和重新连接均通过。复用被其他测试进程占用的配置目录曾导致空白，测试脚本改用临时独立目录。
-- 浏览器实际进入阿卡多挑战；五张头像可解码；非杀免疫、体力流失免疫、嗜血抵消和属性杀经过运行时检查。
-- Windows ZIP：16030项，CRC完整性及关键运行文件内容校验通过。
-- APK：签名v2/v3、zipalign、ZIP CRC及资源路径校验通过；包名com.roxysunrise.noname，Android8以上。
-- APK资源在浏览器可进入游戏，但没有Android手机或模拟器实测，安装、WebView启动及跨设备联机仍待验证。
-- 房主8080监听时，公网 `ws://frp-use.com:50723` 握手返回HTTP501。尚未验证公网隧道可用；需核对TCP类型、映射地址、端口及Sakura在线状态。
-- 未进行完整多人对局和所有技能交互的人工平衡测试。
-
-## 应用覆盖层
-
-退出游戏，PowerShell执行：
-
-```powershell
-./apply.ps1 -AppRoot 'D:/Codex/Project/肉鸽/无名杀/game/resources/app' -CheckOnly
-./apply.ps1 -AppRoot 'D:/Codex/Project/肉鸽/无名杀/game/resources/app'
+```text
+wss://www.r49rldyry.nyat.app:35683
 ```
 
-脚本核对加载入口和SHA256，备份既有文件后复制。该补丁依赖原解压版的引擎及其他资源，不能独立启动。
+该地址已完成可信证书校验、WebSocket 握手及无名杀 `opened` 响应验证；尚不能据此认定朋友设备已成功入房或完整多人对局已验证。
 
-## 构建
+Sakura 配置保存在房主电脑上，不随本项目复制，不包含账户密钥、证书私钥或访问令牌。
 
-`build-crossover.ps1`重建角色包。`tools/build-android.ps1`需要JDK17、Python、Android35平台和构建工具，SDK位于项目父目录 `.android-tools/android-35` 和 `.android-tools/android-15`；临时使用N/O盘映射。签名密钥保留本地，不提交Git。`tools/package-online.py`构建Windows完整便携ZIP。仓库不保存依赖、完整游戏资源或安装包；安装包单独交付。
+## 开发检查
+
+在本目录运行：
+
+```powershell
+./build-crossover.ps1
+node --test crossover.test.mjs online-room.test.mjs boss-roxy.test.mjs expansion.test.mjs online-modes.test.mjs online-skill-callbacks.test.mjs ai-characters.test.mjs
+```
+
+历史版本、旧压缩包、预览截图及临时测试目录移至项目外历史归档，确切路径见 `docs/整理记录.json`。不再维护多份运行目录。
+
+## 2026-10-21 更新
+
+普通角色共19名，分为二次元、Minecraft、AI；AI 包含 GPT、豆包、DeepSeek、Claude、Grok。新头像原图、提示词及来源记录见 `output/imagegen/ai-roster-20261021/`。
+
+AI技能已按审核稿修订：GPT保留最初的【推演】，豆包为【巧答】【伴行】，DeepSeek为【推理】【验算】，Claude为【编译】【调试】，Grok为【洞察】【直言】。完整规则见 `docs/ai-skills-20261021.md`。联机协议为27111730，所有客户端需一起更新并重启。
+
+顶部「显示」可调整整体缩放、武将与手牌尺寸，提供手机紧凑预设、背景选取和昵称编辑。整体缩放需在10秒内确认，否则自动回退。
+
+联机支持标准身份、斗地主、2v2 对决和独立的3v1 Boss挑战。固定席位、AI补位和断线接管沿用同一规则；Boss席位始终由AI控制。具体见 `game/resources/app/docs/online-ai-room.md`。
+
+本批次按用户最新要求制作 Windows 便携ZIP和 Android APK，交付位置为 `D:/无名杀`。Android横屏、安全区和图标已纳入构建，但真机安装与交互仍待验证；Windows已有进程需在当前对局结束后重启以加载新代码。

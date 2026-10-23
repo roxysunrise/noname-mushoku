@@ -20,20 +20,14 @@ test('each registered boss inherits three-card draw and plus-two hand limit', as
  assert.equal(bonus.num, 5);
 });
 
-test('Alucard starts 3/3 and draws with max HP, preserving bonuses and fixed counts', async () => {
- assert.equal(bossCharacters.boss_alucard.hp, 3);
- assert.equal(bossCharacters.boss_alucard.maxHp, 3);
+test('Alucard Boss v6 starts 6/6 and uses the shared Leader supply exactly once', async () => {
+ assert.equal(bossCharacters.boss_alucard.hp, 6);
+ assert.equal(bossCharacters.boss_alucard.maxHp, 6);
  const skills = createBossSkills({}, {});
- const extra = skills.al_king.subSkill.supply;
- for (const maxHp of [1, 3, 4, 5]) {
-  const p = { hp: 1, maxHp };
-  const draw = { num: 2 };
-  await skills.mt_boss_supply.content({}, draw);
-  if (extra.filter(draw, p)) await extra.content({}, draw, p);
-  assert.equal(draw.num, Math.max(3, maxHp));
-  assert.equal(extra.filter({ numFixed: true }, p), false);
- }
- const draw = { num: 4 };
- await extra.content({}, draw, { maxHp: 5 });
- assert.equal(draw.num, 6);
+ assert.ok(bossCharacters.boss_alucard.skills.includes('mt_boss_supply'));
+ assert.equal(skills.al_life.subSkill.supply, undefined);
+ const draw = { num: 1 };
+ await skills.mt_boss_supply.content({}, draw);
+ assert.equal(draw.num, 2);
+ assert.equal(skills.mt_boss_supply.mod.maxHandcard({}, 8), 10);
 });

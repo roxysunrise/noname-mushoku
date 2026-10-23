@@ -1,6 +1,6 @@
 import characters from "./mushoku-characters.js";
 import { characterPacks, packForCharacter } from "./mushoku-rosters.js";
-import { bossCharacters, bossTranslate } from "./mushoku-boss.js";
+import { bossCharacters, bossTranslate, resolveBossCharacter } from "./mushoku-boss.js";
 
 export const onlineModes = ["identity", "doudizhu", "versus", "boss"];
 export function roomSeats(config) {
@@ -71,8 +71,8 @@ export function configureOnlineMenus(lib, game) {
   }
   if (lib.mode.boss) lib.mode.boss.connect = {
     connect_boss_character: {
-      name: "挑战Boss", init: "boss_mt_roxy", frequent: true,
-      item: Object.fromEntries(Object.keys(bossCharacters).map(id => [id, bossTranslate[id]])),
+      name: "挑战Boss", init: "random", frequent: true,
+      item: { random: "随机Boss", ...Object.fromEntries(Object.keys(bossCharacters).map(id => [id, bossTranslate[id]])) },
     },
   };
   for (const name of onlineModes) if (lib.mode[name]?.connect) {
@@ -133,7 +133,7 @@ export function prepareOnlineMode(mode, lib, get, game) {
       for (const p of players) { p.identity = roles[p.playerid]; p.side = p.identity === "zhu"; }
       if (modeName === "boss") {
         boss = players.find(p => p.side);
-        const bossName = lib.configOL.boss_character || "boss_mt_roxy";
+        const bossName = resolveBossCharacter(lib.configOL);
         boss.init(bossName);
         game.boss = game.zhu = boss;
       } else if (modeName === "doudizhu") {

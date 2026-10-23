@@ -1,4 +1,19 @@
-export default {
+export default { ac_hulk:"绿巨人浩克",ac_rageburst:"怒意爆发",ac_rageburst_info:"锁定技，你使用的【杀】需两张【闪】才能抵消；与你进行【决斗】的角色每次需打出两张【杀】。",ac_rageburst_ab:"怒意爆发",ac_gammasteal:"伽马掠夺",ac_gammasteal_info:"当你使用【杀】对一名其他角色造成伤害后，你可获得的其区域里的一张牌。然后若获得的牌不是装备牌，其摸一张牌；若获得的牌是装备牌，则视为你对由其指定的另一名角色使用一张【决斗】。",ac_gammasteal_ab:"伽马掠夺",
+ ac_gojo:"五条悟",ac_fuki:"伏骑",ac_fuki_info:"锁定技，在你使用牌时，某其他角色到你的距离为1，则他不能使用或打出牌响应你使用的牌。",ac_fuki_ab:"伏骑",ac_jiaozi:"骄恣",ac_jiaozi_info:"锁定技，若你的手牌数为全场唯一最多，你造成或受到的伤害值+1。",ac_jiaozi_ab:"骄恣",
+ ac_doraemon:"哆啦A梦",ac_timestore:"时光整理",ac_timestore_info:"出牌阶段结束时，你可以令手牌数不等于体力值的一名角色弃置一张手牌或摸一张牌。然后若其手牌数等于体力值，你摸一张牌，且可以交给该角色一张牌。",ac_timestore_ab:"时光整理",ac_anydoor:"任意门",ac_anydoor_info:"当你成为一张普通锦囊牌的目标时，你可以为此牌增加一个目标或减少一个目标（目标数至少为一）。",ac_anydoor_ab:"任意门",
+ ac_joker:"小丑",ac_chaoslaugh:"混乱狂笑",ac_chaoslaugh_info:"准备阶段，你可以对一名体力不大于你的其他角色造成0-2点随机伤害。",ac_chaoslaugh_ab:"混乱狂笑",ac_crimecycle:"犯罪循环",ac_crimecycle_info:"出牌阶段限一次，当你使用的锦囊牌进入弃牌堆时，你可以减1点体力上限，从弃牌堆获得之。",ac_crimecycle_ab:"犯罪循环",
+ ac_spiderman:"蜘蛛侠",ac_spidersense:"蜘蛛感应",ac_spidersense_info:"每名角色的回合限一次，当你或你攻击范围内的一名角色成为【杀】或延时锦囊牌的目标时，若你不是此牌的使用者，你可以选择一项：1. 弃置此牌使用者的一张手牌；2. 摸一张牌。背水：执行上述所有选项，然后你代替其成为此牌的目标。",ac_spidersense_ab:"蜘蛛感应",
+ ac_wonderwoman:"神奇女侠",ac_lasso:"真言套索",ac_lasso_info:"出牌阶段限一次，你可以选择一名其他角色，令其获得另一名其他角色的一张牌。若其获得的牌不是来自装备区的牌，你摸一张牌。其获得牌后你可以让二者手牌较少的角色摸一张牌。",ac_lasso_ab:"真言套索",ac_amazonlegacy:"亚马逊遗志",ac_amazonlegacy_info:"当你死亡时，你可以令一名其他角色摸三张牌。若如此做，该角色回复1点体力。",ac_amazonlegacy_ab:"亚马逊遗志",
+ ac_ken:"拳四郎",ac_hundredfists:"北斗百裂拳",ac_hundredfists_info:"出牌阶段，你可以选择一项：1. 弃置X+1张牌；2. 流失X+1点体力（X为你本回合已发动“北斗百裂拳”的次数）。若如此做，你视为对一名其他角色使用一张不受次数和距离限制的普通 【杀】。若此【杀】造成伤害，则此技能失效，直到回合结束。",ac_hundredfists_ab:"北斗百裂拳",ac_fateduel:"宿命对决",ac_fateduel_info:"当你使用【杀】指定其他角色为目标时或当你成为其他角色使用的【杀】的目标时，若你与其体力值相等，则你可以摸一张牌。",ac_fateduel_ab:"宿命对决",
+ ac_batman:"蝙蝠侠",ac_nightstalk:"暗夜潜行",ac_nightstalk_info:"若你的手牌数为全场最多，你可以跳过摸牌阶段；若你的体力值为全场最多，你可以跳过出牌阶段；若你的装备区里有牌且数量为全场最多，你可以跳过弃牌阶段。",ac_nightstalk_ab:"暗夜潜行",ac_batprey:"蝙蝠追猎",ac_batprey_info:"回合结束后，你可以对至多X名其他角色各造成1点伤害（X为你本回合跳过的阶段数），若如此做，你从牌堆中随机获得一张装备牌。",ac_batprey_ab:"蝙蝠追猎",
+ ac_santa:"圣诞老人",ac_giftdelivery:"礼物派送",ac_giftdelivery_info:"出牌阶段限一次，你可以将至少两张手牌交给一名其他角色。回合结束时，若其手牌数：为全场最多，你摸一张牌；不为全场最多，你弃置其区域里的一张牌。",ac_giftdelivery_ab:"礼物派送",ac_sijian:"死谏",ac_sijian_info:"每回合限两次，当你失去最后一张手牌后，或者当你进入濒死状态时，你可以选择一项：1.选择一名其他角色，其使用下一张牌后需弃置一张牌。2.令当前回合角色摸两张牌。若此时没有角色处于濒死状态，你可以选择“背水”：执行上述所有选项，然后失去X点体力（X为此前此技能发动过背水的次数，首次为0）。",ac_sijian_ab:"死谏",
+ ac_captain:"美国队长",ac_freedomcommand:"自由号令",ac_freedomcommand_info:"出牌阶段开始时，你可以交给一名其他角色一张牌，然后令其选择是否使用一张非黑色的【杀】，且此【杀】结算结束后你摸X张牌（X为此【杀】造成的伤害值+1且至多为5）；若其不执行，你可以对其或其攻击范围内的一名角色造成1点伤害。",ac_freedomcommand_ab:"自由号令",
+ ac_totoro:"龙猫",ac_forestwatch:"森林守望",ac_forestwatch_info:"回合开始时,你可以选择至多2名角色各摸一张牌并增加一点手牌上限。",ac_forestwatch_ab:"森林守望",
+ ac_light:"夜神月",ac_kirajudgment:"基拉审判",ac_kirajudgment_info:"出牌阶段限一次，你可以弃置任意张手牌并选择一名其他角色，然后令其选择一项：1.弃置等量牌并失去1点体力；2.翻面，然后摸等量的牌。",ac_kirajudgment_ab:"基拉审判",ac_deathnote:"死亡笔记",ac_deathnote_info:"当你受到伤害后，你可以展示一张手牌。若如此做，除非伤害来源弃置与你展示的牌类别不同的一张手牌，否则你回复1点体力。",ac_deathnote_ab:"死亡笔记",
+ ac_kirby:"卡比",ac_copyability:"复制能力",ac_copyability_info:"摸牌阶段开始时，你亮出牌堆顶三张牌，然后你可获得其中点数不大于8的牌，若如此做，你放弃摸牌。若你以此法获得了牌，你可以选择一名其他角色，随机获得其一张牌。",ac_copyability_ab:"复制能力",ac_swallowrecycle:"吞噬回收",ac_swallowrecycle_info:"弃牌阶段结束时，若你于此阶段内弃置过至少两张黑色牌，你可以选择一名其他角色，其下个回合出牌阶段内使用的牌结算结束后，若此牌仍在弃牌堆中，你获得之（本阶段你至多以此法获得三次牌）。",ac_swallowrecycle_ab:"吞噬回收",
+ ac_gandalf:"甘道夫",ac_whitepact:"白袍盟约",ac_whitepact_info:"结束阶段，你可以选择一名其他角色，你的回合结束后和该角色的下个回合结束后，其将手牌摸至或弃至与你手牌数相同（最多摸至五张）。",ac_whitepact_ab:"白袍盟约",
+ ac_mustang:"罗伊·马斯坦",ac_warstock:"战火积蓄",ac_warstock_info:"锁定技，每当你受到或造成1点伤害后，你获得一个“军略”标记。",ac_warstock_ab:"战火积蓄",ac_alchemytactic:"炼成战术",ac_alchemytactic_info:"出牌阶段开始时，若“军略”数量为奇数，你可以对一名角色造成1点伤害；若“军略”数量为偶数，你可以让一名角色进入连环状态并弃置其区域里的一张牌。若“军略”数量超过7个，你可以移去全部“军略”标记并对所有其他角色造成1点伤害。",ac_alchemytactic_ab:"炼成战术",ac_flamealchemy:"焰之炼金术",ac_flamealchemy_info:"限定技，出牌阶段，你可以移去全部“军略”标记，令至多等量的处于连环状态的角色弃置所有装备区里的牌，然后对其中1名角色造成1点火焰伤害。",ac_flamealchemy_ab:"焰之炼金术",
+ ac_vader:"达斯·维达",ac_forcebind:"原力束缚",ac_forcebind_info:"当你使用【杀】指定一个目标后，你可以发动此技能，将其至多X张牌扣置于该角色的武将牌旁（X为其体力值）；若如此做，当前回合结束后，该角色获得这些牌。你使用【杀】对手牌数与装备数均不大于你的角色造成伤害时，此伤害+1。",ac_forcebind_ab:"原力束缚",
  mushoku: "二次元",
  th_mokou: "藤原妹红",
  th_penglai: "蓬莱", th_penglai_info: "锁定技。①你的手牌上限+2，你计算与其他角色的距离时-1。②摸牌阶段，若你的手牌数不大于2或你已受伤，你多摸一张牌。③当你进入濒死状态时，你摸两张牌。",
@@ -21,7 +36,7 @@ export default {
  mt_resolve: "决意", mt_resolve_info: "结束阶段，若你的体力不大于2，你可以摸两张牌；否则，若你本回合造成过伤害，你可以摸X张牌（X为你本回合造成的伤害总点数）。",
  mt_dragon: "龙力", mt_dragon_info: "首次获得此技能时，你获得3点龙力（上限3）。你使用【杀】无距离限制。每回合各限一次：①你于出牌阶段以【杀】对其他角色造成伤害时，可以消耗1点龙力令伤害+1；②你受到伤害时，可以消耗1点龙力令伤害-1。锁定技，结束阶段，若你本回合未造成过伤害，你回复1点龙力（至多3）。",
  mt_dragon_strike: "龙力·攻", mt_dragon_defend: "龙力·守", mt_dragon_rest: "龙力·息",
- mt_dragonlord: "龙盟", mt_dragonlord_info: "主公技，准备阶段，若你是主公且此技能有效，你回复1点龙力（至多3）；然后你可以令一名其他幻或神势力角色摸一张牌，若如此做，你摸一张牌。该选择不判定或公开对方身份。",
+ mt_dragonlord: "龙盟", mt_dragonlord_info: "主公技，准备阶段，若你是主公且此技能有效，你回复1点龙力（至多3）；然后你可以令一名其他幻势力角色摸一张牌，若如此做，你摸一张牌。该选择不判定或公开对方身份。",
  mt_eye: "第三眼", mt_eye_info: "锁定技，你计算与其他角色的距离-1；体力≤2时改为-2。",
  mt_protect: "护幼", mt_protect_info: "每回合限一次，其他角色受伤后，若其体力不大于你，你可弃一张牌：◆其体力＞1：令其摸两张牌；◆其体力≤1：令其回复1点体力、摸一张牌。（体力条件为保护弱者的玩法抽象，不代表角色年龄。）",
  mt_spear: "战矛", mt_spear_info: "出牌阶段限一次，你可对距离内一名角色额外视为使用【杀】；若你的体力≤1时，此【杀】不可闪避。",
@@ -32,3 +47,5 @@ export default {
  mt_training: "授剑", mt_training_info: "每回合限一次，准备阶段，你可以弃置一张牌，令一名没有“剑意”的其他角色获得一枚“剑意”标记。该角色于其下个回合内使用的第一张【杀】造成的伤害+1。若该【杀】造成了伤害，你摸一张牌（每枚剑意仅摸一次）。剑意不叠加，于该角色的下个回合结束后移除；首张【杀】未造成伤害也不顺延。",
  mt_ghislaine_guard: "守护", mt_ghislaine_guard_info: "每回合限一次，当你受到伤害时，你可以防止此伤害，然后失去1点体力，并摸两张牌。",
 };
+
+

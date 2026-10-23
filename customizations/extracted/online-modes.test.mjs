@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { allocateChoices, allocateRoles, configureOnlineMenus, roomSeats, prepareOnlineMode } from './game/resources/app/noname/init/mushoku-online-modes.js';
 import { roomError, findAiSeat, installMushokuOnline } from './game/resources/app/noname/init/mushoku-online.js';
+import { bossCharacters, resolveBossCharacter } from './game/resources/app/noname/init/mushoku-boss.js';
 import characters from './game/resources/app/noname/init/mushoku-characters.js';
 
 test('candidate pools remain disjoint and nonempty for every legal roster size, including AI fallback', () => {
@@ -22,9 +23,17 @@ test('new modes have fixed seat counts and validate subtype, roster and Boss reg
   assert.ok(roomError({}, {mode:'doudizhu',doudizhu_mode:'online'}));
   assert.ok(roomError({}, {mode:'versus',versus_mode:'4v4'}));
   assert.ok(roomError({}, {mode:'boss',boss_character:'boss_lvbu'}));
+  assert.equal(roomError({}, {mode:'boss',boss_character:'random'}), null);
   const banned=Object.keys(characters).slice(2);
   assert.ok(roomError({}, {mode:'boss',banned}));
   assert.equal(roomError({}, {mode:'boss',banned:Object.keys(characters).slice(3)}),null);
+});
+
+test('Boss online menu supports explicit selection and random selection', () => {
+  assert.ok(Object.keys(bossCharacters).length > 1);
+  assert.equal(resolveBossCharacter({boss_character: Object.keys(bossCharacters)[0]}, () => 0), Object.keys(bossCharacters)[0]);
+  assert.equal(resolveBossCharacter({boss_character: 'random'}, () => 0), Object.keys(bossCharacters)[0]);
+  assert.equal(resolveBossCharacter({}, () => 0.999999), Object.keys(bossCharacters).at(-1));
 });
 test('Boss can be taken over and dead/occupied seats cannot be claimed', () => {
   const host={}, boss={isIn:()=>true}, dead={isIn:()=>false}, taken={isIn:()=>true,ws:{closed:false}}, open={isIn:()=>true};

@@ -12,6 +12,8 @@ $jdk = 'C:/Program Files/Java/jdk-17'
 $env:JAVA_HOME = $jdk
 $env:PATH = "$jdk/bin;$env:PATH"
 function Checked { param([string]$Exe,[string[]]$Arguments) & $Exe @Arguments; if($LASTEXITCODE -ne 0){throw "Failed: $Exe"} }
+# Both platforms consume the same freshly generated runtime.
+& (Join-Path $root 'build-crossover.ps1')
 # aapt2 needs an ASCII path on this Windows installation.
 $drive = 'N:'
 if((Test-Path "$drive/") -or (Test-Path 'O:/')){throw 'Build requires unused N: and O: drives.'}
@@ -39,6 +41,7 @@ try {
         Checked "$tools/apksigner.bat" @('verify','--verbose',$apk)
         Checked "$tools/zipalign.exe" @('-c','4',$apk)
         Checked "$tools/aapt.exe" @('dump','badging',$apk)
+        Checked 'python' @('tools/verify-android-runtime.py',$apk)
         Copy-Item -LiteralPath $apk -Destination $OutputPath
         $apk=$OutputPath
         $hash=(Get-FileHash -LiteralPath $apk).Hash.ToLowerInvariant()

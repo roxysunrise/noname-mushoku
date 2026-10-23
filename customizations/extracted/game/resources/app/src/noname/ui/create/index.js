@@ -989,7 +989,8 @@ export class Create {
 	}
 
 	groupControl(dialog) {
-		return ui.create.control("wei", "shu", "wu", "qun", "jin", "western", "key", function (link, node) {
+		const groups = lib.group.filter(group => dialog.buttons.some(button => button.group === group));
+		return ui.create.control(...groups, function (link, node) {
 			if (link == "全部") {
 				dialog.currentcapt = "";
 				dialog.currentgroup = "";

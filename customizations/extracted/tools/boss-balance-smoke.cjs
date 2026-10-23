@@ -35,13 +35,16 @@ app.whenReady().then(async () => {
    await run(w, 'game.pause();');
    const code = name === 'boss_alucard' ? `
     const p=game.boss,t=game.players.find(x=>x!==p);p.removeSkill('al_dualguns');
-    p.hp=p.maxHp=1;p.hujia=0;p.storage.al_blood=2;delete p.storage.al_last_stand_used;
+    p.hp=p.maxHp=5;p.hujia=0;p.storage.al_blood=2;delete p.storage.al_last_stand_used;
     const sha=new lib.element.VCard({name:'sha'});
-    await p.damage(2,t,sha);checks.push(p.hp===1&&p.countMark('al_blood')===1);
-    await p.damage(1,t,sha);checks.push(p.hp===1&&p.countMark('al_blood')===0);
-    await p.damage(1,t,sha);checks.push(p.hp===1&&p.storage.al_last_stand_used&&p.countMark('al_blood')===1);
-    await p.damage(2,t,new lib.element.VCard({name:'huogong'}));await p.loseHp();checks.push(p.hp===1);
+    await p.damage(2,t,sha);checks.push(p.hp===4&&p.countMark('al_blood')===1);
+    await p.damage(1,t,sha);checks.push(p.hp===4&&p.countMark('al_blood')===0);
+    await p.damage(4,t,sha);checks.push(p.hp===4&&p.storage.al_last_stand_used&&p.countMark('al_blood')===1);
+    await p.damage(2,t,new lib.element.VCard({name:'huogong'}));await p.loseHp();checks.push(p.hp===4);
     await t.discard(t.getCards('e'));const trick=new lib.element.VCard({name:'wuzhong'}),delay=new lib.element.VCard({name:'lebu'});
+    const phase=t.phase();phase.phaseList=[];await phase;
+    checks.push(lib.filter.cardEnabled(trick,t)!==false&&lib.filter.cardEnabled(delay,t)!==false);
+    await t.useCard(trick,t,false);
     checks.push(lib.filter.cardEnabled(trick,t)===false&&lib.filter.cardEnabled(delay,t)===false);
     checks.push(lib.filter.cardEnabled(trick,p)!==false);
     await t.equip(game.createCard('bagua'));checks.push(lib.filter.cardEnabled(trick,t)!==false);
@@ -54,12 +57,12 @@ app.whenReady().then(async () => {
     game.roundNumber=2;checks.push(!lib.skill.al_river.filter({},p));game.roundNumber=3;checks.push(lib.skill.al_river.filter({},p));
     p.removeSkill('al_night');checks.push(lib.filter.cardEnabled(trick,t)!==false);
    ` : `
-    const p=game.boss,t=game.players.find(x=>x!==p);p.hp=p.maxHp=10;p.hujia=0;p.storage.mt_boss_mana=4;
+    const p=game.boss,t=game.players.find(x=>x!==p);p.hp=p.maxHp=8;p.hujia=0;p.storage.mt_boss_mana=4;
     p.removeSkill('mt_boss_shield_used');delete p.storage.mt_boss_resolved;delete p.storage.mt_boss_chant;
-    await p.damage(3,t);checks.push(p.hp===8&&p.countMark('mt_boss_mana')===2);
-    await p.damage(2,t);checks.push(p.hp===6&&p.countMark('mt_boss_mana')===2);
-    await p.damage(1,t);checks.push(p.hp===7&&p.storage.mt_boss_resolved&&p.countMark('mt_boss_mana')===4);
-    p.storage.mt_boss_chant={damage:0};await p.damage(3,t);checks.push(p.storage.mt_boss_chant?.damage===3);
+    await p.damage(3,t);checks.push(p.hp===6&&p.countMark('mt_boss_mana')===2);
+    await p.damage(2,t);checks.push(p.hp===4&&p.countMark('mt_boss_mana')===2);
+    await p.damage(1,t);checks.push(p.hp===5&&p.storage.mt_boss_resolved&&p.countMark('mt_boss_mana')===4);
+    p.storage.mt_boss_chant={damage:0,cost:6};await p.damage(3,t);checks.push(p.storage.mt_boss_chant?.damage===3);
     await p.damage(1,t);checks.push(!p.storage.mt_boss_chant&&p.countMark('mt_boss_mana')===5);
    `;
    await run(w, `window.qaDone=false;window.qaResult=null;const next=game.createEvent('bossBalanceQA',false);next.player=game.boss;next.setContent(async()=>{const checks=[];try{${code}window.qaResult={checks};}catch(error){window.qaResult={error:error.stack};}window.qaDone=true;game.pause();});game.resume();`);

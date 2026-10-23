@@ -922,6 +922,22 @@ async function loadConfig() {
 		await game.promises.saveConfig("ai_roster_v1", true);
 		config.set("ai_roster_v1", true);
 	}
+	if (!config.get("western_roster_v1")) {
+		const packs = config.get("characters") || [];
+		if (packs.includes("mushoku") && !packs.includes("western")) packs.push("western");
+		config.set("characters", packs);
+		await game.promises.saveConfigValue("characters");
+		await game.promises.saveConfig("western_roster_v1", true);
+		config.set("western_roster_v1", true);
+	}
+	if (!config.get("modern_roster_v1")) {
+		const packs = config.get("characters") || [];
+		if (packs.includes("mushoku") && !packs.includes("modern")) packs.push("modern");
+		config.set("characters", packs);
+		await game.promises.saveConfigValue("characters");
+		await game.promises.saveConfig("modern_roster_v1", true);
+		config.set("modern_roster_v1", true);
+	}
 	config.get("all").characters = [];
 	config.get("all").cards = [];
 	config.get("all").plays = [];

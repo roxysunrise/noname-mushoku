@@ -3,6 +3,8 @@ window.noname_package = {
 		mushoku: "二次元",
 		minecraft: "Minecraft",
 		ai: "AI",
+		western: "欧美影视",
+		modern: "现代",
 		//经典标包＋神话再临
 		standard: "标准",
 		shenhua: "神话再临",

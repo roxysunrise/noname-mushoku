@@ -103,15 +103,20 @@ export function createAiSkills(game, get, lib, ui, status) {
    enable:"phaseUse",usable:1,filterTarget:(card,player,target)=>target!==player&&target.countCards("h")>0,
    async content(event,trigger,player){
     const target=event.target;
+    if(!target?.isIn?.()||!target.countCards("h"))return;
     const result=await player.chooseControl("基本牌","锦囊牌","装备牌").set("prompt","洞察：声明一种类别，再观看随机两张手牌").set("ai",remote("() => 0")).forResult();
-    const type=["basic","trick","equip"][result.index],cards=target.getCards("h").randomGets(2);
+    const type=["basic","trick","equip"][result.index];
+    if(!type)return;
+    const hand=target.getCards("h");
+    if(!hand.length)return;
+    const cards=hand.randomGets(Math.min(2,hand.length));
     const shown=await player.chooseButton(["洞察：命中声明则选择获得对应牌",cards],true)
      .set("aiDongchaType",type)
      .set("filterButton",remote("button => {const cards=_status.event.dialog.buttons.map(button=>button.link);return !cards.some(card=>get.type2(card)===_status.event.aiDongchaType)||get.type2(button.link)===_status.event.aiDongchaType;}"))
      .set("ai",remote("button => get.value(button.link)")).forResult();
     const selected=shown.links?.[0];
-    if(selected&&get.type2(selected)===type&&target.getCards("h").includes(selected))await player.gain(selected,target,"giveAuto");else await player.draw();
-    if(target.isIn()&&player.countCards("h"))await player.chooseToGive(target,"h",1,true);
+    if(selected&&get.type2(selected)===type&&target.getCards("h").includes(selected)){await player.gain(selected,target,"giveAuto");await player.draw();}else await player.draw();
+    if(target.isIn()&&player.isIn()&&player.countCards("h"))await player.chooseToGive(target,"h",1,true);
    },ai:{order:6,result:{player:1,target:-0.3}},
   },
   ai_zhiyan:{
@@ -121,8 +126,10 @@ export function createAiSkills(game, get, lib, ui, status) {
     const shown=await player.chooseCard("h","直言：展示一张有颜色的手牌，令目标弃同色牌或此杀对其伤害＋1",remote("card => ['red','black'].includes(get.color(card))"))
      .set("ai",remote("card => 6-get.value(card)")).forResult();
     if(!shown.bool)return;player.logSkill("ai_zhiyan",trigger.target);player.addTempSkill("ai_zhiyan_used",{global:"phaseAfter"});await player.showCards(shown.cards,"直言");
-    const result=await trigger.target.chooseToDiscard("h","直言：弃置同颜色手牌，否则此杀对你的伤害＋1",remote("card => get.color(card)===_status.event.aiZhiyanColor"))
-     .set("chooseonly",true).set("aiZhiyanColor",get.color(shown.cards[0])).set("ai",remote("card => 8-get.value(card)")).forResult();
+    const color=get.color(shown.cards[0]);
+    const candidates=trigger.target.getCards("h",card=>get.color(card)===color);
+    const result=candidates.length?await trigger.target.chooseToDiscard("h","直言：弃置同颜色手牌，否则此杀对你的伤害＋1",remote("card => get.color(card)===_status.event.aiZhiyanColor"))
+     .set("chooseonly",true).set("aiZhiyanColor",color).set("ai",remote("card => 8-get.value(card)")).forResult():{bool:false};
     if(result.bool){await trigger.target.showCards(result.cards,"直言：展示并弃置");await trigger.target.discard(result.cards);}
     else {const use=trigger.getParent();use.customArgs ||= {};const args=use.customArgs[trigger.target.playerid] ||= {};args.extraDamage=(args.extraDamage||0)+1;}
    },subSkill:{used:{charlotte:true}},

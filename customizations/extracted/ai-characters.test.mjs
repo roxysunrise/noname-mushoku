@@ -77,18 +77,27 @@ test('Tiaoshi rejects wrong or absent color and consumes program to reduce damag
  const damage={num:1};await s.ai_tiaoshi.content({},damage,p);assert.equal(damage.num,0);assert.equal(cards.length,0);assert.equal(s.ai_tiaoshi.usable,1);
 });
 test('Dongcha hit takes matching revealed card; miss draws; both must give one hand card',async()=>{
- for(const hit of [true,false]){const p=player(),card={type:hit?'basic':'trick'},target={getCards:()=>({randomGets:()=>[card],includes:c=>c===card}),isIn:()=>true};let gains=0,draws=0,gives=0;
+ for(const hit of [true,false]){const p=player(),card={type:hit?'basic':'trick'},hand={length:1,randomGets:()=>[card],includes:c=>c===card},target={getCards:()=>hand,countCards:()=>1,isIn:()=>true};let gains=0,draws=0,gives=0;
  p.chooseControl=()=>choice({index:0});p.chooseButton=()=>choice({links:[card]});p.gain=async()=>gains++;p.draw=async()=>draws++;p.countCards=()=>1;p.chooseToGive=async()=>gives++;
- await s.ai_dongcha.content({target},{},p);assert.equal(gains,hit?1:0);assert.equal(draws,hit?0:1);assert.equal(gives,1);}
+ await s.ai_dongcha.content({target},{},p);assert.equal(gains,hit?1:0);assert.equal(draws,1);assert.equal(gives,1);}
+});
+
+test('Dongcha still gives a hand card after taking the targets last hand card',async()=>{
+ const p=player(),card={type:'basic'};let hand=[card],gives=0;
+ hand.randomGets=()=>[card];
+ const target={isIn:()=>true,getCards:()=>hand,countCards:()=>hand.length};
+ p.chooseControl=()=>choice({index:0});p.chooseButton=()=>choice({links:[card]});
+ p.gain=async()=>{hand=[];};p.draw=async()=>{};p.countCards=()=>2;p.chooseToGive=async()=>gives++;
+ await s.ai_dongcha.content({target},{},p);assert.equal(gives,1);
 });
 test('Zhiyan refusal changes only the current target damage and preserves normal responses',async()=>{
  const p=player(),use={customArgs:{other:{extraDamage:2}}};let shown=0;p.chooseCard=()=>choice({bool:true,cards:[{color:'red'}]});p.showCards=async()=>shown++;
- const target={playerid:'victim',chooseToDiscard:()=>choice({bool:false})};await s.ai_zhiyan.content({}, {target,getParent:()=>use},p);
+ const target={playerid:'victim',getCards:()=>[],chooseToDiscard:()=>choice({bool:false})};await s.ai_zhiyan.content({}, {target,getParent:()=>use},p);
  assert.equal(use.customArgs.victim.extraDamage,1);assert.equal(use.customArgs.other.extraDamage,2);assert.equal(use.directHit,undefined);assert.equal(shown,1);assert.equal(p.hasSkill('ai_zhiyan_used'),true);
 });
 test('Zhiyan accepted payment is shown then discarded and does not boost damage',async()=>{
  const p=player(),order=[],use={};p.chooseCard=()=>choice({bool:true,cards:[{color:'black'}]});p.showCards=async()=>{};
- const target={chooseToDiscard:()=>choice({bool:true,cards:[{}]}),showCards:async()=>order.push('show'),discard:async()=>order.push('discard')};
+ const target={getCards:()=>[{}],chooseToDiscard:()=>choice({bool:true,cards:[{}]}),showCards:async()=>order.push('show'),discard:async()=>order.push('discard')};
  await s.ai_zhiyan.content({}, {target,getParent:()=>use},p);assert.deepEqual(order,['show','discard']);assert.equal(use.customArgs,undefined);
 });
 test('remote callbacks in new skills can execute with engine scope and without factory closures',async()=>{

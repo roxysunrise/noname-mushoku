@@ -9,7 +9,7 @@ const results=[];
 app.setPath('userData',path.join(app.getPath('temp'),'noname-mobile-ui-'+Date.now()));
 app.commandLine.appendSwitch('no-sandbox');
 const server=http.createServer((req,res)=>{
- if(req.url==='/'){res.setHeader('Content-Type','text/html');res.end('<!doctype html><html><head></head><body><div id="window"></div></body></html>');return;}
+ if(req.url==='/'){res.setHeader('Content-Type','text/html');res.end('<!doctype html><html><head><link rel="stylesheet" href="/layout/default/layout.css"></head><body><div id="window"><div id="arena"></div></div></body></html>');return;}
  const target=path.join(root,decodeURIComponent(req.url.split('?')[0]));
  if(!target.startsWith(root+path.sep)){res.writeHead(403).end();return;}
  try {res.setHeader('Content-Type',target.endsWith('.js')?'text/javascript':target.endsWith('.css')?'text/css':'application/octet-stream');res.end(fs.readFileSync(target));}catch{res.writeHead(404).end();}
@@ -21,7 +21,7 @@ app.whenReady().then(async()=>{
   await w.loadURL(`http://127.0.0.1:${server.address().port}/`);
   const setup=await w.webContents.executeJavaScript(`(async()=>{
    const {installMobileAccessibility}=await import('./noname/ui/mobile-accessibility.js');
-   const config={ui_zoom:'100%',connect_nickname:'旧昵称',character_size:100,image_background:'default'};
+   const config={ui_zoom:'100%',connect_nickname:'旧昵称',character_size:100,character_card_side:'right',image_background:'default'};
    const game={deviceZoom:1,saveConfig(key,value){config[key]=value;},updateBackground(){}};
    const ui={updatez(){document.body.style.transform='scale('+game.documentZoom+')';},update(){},create:{system(label,callback){window.openDisplay=callback;}}};
    const lib={config,assetURL:'/',onresize:[],configMenu:{appearence:{config:{image_background:{item:{default:'默认',forest:'森林'},onclick(key){config.image_background=key;}}}}}};
@@ -31,7 +31,10 @@ app.whenReady().then(async()=>{
   })()`);
   assert.equal(setup,'function');
   const run=code=>w.webContents.executeJavaScript(`(()=>{const {ui,game,config}=window.testUI;${code}})()`);
+  await new Promise(r=>setTimeout(r,100));
   assert.equal(await run(`ui.openDisplaySettings();return document.querySelector('[aria-label="显示与操作"]').getAttribute('role');`),'dialog');
+  assert.equal(await run(`return document.querySelector('[aria-label="武将牌位置"]');`),null);
+  assert.equal(await run(`return document.documentElement.hasAttribute('data-player-card-side');`),false);
   await new Promise(r=>setTimeout(r,100));
   assert.equal(await run(`const input=document.querySelector('input[aria-label="整体界面（含手牌）"]');input.value=85;input.dispatchEvent(new Event('input'));return game.documentZoom;`),.85);
   assert.equal(await run(`[...document.querySelectorAll('.accessibility-panel button')].find(n=>n.textContent==='保留缩放').click();return config.ui_zoom;`),'85%');
@@ -51,8 +54,8 @@ app.whenReady().then(async()=>{
    assert.equal(fit.fits,true,JSON.stringify({size,fit}));assert.equal(fit.parent,true);results.push({size,...fit});
   }
   assert.equal(await run(`document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape'}));return document.querySelectorAll('.accessibility-overlay').length;`),0);
-  console.log('MOBILE_UI_PASS '+JSON.stringify({checks:16,viewports:results}));
-  fs.writeFileSync(path.join(__dirname,'mobile-ui-smoke.log'),'MOBILE_UI_PASS '+JSON.stringify({checks:16,viewports:results})+'\n');
- }catch(error){console.error(error);fs.writeFileSync(path.join(__dirname,'mobile-ui-smoke.log'),'MOBILE_UI_FAIL '+error.stack);process.exitCode=1;}
+			console.log('MOBILE_UI_PASS '+JSON.stringify({viewports:results}));
+			fs.writeFileSync(path.join(__dirname,'player-card-settings-smoke.log'),'MOBILE_UI_PASS '+JSON.stringify({viewports:results})+'\n');
+		}catch(error){console.error(error);fs.writeFileSync(path.join(__dirname,'player-card-settings-smoke.log'),'MOBILE_UI_FAIL '+error.stack);process.exitCode=1;}
  finally{w.destroy();server.close();app.exit(process.exitCode||0);}
 });

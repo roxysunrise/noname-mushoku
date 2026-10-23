@@ -1,6 +1,8 @@
 import { lib, game, get, _status } from "noname";
+import sixteen from "./sixteen.js";
 const attack = event => event.card?.name === "sha";
 const level = player => Math.min(4, player.countMark("mt_study"));
+const remoteChoice = source => get.infoFuncOL("_noname_func:" + source);
 const skills = {
  mt_voiceless: {
   enable: "phaseUse", usable: 1, position: "h",
@@ -13,7 +15,7 @@ const skills = {
    trigger: { source: "damageSource" }, direct: true,
    filter: event => event.num > 0 && event.getParent("useCard")?.skill === "mt_voiceless" && event.cards?.some(card => get.type2(card, false) === "trick"),
    async content(event, trigger, player) {
-    const result = await player.chooseTarget("无咏：可以令一名角色摸一张牌", (card, source, target) => target.isIn()).set("ai", target => get.attitude(player, target)).forResult();
+    const result = await player.chooseTarget("无咏：可以令一名角色摸一张牌", (card, source, target) => target.isIn()).set("ai", remoteChoice("target => get.attitude(_status.event.player, target)")).forResult();
     if (result.bool) { player.logSkill("mt_voiceless", result.targets); await result.targets[0].draw(); }
    },
   } },
@@ -21,7 +23,7 @@ const skills = {
  mt_foresight: {
   trigger: { target: "useCardToTargeted" }, usable: 1,
   filter: (event, player) => event.player !== player && (attack(event) || (player.hp <= 2 && get.type2(event.card) === "trick" && get.tag(event.card, "damage"))),
-  async cost(event, trigger, player) { event.result = await player.chooseToDiscard("he", "预见：弃置一张牌，令此牌对你无效").set("ai", card => 7 - get.value(card)).set("chooseonly", true).forResult(); },
+  async cost(event, trigger, player) { event.result = await player.chooseToDiscard("he", "预见：弃置一张牌，令此牌对你无效").set("ai", remoteChoice("card => 7 - get.value(card)")).set("chooseonly", true).forResult(); },
   async content(event, trigger, player) { await player.discard(event.cards); trigger.getParent().excluded.add(player); },
  },
  mt_study: {
@@ -39,7 +41,7 @@ const skills = {
   async content(event, trigger, player) {
    const target = event.target;
    const count = level(player) >= 2 ? 2 : 1;
-   const result = await target.chooseToDiscard(count, "he", `水术：弃置${count}张牌，否则受到1点${level(player) === 4 ? "雷电" : "普通"}伤害`).set("ai", card => 7 - get.value(card)).forResult();
+   const result = await target.chooseToDiscard(count, "he", `水术：弃置${count}张牌，否则受到1点${level(player) === 4 ? "雷电" : "普通"}伤害`).set("ai", remoteChoice("card => 7 - get.value(card)")).forResult();
    if (!result.bool) { if (level(player) === 4) await target.damage(1, player, "thunder"); else await target.damage(1, player); }
   },
   ai: { order: 6, result: { target: -1 } },
@@ -66,7 +68,7 @@ const skills = {
   filter: (event, player) => event.player !== player && event.player.isIn() && player.countCards("he") > 0 && event.num > 0,
   async cost(event, trigger, player) {
    const good = get.attitude(player, trigger.player) > 0;
-   event.result = await player.chooseToDiscard("he", "守护：弃置一张牌，令此次伤害-1").set("chooseonly", true).set("ai", card => good ? 6 - get.value(card) : 0).forResult();
+   event.result = await player.chooseToDiscard("he", "守护：弃置一张牌，令此次伤害-1").set("chooseonly", true).set("mtGuardGood", good).set("ai", remoteChoice("card => _status.event.mtGuardGood ? 6 - get.value(card) : 0")).forResult();
   },
   async content(event, trigger, player) { await player.discard(event.cards); trigger.num--; },
  },
@@ -111,7 +113,7 @@ const skills = {
   filter: (event, player) => player.identity === "zhu" && player.hasZhuSkill("mt_dragonlord"),
   async content(event, trigger, player) {
    if (player.countMark("mt_dragon") < 3) player.addMark("mt_dragon", 1);
-   const result = await player.chooseTarget("龙盟：可令一名其他幻或神势力角色摸一张牌，然后你摸一张牌", (card, source, target) => target !== source && ["huan", "shen"].includes(target.group)).set("ai", target => get.attitude(player, target)).forResult();
+   const result = await player.chooseTarget("龙盟：可令一名其他幻势力角色摸一张牌，然后你摸一张牌", (card, source, target) => target !== source && target.group === "huan").set("ai", remoteChoice("target => get.attitude(_status.event.player, target)")).forResult();
    if (result.bool) { await result.targets[0].draw(); if (player.isIn()) await player.draw(); }
   },
  },
@@ -119,7 +121,7 @@ const skills = {
  mt_protect: {
   trigger: { global: "damageEnd" }, usable: 1,
   filter: (event, player) => event.player !== player && event.player.isIn() && event.player.hp <= player.hp && player.countCards("he") > 0,
-  async cost(event, trigger, player) { const good = get.attitude(player, trigger.player) > 0; event.result = await player.chooseToDiscard("he", "护幼：弃置一张牌，令受伤角色体力大于1时摸两张牌，否则回复1点体力并摸一张牌").set("chooseonly", true).set("ai", card => good ? 7 - get.value(card) : 0).forResult(); },
+  async cost(event, trigger, player) { const good = get.attitude(player, trigger.player) > 0; event.result = await player.chooseToDiscard("he", "护幼：弃置一张牌，令受伤角色体力大于1时摸两张牌，否则回复1点体力并摸一张牌").set("chooseonly", true).set("mtProtectGood", good).set("ai", remoteChoice("card => _status.event.mtProtectGood ? 7 - get.value(card) : 0")).forResult(); },
   async content(event, trigger, player) {
    await player.discard(event.cards);
    if (!trigger.player.isIn()) return;
@@ -156,7 +158,7 @@ const skills = {
    if (!target.isIn()) return;
    await target.recover();
    if (!player.isIn() || !target.isIn() || target.maxHp >= player.maxHp) return;
-   const result = await player.chooseBool("救援：将你的1点体力上限转移给该角色，然后摸一张牌？").set("ai", () => player.maxHp > 2 && get.attitude(player, target) > 0).forResult();
+   const result = await player.chooseBool("救援：将你的1点体力上限转移给该角色，然后摸一张牌？").set("mtRescueTarget", target).set("ai", remoteChoice("() => _status.event.player.maxHp > 2 && get.attitude(_status.event.player, _status.event.mtRescueTarget) > 0")).forResult();
    if (result.bool) { await player.loseMaxHp(); if (target.isIn()) await target.gainMaxHp(); if (player.isIn()) await player.draw(); }
   },
  },
@@ -171,7 +173,7 @@ const skills = {
   async cost(event, trigger, player) {
    const discard = await player.chooseToDiscard("he", "授剑：弃置一张牌，授予一名其他角色剑意").set("chooseonly", true).forResult();
    if (!discard.bool) { event.result = { bool: false }; return; }
-   const target = await player.chooseTarget("授剑：选择一名没有剑意的其他角色", (card, source, target) => target !== source && !target.hasSkill("mt_training_intent")).set("ai", target => get.attitude(player, target)).forResult();
+   const target = await player.chooseTarget("授剑：选择一名没有剑意的其他角色", (card, source, target) => target !== source && !target.hasSkill("mt_training_intent")).set("ai", remoteChoice("target => get.attitude(_status.event.player, target)")).forResult();
    event.result = { bool: target.bool, cards: discard.cards, targets: target.targets };
   },
   async content(event, trigger, player) {
@@ -207,5 +209,6 @@ const skills = {
   check: (event, player) => player.hp > 1 || event.num > 1,
   async content(event, trigger, player) { trigger.cancel(); await player.loseHp(); if (player.isIn()) await player.draw(2); },
  },
+ ...sixteen,
 };
 export default skills;

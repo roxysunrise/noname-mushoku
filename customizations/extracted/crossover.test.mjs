@@ -2,6 +2,8 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import characters from './game/resources/app/src/noname/init/mushoku-characters.js';
+import { characterPacks, packForCharacter } from './game/resources/app/src/noname/init/mushoku-rosters.js';
 const root = new URL('./game/resources/app/', import.meta.url);
 const lib = { skill: {}, translate: {} };
 const ui = { selected: { cards: [] } }, _status = {};
@@ -10,7 +12,7 @@ const get = { type: card => card.type, type2: card => card.type, tag: (card, tag
  is: { damageCard: card => !!card.damage }, suit: card => card.suit, name: card => card.name, autoViewAs: card => card };
 const packs = {};
 get.infoFuncOL = info => vm.runInNewContext(`(${info.slice(13)})`, {lib,get,_status});
-for (const name of ['mushoku', 'minecraft', 'ai']) {
+for (const name of characterPacks) {
  const source = (await readFile(new URL(`character/${name}.js`, root), 'utf8')).replace(/^import \{(.*?)\} from "noname";/gm, (_, names) => `const {${names.replace(/ as /g, ': ')}} = runtime;`);
  vm.runInNewContext(source, { runtime: { lib, ui, _status, game: new Proxy(game, { get(target, key) { return key === 'import' ? (type, fn) => { packs[name] = game.import(type, fn); } : target[key]; } }), get } });
 }
@@ -103,7 +105,7 @@ test('Eris pays HP without discarding; resolve sums damage points and low-health
 });
 test('Mokou stats, Penglai hand limit, distance, conditional draw and dying draw', async () => {
  const info = packs.mushoku.character.th_mokou;
- assert.equal(info.group, 'shen'); assert.equal(info.hp, 2); assert.equal(info.maxHp, 2);
+ assert.equal(info.group, 'huan'); assert.equal(info.hp, 2); assert.equal(info.maxHp, 2);
  const s = skill.th_penglai;
  assert.equal(s.mod.maxHandcard({}, 2), 4); assert.equal(s.mod.globalFrom({}, {}, 3), 2);
  let count = 3, damaged = false, drawn = 0;
@@ -149,16 +151,16 @@ test('Fengyi black discard permits current player self, rejects response-only an
  assert.equal(s.filter({...e,card:{name:'tao'}},p),false);
  _status.currentPhase=null; assert.equal(!!s.filter(e,p),false);
 });
-test('three packs expose nineteen distinct characters and complete skill descriptions', () => {
- const characters = { ...packs.mushoku.character, ...packs.minecraft.character, ...packs.ai.character };
- assert.equal(Object.keys(characters).length, 19);
- assert.equal(Object.keys(packs.ai.character).length, 5);
+test('all four packs expose the canonical roster and complete skill descriptions', () => {
+ const registered = Object.assign({}, ...Object.values(packs).map(pack => pack.character));
+ assert.deepEqual(Object.keys(registered).sort(), Object.keys(characters).sort());
+ assert.equal(Object.keys(packs.ai.character).length, Object.keys(characters).filter(id => packForCharacter(id) === 'ai').length);
  assert.equal(packs.mushoku.character.ac_chatgpt, undefined);
  assert.equal(packs.ai.character.ac_chatgpt.sex, 'female');
  assert.equal(packs.mushoku.translate.mushoku, '二次元');
  assert.equal(packs.minecraft.character.mc_dream.group, 'wang');
  assert.equal(packs.mushoku.character.ac_yuu.hp, 3);
- for (const info of Object.values(characters)) for (const id of info.skills) { assert.ok(skill[id]); assert.ok(lib.translate[id + '_info']); }
+ for (const info of Object.values(registered)) for (const id of info.skills) { assert.ok(skill[id]); assert.ok(lib.translate[id + '_info']); }
 });
 test('Rudeus converts basics/tricks but not equipment; low-health foresight includes damaging tricks only', () => {
  assert.ok(skill.mt_voiceless.filterCard({ type: 'basic' }));
@@ -176,8 +178,8 @@ test('healing gives exactly one bonus card for a trick and resolve uses health t
  assert.equal(healed, 1); assert.equal(drawn, 1);
  await skill.mt_resolve.content({}, {}, player); assert.equal(drawn, 3);
 });
-test('Orsted is god faction with bounded shared power, unrestricted Sha range and conditional rest', async () => {
- assert.equal(packs.mushoku.character.mt_orsted.group, 'shen');
+test('Orsted is illusion faction with bounded shared power, unrestricted Sha range and conditional rest', async () => {
+ assert.equal(packs.mushoku.character.mt_orsted.group, 'huan');
  assert.equal(packs.mushoku.character.mt_orsted.hp, 4);
  const s = skill.mt_dragon; let power = 0, damageHistory = [];
  const p = { storage: {}, addMark: (id,n) => power += n, removeMark: (id,n) => power -= n, countMark: () => power, getHistory: () => damageHistory, isPhaseUsing: () => true };
@@ -195,9 +197,9 @@ test('Orsted is god faction with bounded shared power, unrestricted Sha range an
  power=3; assert.equal(s.subSkill.rest.filter({},p),false);
  power=0; assert.equal(s.subSkill.strike.filter(attack,p),false); assert.equal(s.subSkill.defend.filter({num:1},p),false);
 });
-test('Dragon alliance requires lord identity and accepts only other illusion or god factions', async () => {
+test('Dragon alliance requires lord identity and accepts only other illusion factions', async () => {
  const s=skill.mt_dragonlord; let power=2, drawn=0;
- const ally={group:'shen',draw:async()=>drawn++};
+ const ally={group:'huan',draw:async()=>drawn++};
  const p={identity:'zhu',hasZhuSkill:()=>true,countMark:()=>power,addMark:(id,n)=>power+=n,isIn:()=>true,draw:async()=>drawn++,chooseTarget:(prompt,filter)=>{
   assert.ok(filter(null,p,ally)); assert.ok(filter(null,p,{group:'huan'}));
   assert.equal(filter(null,p,{group:'wang'}),false); assert.equal(filter(null,p,p),false);
@@ -240,22 +242,11 @@ test('Choumou spends selected amount once and grants one heart per selected livi
  await skill.mc_choumou.subSkill.spend.content({}, {}, player);
  assert.equal(spent, 3); assert.equal(gains, 2);
 });
-test('Xianzhui requires targeted AND damaged this turn, ignores charge cap, enforces legality and discard payment', async () => {
- const target = { isIn: () => true, getHistory: () => [{num:1}] }, other = { isIn: () => true, getHistory: () => [] }, dead = { isIn: () => false };
- let discarded = 0, use;
- const current = { isIn: () => true, countDiscardableCards: () => 1 };
- const second = { isIn: () => true, getHistory: () => [{num:2,source:other}] };
- const player = { getMaxCharge: () => 0, getHistory: () => [{ targets: [target, target, dead, other, second] }],
- canUse: (card, target) => target !== dead, discardPlayerCard: p => { assert.equal(p, current); discarded++; return choice({bool:true}); },
- chooseUseTarget: options => { use = options; return { set() { return this; } }; } };
- assert.ok(skill.mc_xianzhui.filter({ player: current }, player));
- await skill.mc_xianzhui.content({}, { player: current }, player);
- assert.equal(discarded, 1); assert.equal(use.selectTarget[1], 2);
- assert.ok(use.filterTarget({}, player, target)); assert.equal(use.filterTarget({}, player, other), false);
- assert.ok(use.filterTarget({}, player, second));
- use=undefined;player.discardPlayerCard=()=>choice({bool:false});
- await skill.mc_xianzhui.content({}, {player:current}, player);assert.equal(use,undefined);
- player.getHistory=()=>[{targets:[other]}];assert.equal(skill.mc_xianzhui.filter({player:current},player),false);
+test('Dream keeps only its first two skills after removing Xianzhui', () => {
+ assert.deepEqual(characters.mc_dream.skills, ['mc_choumou', 'mc_xianyi']);
+ assert.equal(skill.mc_xianzhui, undefined);
+ assert.equal(lib.translate.mc_xianzhui, undefined);
+ assert.ok(skill.mc_choumou && skill.mc_xianyi);
 });
 test('Heyun can target self and discards a skill before drawing two', async () => {
  const actions = [];
@@ -336,13 +327,17 @@ test('Spear checks range and legality without normal Sha quota, and forces a hit
   used=undefined; await s.content({target:far},{},p); assert.equal(used,undefined);
  }
 });
-test('compatibility preserves three packs, respects disabling one, and rejects duplicate roster shortages', async () => {
+test('compatibility preserves four packs, respects disabling packs, and rejects roster shortages', async () => {
  const { installMushokuCompatibility, getMushokuRestriction } = await import(new URL('noname/init/mushoku-compatibility.js', root));
- const state = { character: {}, characterPack: { standard: {} }, config: { characters: ['mushoku', 'minecraft', 'ai'] }, group: [], connectCharacterPack: [] };
- installMushokuCompatibility(state); assert.equal(Object.keys(state.character).length, 19);
+ const state = { character: {}, characterPack: { standard: {} }, config: { characters: [...characterPacks] }, group: [], connectCharacterPack: [] };
+ installMushokuCompatibility(state); assert.equal(Object.keys(state.character).length, Object.keys(characters).length);
  assert.equal(Object.keys(state.characterPack.minecraft).length, 2);
  state.config.characters = ['mushoku']; installMushokuCompatibility(state);
- assert.equal(Object.keys(state.character).length, 12); assert.equal(state.character.mc_dream, undefined); assert.equal(state.character.ac_chatgpt,undefined);
+ assert.equal(Object.keys(state.character).length, Object.keys(characters).filter(id => packForCharacter(id) === 'mushoku').length); assert.equal(state.character.mc_dream, undefined); assert.equal(state.character.ac_chatgpt,undefined); assert.equal(state.character.ac_hulk,undefined);
+ // Exactly sixteen distinct candidates fit eight seats with double characters.
+ state.character = Object.fromEntries(Object.entries(state.character).slice(0, 16));
  const config = { player_number: 8, double_character: true };
+ assert.equal(getMushokuRestriction(state, { config: key => config[key] }, 'identity'), null);
+ delete state.character[Object.keys(state.character)[0]];
  assert.match(getMushokuRestriction(state, { config: key => config[key] }, 'identity'), /16/);
 });

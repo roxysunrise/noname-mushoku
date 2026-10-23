@@ -8,7 +8,7 @@ if (-not (Test-Path -LiteralPath (Join-Path $wsTarget 'package.json'))) {
     New-Item -ItemType Directory -Force -Path (Join-Path $appRoot 'node_modules') | Out-Null
     Copy-Item -LiteralPath (Join-Path $onlineRuntime 'node_modules/ws') -Destination $wsTarget -Recurse
 }
-foreach ($packName in @('mushoku', 'minecraft', 'ai')) {
+foreach ($packName in @('mushoku', 'minecraft', 'ai', 'western', 'modern')) {
     & npx --yes esbuild (Join-Path $appRoot "src/character/$packName/index.js") --bundle --format=esm --external:noname "--outfile=$(Join-Path $appRoot "character/$packName.js")"
     if ($LASTEXITCODE -ne 0) { throw "Failed to build $packName" }
 }

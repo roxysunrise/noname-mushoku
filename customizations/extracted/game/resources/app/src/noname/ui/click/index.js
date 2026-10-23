@@ -1598,7 +1598,9 @@ export class Click {
 						ex -= -ui.chessContainer.chessLeft + ui.chess.offsetLeft;
 						ey -= -ui.chessContainer.chessTop + ui.chess.offsetTop;
 					}
-					if (itemtype != "player" || game.chess || (ex > item.offsetLeft && ex < item.offsetLeft + item.offsetWidth && ey > item.offsetTop && ey < item.offsetTop + item.offsetHeight)) {
+					// Pointer coordinates and rendered bounds include both CSS zoom and transforms.
+					var targetRect = itemtype == "player" ? item.getBoundingClientRect() : null;
+					if (itemtype != "player" || game.chess || (e.touches[0].clientX >= targetRect.left && e.touches[0].clientX < targetRect.right && e.touches[0].clientY >= targetRect.top && e.touches[0].clientY < targetRect.bottom)) {
 						var targetfixed = false;
 						if (itemtype == "player") {
 							if (get.select(_status.event.selectTarget)[1] <= -1) {
@@ -1983,7 +1985,9 @@ export class Click {
 						ex -= -ui.chessContainer.chessLeft + ui.chess.offsetLeft;
 						ey -= -ui.chessContainer.chessTop + ui.chess.offsetTop;
 					}
-					if (itemtype != "player" || game.chess || (ex > item.offsetLeft && ex < item.offsetLeft + item.offsetWidth && ey > item.offsetTop && ey < item.offsetTop + item.offsetHeight)) {
+					// Pointer coordinates and rendered bounds include both CSS zoom and transforms.
+					var targetRect = itemtype == "player" ? item.getBoundingClientRect() : null;
+					if (itemtype != "player" || game.chess || (e.clientX >= targetRect.left && e.clientX < targetRect.right && e.clientY >= targetRect.top && e.clientY < targetRect.bottom)) {
 						var targetfixed = false;
 						if (itemtype == "player") {
 							if (get.select(_status.event.selectTarget)[1] <= -1) {
@@ -2140,9 +2144,9 @@ export class Click {
 		while (item) {
 			var itemtype = get.itemtype(item);
 			if (itemtype == "card" || itemtype == "button" || itemtype == "player") {
-				if (item.classList.contains("selectable") && !item.classList.contains("selected") && !item.classList.contains("noclick")) {
+				if (item.classList.contains("selectable") && (!item.classList.contains("selected") || itemtype == "card") && !item.classList.contains("noclick")) {
 					_status.clicked = false;
-					ui.click[itemtype].call(item);
+					if (!item.classList.contains("selected")) ui.click[itemtype].call(item);
 					if (item.classList.contains("selected")) {
 						_status.mousedragging = e;
 						_status.mousedragorigin = item;
@@ -2174,10 +2178,7 @@ export class Click {
 		if (this.parentNode.parentNode.parentNode != ui.me) {
 			return;
 		}
-		if (this.parentNode.parentNode.classList.contains("scrollh")) {
-			return;
-		}
-		if (this.classList.contains("selectable") && !this.classList.contains("selected") && !this.classList.contains("noclick")) {
+		if (this.classList.contains("selectable") && !this.classList.contains("noclick")) {
 			this._waitingfordrag = {
 				clientX: e.touches[0].clientX,
 				clientY: e.touches[0].clientY,
@@ -2188,9 +2189,22 @@ export class Click {
 		ui.click.longpresscancel.call(this);
 		if (this._waitingfordrag) {
 			var drag = this._waitingfordrag;
+			// Scroll overflowing hands horizontally; a vertical gesture still plays a card.
+			if (this.parentNode?.parentNode?.classList.contains("scrollh")) {
+				if (e.touches.length != 1) return;
+				var dx = Math.abs(e.touches[0].clientX - drag.clientX);
+				var dy = Math.abs(e.touches[0].clientY - drag.clientY);
+				if (Math.max(dx, dy) < 10 * game.documentZoom) return;
+				if (dx > dy) {
+					delete this._waitingfordrag;
+					return;
+				}
+			}
+			e.preventDefault();
 			_status.clicked = false;
+			_status.dragged = false;
 			_status.touchnocheck = true;
-			ui.click.card.call(this);
+			if (!this.classList.contains("selected")) ui.click.card.call(this);
 			_status.touchnocheck = false;
 			if (this.classList.contains("selected")) {
 				_status.mousedragging = drag;

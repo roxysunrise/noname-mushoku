@@ -1,19 +1,24 @@
 import characters from "./mushoku-characters.js";
-import { characterPacks, packForCharacter } from "./mushoku-rosters.js";
-import { bossCharacters, createBossSkills, bossTranslate } from "./mushoku-boss.js";
+import { characterPacks, characterGroups, packForCharacter } from "./mushoku-rosters.js";
+import { bossCharacters, bossCharacterIntro, createBossSkills, bossTranslate } from "./mushoku-boss.js";
 import { onlineModes, prepareOnlineMode } from "./mushoku-online-modes.js";
 const sourceRevision = "b17a619841f9162b60bc50ffa88a8962c1618b63";
 const rosterIds = Object.freeze(Object.keys(characters));
 const rosterSet = new Set(rosterIds);
-const categories = ["huan", "xu", "wang", "qi", "yi", "shen"];
+const categories = characterGroups;
 const packFor = packForCharacter;
 const packs = characterPacks;
 function installMushokuCompatibility(lib) {
+  Object.assign(lib.characterIntro ??= {}, bossCharacterIntro);
   const isBossMode = lib.config.mode === "boss";
   const hiddenPacks = Object.keys(lib.characterPack).filter((pack) => !packs.includes(pack) && !(isBossMode && pack === "mode_boss"));
   for (const id of Object.keys(lib.character)) if (!rosterSet.has(id) && !(isBossMode && bossCharacters[id])) delete lib.character[id];
   if (isBossMode) lib.characterPack.mode_boss = { ...bossCharacters };
-  for (const pack of hiddenPacks) lib.characterPack[pack] = {};
+  // Removing characters alone leaves empty original packs in the menu's fallback list.
+  for (const pack of hiddenPacks) delete lib.characterPack[pack];
+  if (lib.config.all?.characters) lib.config.all.characters = packs.slice();
+  if (lib.config.defaultcharacters) lib.config.defaultcharacters = packs.slice();
+  lib.config.characters = lib.config.characters.filter(pack => packs.includes(pack));
   let availableCount = 0;
   for (const [id, info] of Object.entries(characters)) {
     if (lib.config.characters.includes(packFor(id))) { lib.character[id] = { ...info, skills: info.skills.slice() }; availableCount++; }
@@ -25,8 +30,7 @@ function installMushokuCompatibility(lib) {
   if (Array.isArray(lib.config.continue_name)) lib.config.continue_name = [...new Set(lib.config.continue_name.filter((id) => rosterSet.has(id)))];
   if (lib.config.test_game && lib.config.test_game !== "_" && !rosterSet.has(lib.config.test_game)) delete lib.config.test_game;
   lib.group.splice(0, lib.group.length, ...categories);
-  // Custom god characters have a fixed faction; do not open vanilla faction reassignment.
-  if (lib.selectGroup) lib.selectGroup = lib.selectGroup.filter(group => group !== "shen");
+  if (lib.selectGroup) lib.selectGroup = lib.selectGroup.filter(group => categories.includes(group));
   if (lib.connectCharacterPack) lib.connectCharacterPack.splice(0, lib.connectCharacterPack.length, ...packs);
   lib.mushokuCompatibility = { active: false, strict: true, packs: hiddenPacks, slots: availableCount };
 }
@@ -76,7 +80,7 @@ function showMushokuRestriction(reason, lib, game, ui, status = {}) {
   const title = ui.create.div("", panel);
   title.textContent = "当前玩法暂不可用";
   title.style.cssText = "position:static;transform:none;width:auto;height:auto;white-space:normal;font-size:28px;color:#e6c889;margin:0 0 12px";
-  for (const text of [reason, "仅使用二次元、AI 与 Minecraft 分类中已启用的角色，禁止重复上场。可通过选项调整玩法配置。"]) {
+  for (const text of [reason, "仅使用二次元、AI、Minecraft、欧美影视与现代分类中已启用的角色，禁止重复上场。可通过选项调整玩法配置。"]) {
     const line = ui.create.div("", panel);
     line.textContent = text;
     line.style.cssText = "position:static;transform:none;display:block;width:auto;height:auto;white-space:normal;margin:8px 0";

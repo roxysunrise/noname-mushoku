@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { roomError, findAiSeat, installMushokuOnline } from './game/resources/app/noname/init/mushoku-online.js';
 import { getMushokuRestriction, prepareMushokuMode } from './game/resources/app/noname/init/mushoku-compatibility.js';
+import characters from './game/resources/app/noname/init/mushoku-characters.js';
 function fixture() {
  const host={playerid:'host',isIn:()=>true};
  const ai=Array.from({length:3},(_,i)=>({playerid:`ai${i}`,hp:3,name:`role${i}`,hand:[i],isIn:()=>true,setNickname(){}}));
@@ -25,7 +26,7 @@ function fixture() {
 test('room validates mode, single-general, seat count, bans and enabled roster',()=>{
  const f=fixture(); const c=f.lib.configOL;
  assert.equal(roomError(f.lib),null);
- for(const bad of [{mode:'stone'},{identity_mode:'purple'},{double_character:true},{number:9},{number:1},{number:2.5},{characterPack:['standard']},{number:8,banned:['th_mokou','ac_yuu','mc_dream','mt_rudeus','ac_yumeko','ac_kaito','ac_chatgpt','mc_netherite']}]) assert.ok(roomError(f.lib,{...c,...bad}));
+ for(const bad of [{mode:'stone'},{identity_mode:'purple'},{double_character:true},{number:9},{number:1},{number:2.5},{characterPack:['standard']},{number:8,banned:Object.keys(characters).slice(0,-7)}]) assert.ok(roomError(f.lib,{...c,...bad}));
  assert.equal(getMushokuRestriction({}, {config:()=>false}, 'connect'),null);
 });
 test('online mode loading defers room checks until switchMode has populated configOL',()=>{

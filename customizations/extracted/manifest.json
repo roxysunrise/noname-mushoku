@@ -1,35 +1,131 @@
 [
   {
-    "sha256": "5E6AC084F01FD92AF98A544FFF6EB0D97EB11EF0AC35B52D684708E9FAF714B2",
+    "sha256": "B84365F0FC82A2109E909C45BD9A5AE298363EEBCE1E2CF35AC40CD51778104D",
+    "path": "app/main.js"
+  },
+  {
+    "sha256": "CE6FA366E99CDE7A882C50DF00BC5895D84BC726E1CC86A64AF048776AA9D7B7",
+    "path": "app/preload.js"
+  },
+  {
+    "sha256": "F358ACCFFC5DD4EA0DBBBC3458CB05F8C82CE0EA2533DB11E8722CADA5EE9E7D",
     "path": "character/ai.js"
   },
   {
-    "sha256": "9CC65DFDE49F5583F666E55E393D733F254AE07ACB5DA9EB030B502186840A14",
+    "sha256": "553D498BD3AFEBA27BE42BA268A78843AF9639A84BCBF4D0C8235099FEF1488C",
     "path": "character/minecraft.js"
   },
   {
-    "sha256": "1D278A88775649B5632B302E597A61396328545961B7397F08C55F144C2A812C",
+    "sha256": "F46C78DD241780B10FA3A67E48A5CEAE6466BE0D4CF5A6FDC02BC592F50E7A2D",
+    "path": "character/modern.js"
+  },
+  {
+    "sha256": "26C025806EBA5EACAB8710901DD84BCB9A3445F8F4EE7E8D1357DC3EDF64EC7F",
     "path": "character/mushoku.js"
+  },
+  {
+    "sha256": "1483B9A9AC6D361794A31C84DBC9222E0AEBED2BCD47636F619C762B72F374CD",
+    "path": "character/western.js"
   },
   {
     "sha256": "53D0A57BCDE98ABA832FB0B05AD2DEDBBC5BCC7812F1C185AA32925DA465012F",
     "path": "docs/online-ai-room.md"
   },
   {
-    "sha256": "8A336F158F2763CF103EDEBBD0B370B63827383ACE62A66B93F4DF22C1BE9BE0",
+    "sha256": "1D977C76A7239015CF2D81785D4AB7874366E33D699F2412ECD1663F61E3A85E",
     "path": "game/config.json"
   },
   {
-    "sha256": "75AEB93A6CF38F5095680EE2741E2C5309F8BBFCF4EC8AEB7F587D8310006450",
+    "sha256": "9EBEB2CF6E996F1222233F0EBA91E3835665F5174F3822E3B58C2A624B15EB3A",
     "path": "game/package.js"
+  },
+  {
+    "sha256": "6E2C97C183E9D6915C451626816979497E861E1BF2CCC5DF64FDB1C44F6B4923",
+    "path": "image/character/ac_alucard.jpg"
+  },
+  {
+    "sha256": "A50E3689C2DB49C83144768D95297F79F79E57B34E9E7C3D24F3EAE63CFD1612",
+    "path": "image/character/ac_batman.jpg"
+  },
+  {
+    "sha256": "B4827C0C2008050F978A722CDE713BDF7E8A2CBAF4258C0C7E23972ECE9B55A1",
+    "path": "image/character/ac_captain.jpg"
   },
   {
     "sha256": "FE9929B8338ACC742B7007B7847D506CB3E947B6F7C2735A769BF35ED14AFC7A",
     "path": "image/character/ac_chatgpt.jpg"
   },
   {
+    "sha256": "9F87AC1B92A55C17D979EC294E503ED1984953A2AC32D9D5552FC81255ECA87E",
+    "path": "image/character/ac_doraemon.jpg"
+  },
+  {
+    "sha256": "8EBA23D5EDF0DBD3421509D7433F5DDF5F2C38FB4376F4678C846573280A7F7D",
+    "path": "image/character/ac_fighter.jpg"
+  },
+  {
+    "sha256": "8304FABE18D320C3A3967791A1A61BD61E25C266A3212AA0EA0525A1EF9298A2",
+    "path": "image/character/ac_gandalf.jpg"
+  },
+  {
+    "sha256": "ACB5EFC57EE04AC4E8B42801EB71081B11FD87739655CB0A634F2DD90C570EAD",
+    "path": "image/character/ac_gojo.jpg"
+  },
+  {
+    "sha256": "01E8AE379CF8F997CD10DEF3277F6A7DDE78482B4EED978CF6DF46F0936689E4",
+    "path": "image/character/ac_hulk.jpg"
+  },
+  {
+    "sha256": "7CBA80FC094A20F949AA6C16FE0DDC92F393B17480D89ECA285843F992446069",
+    "path": "image/character/ac_joker.jpg"
+  },
+  {
     "sha256": "A2440D58A231D8D8E4F77EFBED86B6684E832B52AA885414C79534CA760F4948",
     "path": "image/character/ac_kaito.jpg"
+  },
+  {
+    "sha256": "36CD6CE863ACB8E517F720CBEE7EDB5C054D6A457BD0B5CDC1F014246074FFA9",
+    "path": "image/character/ac_ken.jpg"
+  },
+  {
+    "sha256": "3E317E4FE7E8D13C54088F74A258100495E04183848BD9B9DC3573BFE2E2CB4D",
+    "path": "image/character/ac_kirby.jpg"
+  },
+  {
+    "sha256": "5541976FA6CD4350F3E687F363D4829A94EF8C6FF5E046CD71CAC7A7A890AA1E",
+    "path": "image/character/ac_light.jpg"
+  },
+  {
+    "sha256": "A61A3A53BEED100BD3704A250FB1E433B09662171ECA0C836320496C085EAEC3",
+    "path": "image/character/ac_mustang.jpg"
+  },
+  {
+    "sha256": "3B7DA7E6CD45AFBF09DE3E5D4B376BF74597B3CD931C9CDBAB71D516505D118E",
+    "path": "image/character/ac_okabe.jpg"
+  },
+  {
+    "sha256": "B57487509C9D92E54B866C03CFB85FA7B15B0B150BE10AED55394B5098A6803E",
+    "path": "image/character/ac_santa.jpg"
+  },
+  {
+    "sha256": "434D490A31389C3796BAEC1CFD173197F9027D250EC52AF400C911021B7B1609",
+    "path": "image/character/ac_spiderman.jpg"
+  },
+  {
+    "sha256": "884CDE0C8E3341A952C55072E13339D64FD5891FCDAACE5A0800A382108D0EEC",
+    "path": "image/character/ac_tank.jpg"
+  },
+  {
+    "sha256": "DFFCECF4AD242841DE380C2A22D8D4A8FE68294B6C814B8748A527E682DFB998",
+    "path": "image/character/ac_totoro.jpg"
+  },
+  {
+    "sha256": "883C03A522D60BA72E37B1ACBAA65AE5D214C2C8187DC638CFE379151B7C906F",
+    "path": "image/character/ac_vader.jpg"
+  },
+  {
+    "sha256": "D27F7E7AEB9D2E2DC20D053C990C294D7952567CA6D59A86089C3359331FF967",
+    "path": "image/character/ac_wonderwoman.jpg"
   },
   {
     "sha256": "7DA83959B7FB5363C4C04C369B3BBAF1F8E5C946013BCCB0A07B5A349757F842",
@@ -64,8 +160,20 @@
     "path": "image/character/boss_alucard.jpg"
   },
   {
+    "sha256": "BD0B4E0900FC4B3576A516BAF69B7A225EFE22F21A5372DF90A4ADFFC40DC189",
+    "path": "image/character/boss_johan-v2.jpg"
+  },
+  {
     "sha256": "DA93E8A55548B45138F3CA80FC4D230073C6F8D01823AD35EDEB1B017EC484DB",
     "path": "image/character/boss_mt_roxy.jpg"
+  },
+  {
+    "sha256": "CB001095ED4C03C41CB498D11E287DB5960EBF1562C3EFA1461F79F4CF7E9961",
+    "path": "image/character/liuxie.jpg"
+  },
+  {
+    "sha256": "AFD8450E268EA9ED7C0E4855312339D9D059F27FDDEA2CB831803F2DE178B176",
+    "path": "image/character/mc_dream.jpg"
   },
   {
     "sha256": "856DDA170D36350DE4B7CECBC51F7F085F5DC281CA49F0412830DC1AB53A0766",
@@ -74,6 +182,18 @@
   {
     "sha256": "A93141E189622836E98007EC2F9EB2071344BCBC18EED863362F7B7159D14735",
     "path": "image/character/mc_netherite.jpg"
+  },
+  {
+    "sha256": "FF87C12F3972FAE844D4FD7E8962D84377EBD475F89813116316E20E7AA29845",
+    "path": "image/character/noname_machao.png"
+  },
+  {
+    "sha256": "1618D106862A4F93F9713DD7F84B1C299BD062B4935A36DA3A2429259813D0FE",
+    "path": "image/character/noname_sunce.png"
+  },
+  {
+    "sha256": "4EB93F1836F4467A74E6F226BCE01EBE8D7B53E7E1A96D74827DA1A5783429C2",
+    "path": "image/character/sunluyu.jpg"
   },
   {
     "sha256": "CAFEE8DB0F295374D4EBCC5F0686A0BC59E14E2EEAC0161B99936DED6BE0DAE0",
@@ -88,55 +208,63 @@
     "path": "image/mode/boss/character/boss_mt_roxy.jpg"
   },
   {
-    "sha256": "0EC2D398BF9630E13D47DD2C192508E95ED89BAD4B29B24FDC5D6384298E4B52",
+    "sha256": "79493E2428B5B84E92188645285F8373F51684F651FE0E3DAE97879B94334DE7",
     "path": "index.html"
   },
   {
-    "sha256": "A00AE86F56E872D72CC34C7B914BAE433C6BEB20896DFB61355B55F2C5AEE6CB",
+    "sha256": "23C0CB85EA0892CA9ADEA24FF6D09A070C473DA6DE8D2DFEB25F8231849B42EF",
     "path": "layout/default/accessibility.css"
   },
   {
-    "sha256": "B542402A4841E8916173630CC71EA0DFD06AE781862269F5C95F09EFE7F17428",
+    "sha256": "9FE0AE35587476BA37AB6F4C125AAAEEA260459779E9BBB04AD7E18607778343",
+    "path": "mode/identity.js"
+  },
+  {
+    "sha256": "42E8C195112C8963E7A70001A1D93F7756E0A76A67657D1C1D6E7415D4B1768C",
     "path": "noname/init/index.js"
   },
   {
-    "sha256": "0B8CAEA1581DD6A6B89D5184A32D2882BC341B63ECF933EC919155EBEC9ABA80",
+    "sha256": "A49C7E0EE9A62556FE8B94685B6BB71C7F02EF3F696EEF7EFBC49B3BB54FD5D4",
     "path": "noname/init/mushoku-alucard.js"
   },
   {
-    "sha256": "1A538437F8BC2CF6DA054A0D4E4ECFF24EE81E27BA4DB4F214F2EE2C9A601DF1",
+    "sha256": "4E968D6C53743435AEADCE976D65EBAEF8F5993D1094AA95FFD7061BB77BFE2F",
     "path": "noname/init/mushoku-boss.js"
   },
   {
-    "sha256": "6AB50FEDDFEC22BBDAD7E2CE34E5BCE361EE2DDB67712110D2D1DF2D69A60A7A",
+    "sha256": "012B867B0C41AF8294292FFC29F1E8866E98CA8881A5039A98A1179BF738E500",
     "path": "noname/init/mushoku-characters.js"
   },
   {
-    "sha256": "E5366CBA49EADC7E754EE6EC020A1CE03E551E5371302C35333096474D7704BF",
+    "sha256": "CE52C311CFB227BF943C14D966835EFFF6E6689DC746B6DA9D22F9EDFB8A7F01",
     "path": "noname/init/mushoku-compatibility.js"
   },
   {
-    "sha256": "2BFC58FBBFDD65B1238479122666EC343BAB48C024219F85FA4F9D5D7336FFBC",
+    "sha256": "A3B78C1259FD6E17E1C41792980FCA915671ADE3A73AD39DB5556FCC94226AC5",
     "path": "noname/init/mushoku-online-modes.js"
   },
   {
-    "sha256": "95D985A12061E745BC3A35C20A63FEE3185D0FBB996E5104E8C4468CC0E8CEF0",
+    "sha256": "974E201BA0910168731242C853B6AAA12FB6BA03D9B5C2C7F33FFF9C19F05EBB",
     "path": "noname/init/mushoku-online.js"
   },
   {
-    "sha256": "7E7242A1954D2C9D8F7B28903825AFE40DE4FFCA682CA8685197A3367F014664",
+    "sha256": "0D7E2507D9E4081C97112A7C0228A5A264E9E869C8C7632A7B47444C281CD2E8",
     "path": "noname/init/mushoku-rosters.js"
   },
   {
-    "sha256": "1E021B4A56E8691ABA865B784DDB4AD37D4DB3F923EF6766FEB17F8A243ACE70",
+    "sha256": "0C470CC9BA1B931DCC0A29530302DB67BC81173923E9F40B82A73F782659F4C4",
+    "path": "noname/init/polyfill.js"
+  },
+  {
+    "sha256": "EB74BBA7B32AFE81E76A80BAD1B1CA30A25133B3D990B9E5BBDEE25E42E250A5",
     "path": "noname/library/index.js"
   },
   {
-    "sha256": "906AB1349A698673139E69D800AE5190A8AAD6AF6C3E76E8472B0F2F88730FEB",
+    "sha256": "551C85FBDEA88C61F5AD89EE9A1792E85FB719C6A70FCCC1DA34A73CFF5524A5",
     "path": "noname/ui/click/index.js"
   },
   {
-    "sha256": "D76504CCED7A77FA9C4232F4EBB916282B66F9F5D9CD40179BE0DD5442B96534",
+    "sha256": "58697715F5FB3D60B77CAE2E3C125EB1E897DBD9332275B72C0CD40DF011D939",
     "path": "noname/ui/create/index.js"
   },
   {
@@ -148,7 +276,7 @@
     "path": "noname/ui/create/menu/pages/startMenu.js"
   },
   {
-    "sha256": "25766E89E8182B969443C39988B45B69B551E8907982CE49DE1E122DB3A275B9",
+    "sha256": "1A7A045B6543849FBEEEC327982569383D2BFA68E7DD799B29A050D006D2092C",
     "path": "noname/ui/mobile-accessibility.js"
   },
   {
@@ -160,7 +288,7 @@
     "path": "src/character/ai/index.js"
   },
   {
-    "sha256": "B1FC8C2DA74773100F33C07DC8DC9B80B753AC33C71E1AB643A5108C10B9FA05",
+    "sha256": "D8B8BB0884898CC31C2C1D0560B9012ED637F78330A6A111FADD22467C76912E",
     "path": "src/character/ai/mechanics.js"
   },
   {
@@ -168,24 +296,460 @@
     "path": "src/character/ai/skill.js"
   },
   {
-    "sha256": "53FDAE05FB2A26F871143DB368EBCA8AFF8920B8CC9500403181E551864948AB",
+    "sha256": "83541BFE203928E726B7584F9408E123DF5FD22CA8A9B3E8FE3FDB05C5BA8D31",
     "path": "src/character/ai/translate.js"
+  },
+  {
+    "sha256": "68FA9CBD70F09CEEF0ED0192D491D99B0AD3B6980E14BC392EC8E506A60B796E",
+    "path": "src/character/bingshi/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/bingshi/character.js"
+  },
+  {
+    "sha256": "9F8434483B6E947B0A59A8DF0C4B1D30FE3BF53863E966C3C48636E63129AFAA",
+    "path": "src/character/bingshi/characterFilter.js"
+  },
+  {
+    "sha256": "DFAF430665E7CEEB182376AE3062845170002BE23A7F99C22A09B3138E296067",
+    "path": "src/character/bingshi/characterTitle.js"
+  },
+  {
+    "sha256": "B0D37581AF5731F2DAE70C26ED9EB3ACE2E228C8B24E673F01236ABF77493FC2",
+    "path": "src/character/bingshi/dynamicTranslate.js"
+  },
+  {
+    "sha256": "7E06F88E5CA36CBC85C585BC3926A0A8E91F04C820B2AA7DF9902528FF30FF12",
+    "path": "src/character/bingshi/index.js"
+  },
+  {
+    "sha256": "2D0C6B41E87472E05924C4804F4C0008D9C4594B98619013344A762288703646",
+    "path": "src/character/bingshi/intro.js"
+  },
+  {
+    "sha256": "3D94D4DE2580AE6B4467816A186B4474AC3D13C612E0EE0BB823B1017D566799",
+    "path": "src/character/bingshi/perfectPairs.js"
+  },
+  {
+    "sha256": "3D3874473A0B6057F5E165EB1BD484A05E79429EB8E66CFFD95BF54A2545155C",
+    "path": "src/character/bingshi/pinyin.js"
+  },
+  {
+    "sha256": "39E16F5C8D4316B536A1C2C29BF9A8185820102E2562BC29228A9574474877D5",
+    "path": "src/character/bingshi/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/bingshi/sort.js"
+  },
+  {
+    "sha256": "23B5E0DDE06C4F9D525CAB0ECA262C2DD404EC44C2AC85717B670E2A8E26101D",
+    "path": "src/character/bingshi/translate.js"
+  },
+  {
+    "sha256": "ED3B5D3ABBA15F5615CF65235A13B05B4307C5BF13E3AAC1EF29ED8C1EA82030",
+    "path": "src/character/bingshi/voices.js"
+  },
+  {
+    "sha256": "E5F88330368F7C21D8CE53A349A5E1B8A9EBC2567E1CA51C65556D22541D7B0D",
+    "path": "src/character/clan/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/clan/character.js"
+  },
+  {
+    "sha256": "9F8434483B6E947B0A59A8DF0C4B1D30FE3BF53863E966C3C48636E63129AFAA",
+    "path": "src/character/clan/characterFilter.js"
+  },
+  {
+    "sha256": "73D862B449FE870EA2B6D6A2F163F35B685DD6C3B4FA4B72B272C5D85EC7F7EA",
+    "path": "src/character/clan/characterTitle.js"
+  },
+  {
+    "sha256": "7F90008CB102C04A6C42FAA323E952E9D7ABDD776E2DD715C24AF4480AF89D20",
+    "path": "src/character/clan/dynamicTranslate.js"
+  },
+  {
+    "sha256": "A23AE9979843C90DA39EEFECE76178D6D5BFED1D7DB4F9C82C7BF3A7E0E69492",
+    "path": "src/character/clan/index.js"
+  },
+  {
+    "sha256": "CB7194F1CB0C8A9BFAC02E52E0C779885D75EAACBF84FF5E624F808D95625CAE",
+    "path": "src/character/clan/intro.js"
+  },
+  {
+    "sha256": "3D3874473A0B6057F5E165EB1BD484A05E79429EB8E66CFFD95BF54A2545155C",
+    "path": "src/character/clan/pinyin.js"
+  },
+  {
+    "sha256": "ABAF36F4A7AFD00C1DF2C6A7E873932684D3E2E6E162AB2B1361C6562142CF92",
+    "path": "src/character/clan/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/clan/sort.js"
+  },
+  {
+    "sha256": "D5DEAA6E65E7167E564DA03417D38BA27E89C8B15856E4F3FDF357AD5BD07B3B",
+    "path": "src/character/clan/translate.js"
+  },
+  {
+    "sha256": "B1952ED0817911D8BDC1571C65FF9C7B5F0F37B22F2688D32058E6D8E976248A",
+    "path": "src/character/clan/voices.js"
+  },
+  {
+    "sha256": "3F5EA3781C9EA6B6F92A4BA9769E83F807C6E27888A52FEB93857AE8940EBAE7",
+    "path": "src/character/collab/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/collab/character.js"
+  },
+  {
+    "sha256": "169D550A3FEE81E695488CB32C1EF8639EC37DB86E9BFEAF04BA729C8193A33B",
+    "path": "src/character/collab/characterFilter.js"
+  },
+  {
+    "sha256": "44E876A9FFDA01B9A084DB4A339ECC3659ECD75B55EE356B7209EF6ABBF3A2A0",
+    "path": "src/character/collab/characterTitle.js"
+  },
+  {
+    "sha256": "8FC9A11D22DEE682BFB1A9826C9EE5EBCC1749E3564360AE4B55989FDBB4AAB7",
+    "path": "src/character/collab/dynamicTranslate.js"
+  },
+  {
+    "sha256": "D25333504464EFA6D3F42D9F01AD02E98850FE2767ADDD9A502890DA03684FB5",
+    "path": "src/character/collab/index.js"
+  },
+  {
+    "sha256": "02AA6B2BD4D60A73702566CD4FFBBFA50BA0BA6328CD5DEF2636F12ED19A82CA",
+    "path": "src/character/collab/intro.js"
+  },
+  {
+    "sha256": "4DB16F43103E9590DEE3022715B9CA6B143CB8F3DA59581603400D4F420BD2DF",
+    "path": "src/character/collab/pinyin.js"
+  },
+  {
+    "sha256": "408FA68F30BD6D9431217465E5036385917B7DF0B8DDCB29EB3D85F04B3C58FC",
+    "path": "src/character/collab/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/collab/sort.js"
+  },
+  {
+    "sha256": "0D48B0E865CFBE794E4A5B8CA6E03DAA9D6FCD8ADA7190274B32DBB5CE672F15",
+    "path": "src/character/collab/translate.js"
+  },
+  {
+    "sha256": "3D0A269D47F929780FD0149EDB5F37B47DC8272A8FC75DA59BBE098FDC5D321A",
+    "path": "src/character/collab/voices.js"
+  },
+  {
+    "sha256": "9FC2D99661A99544ED60F5D0738F6467D0469EA0983945A6112A9ED4378B4B2A",
+    "path": "src/character/diy/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/diy/character.js"
+  },
+  {
+    "sha256": "6C9DC9A71049BD9FD7937AADEACFB3A7471829864454E5192DF7DDCEBFDBBB8A",
+    "path": "src/character/diy/characterFilter.js"
+  },
+  {
+    "sha256": "E43583FB0BF0E6F686C3F84EB46F7FA7E906273405D6EABD30B35EDB318ACFD0",
+    "path": "src/character/diy/characterTitles.js"
+  },
+  {
+    "sha256": "126CF880FBB4D7327B6DF78E5179349074E77B92A83C34CDD75B95DBC2EE5CA3",
+    "path": "src/character/diy/dynamicTranslate.js"
+  },
+  {
+    "sha256": "7E43C1FFAB98B989B5D9CEDC52E1D2603B635A29D289445A8A085AD3710B5393",
+    "path": "src/character/diy/index.js"
+  },
+  {
+    "sha256": "A5B3B64F21AA86F60C03D5568BD074258AA4280791FE0B5FAF45FE8326120FD6",
+    "path": "src/character/diy/intro.js"
+  },
+  {
+    "sha256": "3D94D4DE2580AE6B4467816A186B4474AC3D13C612E0EE0BB823B1017D566799",
+    "path": "src/character/diy/perfectPairs.js"
+  },
+  {
+    "sha256": "3D3874473A0B6057F5E165EB1BD484A05E79429EB8E66CFFD95BF54A2545155C",
+    "path": "src/character/diy/pinyin.js"
+  },
+  {
+    "sha256": "B78AD0C6A311041D5BB95238FAF927A0259C157895DD1EACC173CCD92619F0F0",
+    "path": "src/character/diy/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/diy/sort.js"
+  },
+  {
+    "sha256": "B244E92988CC2BB353D9F4E75FF79A95C4217DA84CF83C85E69BBAEE6B503884",
+    "path": "src/character/diy/translate.js"
+  },
+  {
+    "sha256": "3D94D4DE2580AE6B4467816A186B4474AC3D13C612E0EE0BB823B1017D566799",
+    "path": "src/character/diy/voices.js"
+  },
+  {
+    "sha256": "85EC3AE3D686184144D49D17C78FFF2F8F9A9B05D6E26E2914A69B36A4CB1BE5",
+    "path": "src/character/extra/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/extra/character.js"
+  },
+  {
+    "sha256": "F3D7465230D1A225726058753EBF7B1FBFD884F54A5F60FCA3B435A50FD98D06",
+    "path": "src/character/extra/characterFilter.js"
+  },
+  {
+    "sha256": "23269085386D064765B844FDC5DC1066471C0855118E8B58BFC721F8A282AD65",
+    "path": "src/character/extra/characterTitle.js"
+  },
+  {
+    "sha256": "58240F973B2AFBA77D31590F01DA5D516A4F0998CB25C795DF6D2E37E14A58ED",
+    "path": "src/character/extra/dynamicTranslate.js"
+  },
+  {
+    "sha256": "C3815069CFEB51154732DD0FEB3C0AC6FE8C1FA49FE01304AAE3726B98EED87A",
+    "path": "src/character/extra/index.js"
+  },
+  {
+    "sha256": "2553EA5C61CEA4FA58B5D307C2689413541A235EAAEF046121835BAA6659DE08",
+    "path": "src/character/extra/intro.js"
+  },
+  {
+    "sha256": "3D3874473A0B6057F5E165EB1BD484A05E79429EB8E66CFFD95BF54A2545155C",
+    "path": "src/character/extra/pinyin.js"
+  },
+  {
+    "sha256": "491E868A0C6BAE64F09B092439A10F7F9CAC811E670E4E122FDEC7FC12F0C0C7",
+    "path": "src/character/extra/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/extra/sort.js"
+  },
+  {
+    "sha256": "8FE85F53E2103AC98FD529662D8ACD85CE3FBDB89DEC7D5DCC89D86569BBEF5A",
+    "path": "src/character/extra/translate.js"
+  },
+  {
+    "sha256": "394434BB4598F90560780135F6C08EF884228588C78684D65F970E6E89530E2E",
+    "path": "src/character/extra/voices.js"
+  },
+  {
+    "sha256": "68FA9CBD70F09CEEF0ED0192D491D99B0AD3B6980E14BC392EC8E506A60B796E",
+    "path": "src/character/huicui/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/huicui/character.js"
+  },
+  {
+    "sha256": "9F8434483B6E947B0A59A8DF0C4B1D30FE3BF53863E966C3C48636E63129AFAA",
+    "path": "src/character/huicui/characterFilter.js"
+  },
+  {
+    "sha256": "CAEE432BDAE956A4D60B1A8FE713D4AE422F85A90DEC43D3FA350D5DC79D8C62",
+    "path": "src/character/huicui/characterTitle.js"
+  },
+  {
+    "sha256": "21007647C1BEDA3FE87ADE1B3F6CB36C67E05DAC85033E27780A91462A72C547",
+    "path": "src/character/huicui/dynamicTranslate.js"
+  },
+  {
+    "sha256": "99A260DDF61E7B965022D0D96E469D1142F64D63F7B9AE8A0CE21A9495FBDF91",
+    "path": "src/character/huicui/index.js"
+  },
+  {
+    "sha256": "93964412CD5CC251E3C1697914C6642C2A0E68DDBE3527A12EBD7ABFF6B72BBD",
+    "path": "src/character/huicui/intro.js"
+  },
+  {
+    "sha256": "3D3874473A0B6057F5E165EB1BD484A05E79429EB8E66CFFD95BF54A2545155C",
+    "path": "src/character/huicui/pinyin.js"
+  },
+  {
+    "sha256": "DA2DE685B5614B4D370DFD1639616116843DAC70CA9988F9A0A1CED66354509E",
+    "path": "src/character/huicui/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/huicui/sort.js"
+  },
+  {
+    "sha256": "525D19A929073A0AE8C62694BE97FD152122603CCD298265B3841A38866775A4",
+    "path": "src/character/huicui/translate.js"
+  },
+  {
+    "sha256": "916CA82D77FA6F17E79CED4C3EF80FF1666B743AA037CE2CE9D3A1D17870F841",
+    "path": "src/character/huicui/voices.js"
+  },
+  {
+    "sha256": "28BB2865238FFF4C9CBEEAFF7F1D7EABD52A795AEDAC772D3A33C6E9F64DE3B8",
+    "path": "src/character/jsrg/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/jsrg/character.js"
+  },
+  {
+    "sha256": "4753609AEEF76E61B54F384489EFB11E37A3F5BE5344F1F659F13C5BAD83B7F9",
+    "path": "src/character/jsrg/characterFilter.js"
+  },
+  {
+    "sha256": "AD8E7302D9E674BE8E2C0B6D0A9F128ECFE23E4580583FECE19DE091457F403F",
+    "path": "src/character/jsrg/characterTitle.js"
+  },
+  {
+    "sha256": "B9D5C2616C2811DFD86D2F0EA09E119ACF481A6AD6ABB194BA5A64F8FE272CAB",
+    "path": "src/character/jsrg/dynamicTranslate.js"
+  },
+  {
+    "sha256": "4CD18EF6C18206A9EC9DDDFA24F2E7D8F25E36D8E248FC49ED21874B1A84CB35",
+    "path": "src/character/jsrg/index.js"
+  },
+  {
+    "sha256": "8FC1FD8DFD8C994D885B02F1AA8DC9747653037F4CFD5895A27B9DD59E5EC371",
+    "path": "src/character/jsrg/intro.js"
+  },
+  {
+    "sha256": "3D3874473A0B6057F5E165EB1BD484A05E79429EB8E66CFFD95BF54A2545155C",
+    "path": "src/character/jsrg/pinyin.js"
+  },
+  {
+    "sha256": "80CE8C8785C5718CE1F13056148FA7BA3A773646E7A8E45A85DB7326F1D287FC",
+    "path": "src/character/jsrg/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/jsrg/sort.js"
+  },
+  {
+    "sha256": "914C12DDD1D902046EEE29349C969073738B5E04F9C5F859D01BCE061B4E3684",
+    "path": "src/character/jsrg/translate.js"
+  },
+  {
+    "sha256": "0EEE90F2D3CDB4EC25200D0A66E51A6F642E02A0EC39A82C950310597389A992",
+    "path": "src/character/jsrg/voices.js"
+  },
+  {
+    "sha256": "D9DCDB450904585CE7411310890C3C462F7231C872C8355A4AC1141CC21FD1E9",
+    "path": "src/character/key/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/key/character.js"
+  },
+  {
+    "sha256": "F57003F411169F875ACD03316585BBAA01A854FCC09B0D9A74F75F69CBF9C4E6",
+    "path": "src/character/key/index.js"
+  },
+  {
+    "sha256": "7412641B68B76BB74BF5EF3072835B022525C7CB3123C56CACFB990291A49F69",
+    "path": "src/character/key/pinyin.js"
+  },
+  {
+    "sha256": "9161CE9CE6E6EB9ADEEC27DF55F8FD5AD90FE1E064D4C11B90FEF253DF91B160",
+    "path": "src/character/key/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/key/sort.js"
+  },
+  {
+    "sha256": "54F4DB788695590EDA46061B691B82436D3A8C45043BD9785D4F47914DB7DF2B",
+    "path": "src/character/key/translate.js"
+  },
+  {
+    "sha256": "CDEBDF39CFF9F3D7554BD80B85E4BD2C8713458FF8BF79375E9D5EC5A26E9051",
+    "path": "src/character/key/voices.js"
   },
   {
     "sha256": "9AF8B226AE01F6F6341C7FB089DB131178A180DED2A57D25A8DF8CE741708E1C",
     "path": "src/character/minecraft/character.js"
   },
   {
-    "sha256": "511C1A71FD1CF24531F7695EF815266DB99D424ED0CBF43E0F1C42D4BE4624AA",
+    "sha256": "7020A898487552800626F170BE2AB86B1460DD15F5247AB94A8C203FCCBE7527",
     "path": "src/character/minecraft/index.js"
   },
   {
-    "sha256": "831F7CFEB058B42F35710D4BC826E81499FB5ECF8A10E2416268B8B041F3099F",
+    "sha256": "23169135EEEA81798DEB434858AEE1F892DB1A45F8861010DC1C5CC31ECD924F",
     "path": "src/character/minecraft/skill.js"
   },
   {
-    "sha256": "8F3C2D032B3DB27DFA7E0040E353A908CB11B1866296372E421F7CFA62767FCC",
+    "sha256": "EC6C4C100041C2D865B1637A0B8580AF50B746085E45FCB734414A75D4C759AE",
     "path": "src/character/minecraft/translate.js"
+  },
+  {
+    "sha256": "7CA1E3287C973140670AB48C8F9565E9E2394413B1B83464956B8395F90E462F",
+    "path": "src/character/mobile/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/mobile/character.js"
+  },
+  {
+    "sha256": "D7721334BA1DFFFAF5A132518583CB985A0199637D6A8B0C79EEF43DBD2B5424",
+    "path": "src/character/mobile/characterFilter.js"
+  },
+  {
+    "sha256": "B9D54DA1FB48ADF0E0D3A75FEA962B7ACD890622AA3E86D31A41B1EAF6AE077D",
+    "path": "src/character/mobile/characterTitle.js"
+  },
+  {
+    "sha256": "8DD62C349A854024A69182BA54C77E203688260B51D88770A2379123130124A4",
+    "path": "src/character/mobile/dynamicTranslate.js"
+  },
+  {
+    "sha256": "FE407832332F5E22D12E484FBA994B870296F5A7ADF63E723278D9803AE0C8BD",
+    "path": "src/character/mobile/index.js"
+  },
+  {
+    "sha256": "9966CAFCEB915F5C1008EEC35EADFB586A4246B842256BE1D5C1B0F02407869D",
+    "path": "src/character/mobile/intro.js"
+  },
+  {
+    "sha256": "3D94D4DE2580AE6B4467816A186B4474AC3D13C612E0EE0BB823B1017D566799",
+    "path": "src/character/mobile/perfectPairs.js"
+  },
+  {
+    "sha256": "3D3874473A0B6057F5E165EB1BD484A05E79429EB8E66CFFD95BF54A2545155C",
+    "path": "src/character/mobile/pinyin.js"
+  },
+  {
+    "sha256": "71614573E3EE47CBC6A607B293267B85146A20B9956D4D653456B8CB345D066D",
+    "path": "src/character/mobile/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/mobile/sort.js"
+  },
+  {
+    "sha256": "3B75ADC0EA300E7421B34207E540F7049D715FB401DF628937E913D7936C6114",
+    "path": "src/character/mobile/translate.js"
+  },
+  {
+    "sha256": "8B43E5BF2B0B0C7CE922671A39291742A202F17F6054984D296A518AE1436B54",
+    "path": "src/character/mobile/voices.js"
+  },
+  {
+    "sha256": "F659BFCAFDDC9CECE836AADECD4D90C9BE9641F09CFE79888B513BC822F48313",
+    "path": "src/character/modern/character.js"
+  },
+  {
+    "sha256": "2C12BF46BBB31D725AC858868753D0AF1B3E2C06A59368858CE39BA34E9B55A8",
+    "path": "src/character/modern/index.js"
   },
   {
     "sha256": "6F45581389C53326004892A32A70F60C8E715D117F877DCB49DFC1E305B0A7C9",
@@ -196,19 +760,19 @@
     "path": "src/character/mushoku/crossover.js"
   },
   {
-    "sha256": "91275DF8C620B9007044163B92FB92F5D8B33F5E529A27144983FF6C2BBDD975",
+    "sha256": "C6BFAD10DC38B8427FE6EFE6FA95BBD5194B7663CE77888C32CCCE845CF895AA",
     "path": "src/character/mushoku/expansion-translate.js"
   },
   {
-    "sha256": "F83F74F893CF486A974C06DF6AB87E143D8A7E557712EB68159B87E8236C42E4",
+    "sha256": "A6B72F27893879936E4223D22A0FE7A30E62895367158703C2314B2D4741679B",
     "path": "src/character/mushoku/expansion.js"
   },
   {
-    "sha256": "402DBCD71735F77A4F1A77FBF2B2BAB72750EDF8202A7076E9DE93308A53C6F2",
+    "sha256": "44C7902CDAE1DF396663D94ED3F730FA0CBCA9229F99338E9ED0F0EE7A0DA0C4",
     "path": "src/character/mushoku/index.js"
   },
   {
-    "sha256": "64A59BE44FAD8B2BC61B2953DAA8D4084F43478B113D904B635160C59D29C2D1",
+    "sha256": "047292D0510DC7344E87BBFAD7BB73430181018E8E299636788C22A71AA8502C",
     "path": "src/character/mushoku/intro.js"
   },
   {
@@ -216,55 +780,1099 @@
     "path": "src/character/mushoku/mokou.js"
   },
   {
-    "sha256": "63448E539B53A7DE23A1DCBD17FA43DADFDDA7D23AEDD80DE6400A8292D07A08",
+    "sha256": "4255476F9168BD203C11154CDC4DEFCF673344B68A20541F413A84EEC0E3E286",
+    "path": "src/character/mushoku/roxy.js"
+  },
+  {
+    "sha256": "ABD8EC74D206C44F72D98AF4308C67DAD14BA7865A9E6458A2C0A5E74C5E712D",
+    "path": "src/character/mushoku/sixteen.js"
+  },
+  {
+    "sha256": "9EAA049C78BF601E84ACC4CAE9717176046957A397BA488F2667E8D819BEE990",
     "path": "src/character/mushoku/skill.js"
   },
   {
-    "sha256": "5940A8CF93951F3A2AFE7EC4C9650DDEB89FBA026CE99C8A6CA54E4B1DCA2767",
+    "sha256": "319672AD23977AAEA86B15725D377C5E035AF60E0A6AECD4EE9B9B6019314419",
     "path": "src/character/mushoku/translate.js"
   },
   {
-    "sha256": "2492E8E106420A8AA69B3110D55E33FD6F5B36D4152E14B369531FD63CAEC795",
+    "sha256": "C87E0B0852FC18E88BDD13868137D3E13A6980A21D4D9E5BA1524A6ED9B96387",
+    "path": "src/character/newjiang/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/newjiang/character.js"
+  },
+  {
+    "sha256": "9F8434483B6E947B0A59A8DF0C4B1D30FE3BF53863E966C3C48636E63129AFAA",
+    "path": "src/character/newjiang/characterFilter.js"
+  },
+  {
+    "sha256": "206AF4B22E7AF21CB7140A3CD3B6FEBA9ACD311EA31DC1F30C48886F4515707C",
+    "path": "src/character/newjiang/characterTitle.js"
+  },
+  {
+    "sha256": "97DC2B133858615B850505726AB82528DB88B342568F004B34A43F97F0BAA44A",
+    "path": "src/character/newjiang/dynamicTranslate.js"
+  },
+  {
+    "sha256": "D1480293BA3A4B92A5105FA9BDA57CAB44A42A43838F9CEEFAE37599B28491B1",
+    "path": "src/character/newjiang/index.js"
+  },
+  {
+    "sha256": "A66E3692C588A218F5B80F20F5A2C969CB6B623CF5EF91D0C9CF16F4B2D3873B",
+    "path": "src/character/newjiang/intro.js"
+  },
+  {
+    "sha256": "3D94D4DE2580AE6B4467816A186B4474AC3D13C612E0EE0BB823B1017D566799",
+    "path": "src/character/newjiang/perfectPairs.js"
+  },
+  {
+    "sha256": "3D3874473A0B6057F5E165EB1BD484A05E79429EB8E66CFFD95BF54A2545155C",
+    "path": "src/character/newjiang/pinyin.js"
+  },
+  {
+    "sha256": "03F604C3F082CAD22B3C3AB23F8E1EB5D21857E71B954AAAA2DE71B17BC2903B",
+    "path": "src/character/newjiang/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/newjiang/sort.js"
+  },
+  {
+    "sha256": "4D8478C7D3E29F8F40B2A6C6E500FFE26E28DB45BBAEF169C0D0A3D6BF0B1B9A",
+    "path": "src/character/newjiang/translate.js"
+  },
+  {
+    "sha256": "63B041F5F00E54F133C7B5EBDAE6389D83A7D8B0424B4DF96DBC60F5BA7B4A5A",
+    "path": "src/character/newjiang/voices.js"
+  },
+  {
+    "sha256": "48A6B2F9B1F9A8787B8C89BE743CFA2E1DDFFF1417386B80D28AE3EFB4E934A2",
+    "path": "src/character/offline/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/offline/character.js"
+  },
+  {
+    "sha256": "7459852FD0A95F760080EA100EE9D695A8E4058DD7D98900C116E3E59E05FAD7",
+    "path": "src/character/offline/characterFilter.js"
+  },
+  {
+    "sha256": "88FB4FD7D7D9D23FAA478BDCE396ACA18C93E18F0F27131F8022548A8669BEEE",
+    "path": "src/character/offline/characterTitle.js"
+  },
+  {
+    "sha256": "8C9727E0739D83AC0EA8DD99C322FF3314D403CE5C56760D68E25C508F651B22",
+    "path": "src/character/offline/dynamicTranslate.js"
+  },
+  {
+    "sha256": "74E38372A81DC911108320399D4EB952E11797FF5F358DD6F135495FEBA5E195",
+    "path": "src/character/offline/index.js"
+  },
+  {
+    "sha256": "30A92E43768DD67D8BA92EE555E29FCBDB35C3DD3E546A07C3BBB28552ACBC96",
+    "path": "src/character/offline/intro.js"
+  },
+  {
+    "sha256": "3D3874473A0B6057F5E165EB1BD484A05E79429EB8E66CFFD95BF54A2545155C",
+    "path": "src/character/offline/pinyin.js"
+  },
+  {
+    "sha256": "A2A56AFC2254A002F7A5D608C8ABAA0D3E6ED4EFB57FAFD938B74D54BCA291AE",
+    "path": "src/character/offline/skill/extra_offline.js"
+  },
+  {
+    "sha256": "87ED49082400FA2DD23D93674E3DF001F94D354941D2ED097E75F1969ECE1CF0",
+    "path": "src/character/offline/skill/index.ts"
+  },
+  {
+    "sha256": "1239B154F4A0E9239D80E5401F516B66CAFC8ACBD587E65CADCC9E24E63E7064",
+    "path": "src/character/offline/skill/offline_Europe.js"
+  },
+  {
+    "sha256": "940D2C56F8835E8414CE4C7159EA243CE94B02D7621B9A42390785A0EEE7FAF9",
+    "path": "src/character/offline/skill/offline_changan.js"
+  },
+  {
+    "sha256": "1702C423B9D87FFFBDAB79E5DAA4CEDC04C70FC6621FC355C51FEE643397CCCB",
+    "path": "src/character/offline/skill/offline_chunqiu.js"
+  },
+  {
+    "sha256": "BA3E41FF4C05DFDCB52C8D9800545F0F433FF847FEB4FF09E73334975ADAF636",
+    "path": "src/character/offline/skill/offline_fengyun.js"
+  },
+  {
+    "sha256": "45879D1CD4904EFE49FFA9CC4E9EAEC4ACF01003ADA6C1FFCF317D659805092E",
+    "path": "src/character/offline/skill/offline_guansuo.js"
+  },
+  {
+    "sha256": "F244978924ED7F24FDC5DE868E2E0DFA8C421ECED08E62BE45EFBBAF976D42A5",
+    "path": "src/character/offline/skill/offline_hanmo.js"
+  },
+  {
+    "sha256": "BBD6C5B016834A0480C31B712D58C48AE7D8A0B0C9AB2C09FCFD1F0872B63E7B",
+    "path": "src/character/offline/skill/offline_jingxiang.js"
+  },
+  {
+    "sha256": "A829084F37D9499D2C467F2F40F30761A0150BA951E3800EC2952EB5C49AEEB6",
+    "path": "src/character/offline/skill/offline_jingyang.js"
+  },
+  {
+    "sha256": "25581D82CAF699ACCF18D12C693BC217BC34B4820229551669E7C5DE64B7E001",
+    "path": "src/character/offline/skill/offline_jiudin.js"
+  },
+  {
+    "sha256": "037717A4EC07515B8BA27591CB72E1B2800910F4D3282B64F131047281CB0387",
+    "path": "src/character/offline/skill/offline_juedai.js"
+  },
+  {
+    "sha256": "54D73CA0BAB08A1AF4A60B5A068D0534FBE69D9F7B0CB0724164FF9121FA35D6",
+    "path": "src/character/offline/skill/offline_longxuexuanhuang.js"
+  },
+  {
+    "sha256": "179A5DC89E57E107A6F446603DEAB3FC9191C63E67F5901DBE47B363519AA499",
+    "path": "src/character/offline/skill/offline_longyutao.js"
+  },
+  {
+    "sha256": "F3C2960DE8546982B8FAE6078A25976D8839F4AFEB69C11359A49253E7BB66C7",
+    "path": "src/character/offline/skill/offline_luanwu.js"
+  },
+  {
+    "sha256": "1BAC689BDF4C012AF0669E566B91B45728239FFD8B7D12C5F8F46553024824EC",
+    "path": "src/character/offline/skill/offline_piracyE.js"
+  },
+  {
+    "sha256": "DB787E2585696C00C614790428B437DE9225C81B7FC9C76E9A9CF7596D4160CD",
+    "path": "src/character/offline/skill/offline_piracyE_hl.js"
+  },
+  {
+    "sha256": "E4038F935A36DFCFE0CFBEF59DEE568F908D74DE8E1DBB0BF8B773AD6F6F46CB",
+    "path": "src/character/offline/skill/offline_piracyE_jb.js"
+  },
+  {
+    "sha256": "2ADC417AC09DF1FBCD7F8C5A09F60AD2897F9C00C298D464EC9EAB172154BF7B",
+    "path": "src/character/offline/skill/offline_piracyE_shenmo.js"
+  },
+  {
+    "sha256": "2B773A9C430E8E098CE0EE27FF6476A46FAB227B1C44E8BBB0D4A9999BA11F19",
+    "path": "src/character/offline/skill/offline_piracyE_xk.js"
+  },
+  {
+    "sha256": "83604C05F80EB85BC0F27FBB2450FF9CDBEA088C6F0985BC1781F3FE1CEEE819",
+    "path": "src/character/offline/skill/offline_piracyE_zy.js"
+  },
+  {
+    "sha256": "2BAEDF831B4AFD4DD76299B94FFAC94FA334176CDB2E745C84B198A4F14316C4",
+    "path": "src/character/offline/skill/offline_piracyK.js"
+  },
+  {
+    "sha256": "5345E8295663F2EF52E7E7AE94935047960023B7A1304211033E397AD4A9EDB9",
+    "path": "src/character/offline/skill/offline_piracyS.js"
+  },
+  {
+    "sha256": "A996F42748A40AC2B5AF87735CC1865FD6570A796049F0235DCFB00A583F848F",
+    "path": "src/character/offline/skill/offline_piracyS_shenmo.js"
+  },
+  {
+    "sha256": "BF346FAFFFDF47DF72C2E78D687A84666D6194C1E5D49961704AD2FC79129BFC",
+    "path": "src/character/offline/skill/offline_prettyDerby.js"
+  },
+  {
+    "sha256": "4C9B4E67E3EDB67336D28901AB6EAADD919F3D7EFB44FC4BA53C0E4B7CC35C0F",
+    "path": "src/character/offline/skill/offline_qingshi.js"
+  },
+  {
+    "sha256": "B7AC4A022AE50D079B1371204B00E35EB9F1B1D29812D9E3C0291C6EC9BEB7CE",
+    "path": "src/character/offline/skill/offline_scl.js"
+  },
+  {
+    "sha256": "48B5438E9BD0A4A1F42FBF62C49EB49CD022B9B7D4087A6AD98EDA4824FB3DB3",
+    "path": "src/character/offline/skill/offline_shichangshi.js"
+  },
+  {
+    "sha256": "62AE773736515C7C0F0F65AE25EAC35457A2DE18775A4E066555A06648F27E70",
+    "path": "src/character/offline/skill/offline_shiningGrils.js"
+  },
+  {
+    "sha256": "FB275BF68EAE875D5113DC969A7E092C5E82C87871F49B78461562A3C316AE51",
+    "path": "src/character/offline/skill/offline_star.js"
+  },
+  {
+    "sha256": "00A4E537EC7DC9F5566251406AAD9F9DAB62451F9E7470D55554B56A1E2FA22A",
+    "path": "src/character/offline/skill/offline_sticker.js"
+  },
+  {
+    "sha256": "FA9D7B3C97DC91FF8C3EA7CA9C81FF87F88BAC933B5339E2DD0F49C1F604668F",
+    "path": "src/character/offline/skill/offline_taoyuan.js"
+  },
+  {
+    "sha256": "2B7A49A0137E8BAEBFA69EE6880B0C660E38E31F6A4BEB98A9F52211C058A473",
+    "path": "src/character/offline/skill/offline_vtuber.js"
+  },
+  {
+    "sha256": "3E1DD6DBF043B93B5B7B8808C1F24E5B385975DD6190696C92A0FABEDB1CCEAE",
+    "path": "src/character/offline/skill/offline_weinan.js"
+  },
+  {
+    "sha256": "3ACD15EDC3B59485C0A2CF81322CF101A0A6CDC785255F140A954DB06A19A3AD",
+    "path": "src/character/offline/skill/offline_wenxindiaolong.js"
+  },
+  {
+    "sha256": "44242FDEE60B5E1B244D8AB1285E4C2CE713A0BEF8B8BE3E336BE0CEC2A77707",
+    "path": "src/character/offline/skill/offline_xy.js"
+  },
+  {
+    "sha256": "E8B109E635911713B85849E705AD4F937FCA4F5B0C6DBC0914C01FD89ACE039F",
+    "path": "src/character/offline/skill/offline_yanling.js"
+  },
+  {
+    "sha256": "C355B5299506D8BE69B813E1B9E7D8F77D36C7F492CC60058330D203C1386822",
+    "path": "src/character/offline/skill/offline_yanyou.js"
+  },
+  {
+    "sha256": "73717825DED2FB265C943C4B0790079E2AAF74D47423324EC6B5649E2F7738D7",
+    "path": "src/character/offline/skill/offline_yongjian.js"
+  },
+  {
+    "sha256": "1AC4A5ED31D04BA52FC07505CA4044303BE1204AD837195C6411B4B9232BE776",
+    "path": "src/character/offline/skill/offline_zc26.js"
+  },
+  {
+    "sha256": "198C58BA1CEAECAFBC59156F7F0E05D97B337C4800B682E0AEF1D3E2FE108EBC",
+    "path": "src/character/offline/skill/offline_zongheng.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/offline/sort.js"
+  },
+  {
+    "sha256": "3CA70712BFED91CEA6A0B9E4EBD364118F60AD7AE6B83A1FA8DD355B2E47EFE7",
+    "path": "src/character/offline/translate.js"
+  },
+  {
+    "sha256": "60E562AD5E39D9CEEB6C3F809475121C283E68C490A1B00B6BAEA48ECC3E7A4B",
+    "path": "src/character/offline/voices.js"
+  },
+  {
+    "sha256": "68FA9CBD70F09CEEF0ED0192D491D99B0AD3B6980E14BC392EC8E506A60B796E",
+    "path": "src/character/old/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/old/character.js"
+  },
+  {
+    "sha256": "9F8434483B6E947B0A59A8DF0C4B1D30FE3BF53863E966C3C48636E63129AFAA",
+    "path": "src/character/old/characterFilter.js"
+  },
+  {
+    "sha256": "6DF33699681CF9EFC30967A9F3EADD89703031E5CF0CFCB43389BF05701B1CA4",
+    "path": "src/character/old/characterTitle.js"
+  },
+  {
+    "sha256": "BDF81AFB77BD07D846902F311C96A5893A307FCDCF48B3E77A189E33419892DD",
+    "path": "src/character/old/dynamicTranslate.js"
+  },
+  {
+    "sha256": "96060B035923E8836CE5C4BB856DF12A07CAFC94F6EF24D8C99A9CEB5543070A",
+    "path": "src/character/old/index.js"
+  },
+  {
+    "sha256": "52DCE65C6F45DF32E111105C0D4790B76935346F191655C7DD76B54880E4095B",
+    "path": "src/character/old/intro.js"
+  },
+  {
+    "sha256": "3D3874473A0B6057F5E165EB1BD484A05E79429EB8E66CFFD95BF54A2545155C",
+    "path": "src/character/old/pinyin.js"
+  },
+  {
+    "sha256": "0509AC5C13B0E3B135940584922B6F6270CF3D6A7AE6FC453C5B602EDE29CBBF",
+    "path": "src/character/old/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/old/sort.js"
+  },
+  {
+    "sha256": "870EC9CEEF2C8BF5F3337AB62DEF4157A1206DAC37B3976295B92CC81EB06F0C",
+    "path": "src/character/old/translate.js"
+  },
+  {
+    "sha256": "83B4238F6144C1C24777AA6124A7D91030FB5BF940EDC8D3B560F8F57B9B4A67",
+    "path": "src/character/old/voices.js"
+  },
+  {
+    "sha256": "DF099EF4998EE13ED88EA1DEAE739F5AF88EC1FEF3C3C4C0006C1233B127CEF2",
+    "path": "src/character/onlyOL/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/onlyOL/character.js"
+  },
+  {
+    "sha256": "9F8434483B6E947B0A59A8DF0C4B1D30FE3BF53863E966C3C48636E63129AFAA",
+    "path": "src/character/onlyOL/characterFilter.js"
+  },
+  {
+    "sha256": "198E3F569941F27B2B7077A283DDD8D1AFDB3354210A708DB0B26D713F180FF8",
+    "path": "src/character/onlyOL/characterTitle.js"
+  },
+  {
+    "sha256": "7D9BF860797FE50D04698F1D30300043FCD2CEE8D44EC03A7D19D664B723B099",
+    "path": "src/character/onlyOL/dynamicTranslate.js"
+  },
+  {
+    "sha256": "0EA7B8DD4A0703149C54761BF85AEB1A545D734842612CDD64FA4ABD1A90AB86",
+    "path": "src/character/onlyOL/index.js"
+  },
+  {
+    "sha256": "52DCE65C6F45DF32E111105C0D4790B76935346F191655C7DD76B54880E4095B",
+    "path": "src/character/onlyOL/intro.js"
+  },
+  {
+    "sha256": "3D3874473A0B6057F5E165EB1BD484A05E79429EB8E66CFFD95BF54A2545155C",
+    "path": "src/character/onlyOL/pinyin.js"
+  },
+  {
+    "sha256": "41737551EE7CD25C52C2A8D61BA4878E9406908ED42AE22097480778054F7340",
+    "path": "src/character/onlyOL/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/onlyOL/sort.js"
+  },
+  {
+    "sha256": "75EFD2AE71AE2CC46508BE6EF6F3E70A61CF16C7EC544215FEC66226595CDE4E",
+    "path": "src/character/onlyOL/translate.js"
+  },
+  {
+    "sha256": "D82E9F572932AFA2C1120E6AFA5A8213FB2A36359F0AF8C43D5E2700FDBAFDF6",
+    "path": "src/character/onlyOL/voices.js"
+  },
+  {
+    "sha256": "68FA9CBD70F09CEEF0ED0192D491D99B0AD3B6980E14BC392EC8E506A60B796E",
+    "path": "src/character/refresh/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/refresh/character.js"
+  },
+  {
+    "sha256": "38C02676DD4D30CF58E5BF16B298143E357C746FECE3F15E6DCBF9D253A0C711",
+    "path": "src/character/refresh/characterFilter.js"
+  },
+  {
+    "sha256": "D93CED8D79C66134E3BBD2A8F026F1258C53DC7672B0D8A4DCAE3A3876D7A918",
+    "path": "src/character/refresh/characterTitle.js"
+  },
+  {
+    "sha256": "8493B292CBE7AA2422D4549C1EAD6D84C9815AEC846EAB3262D96E05F8AB2C7E",
+    "path": "src/character/refresh/dynamicTranslate.js"
+  },
+  {
+    "sha256": "C1BE72118B980D2DD752B49E6FE69BDA4F548EDDDAB657BE613E8F261D5EB0B0",
+    "path": "src/character/refresh/index.js"
+  },
+  {
+    "sha256": "BF540CB3A554FF46173D0327F32CD5C82CA2B39A730456AEFBD8A3C4C51422FF",
+    "path": "src/character/refresh/intro.js"
+  },
+  {
+    "sha256": "3D94D4DE2580AE6B4467816A186B4474AC3D13C612E0EE0BB823B1017D566799",
+    "path": "src/character/refresh/perfectPairs.js"
+  },
+  {
+    "sha256": "3D3874473A0B6057F5E165EB1BD484A05E79429EB8E66CFFD95BF54A2545155C",
+    "path": "src/character/refresh/pinyin.js"
+  },
+  {
+    "sha256": "C2D7CC8548FD93EAA7A119BFD1A2936638ECAEDD826F6D5CB60E871DE8DD279D",
+    "path": "src/character/refresh/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/refresh/sort.js"
+  },
+  {
+    "sha256": "1F1F73899F9E1B19373D584364D12C31E358680BB04B7CBAA6F3E27AF20305C2",
+    "path": "src/character/refresh/translate.js"
+  },
+  {
+    "sha256": "020F90C6A59B55D96DDA2D2F79128C7E105C387EF708F74240E45B90B55B3ABE",
+    "path": "src/character/refresh/voices.js"
+  },
+  {
+    "sha256": "68FA9CBD70F09CEEF0ED0192D491D99B0AD3B6980E14BC392EC8E506A60B796E",
+    "path": "src/character/sb/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/sb/character.js"
+  },
+  {
+    "sha256": "9F8434483B6E947B0A59A8DF0C4B1D30FE3BF53863E966C3C48636E63129AFAA",
+    "path": "src/character/sb/characterFilter.js"
+  },
+  {
+    "sha256": "FBF69F6C7E223C0CA025DA7A1B482178849F2F5A12B297FC43960176A8CF0285",
+    "path": "src/character/sb/characterTitle.js"
+  },
+  {
+    "sha256": "7D267AAE028ECA09F1DD016E78DF11FF61C115EE0E5E64E067A6B4E09696B003",
+    "path": "src/character/sb/dynamicTranslate.js"
+  },
+  {
+    "sha256": "FF95667D21DD0D83AEF2D2FD2EC886FA7C5553775D1B6F80060E00F8BCAB0D86",
+    "path": "src/character/sb/index.js"
+  },
+  {
+    "sha256": "25D82A0534250F791A3266D56318EE7178A181DC5FDA4CEC4841B80B783A7BA9",
+    "path": "src/character/sb/intro.js"
+  },
+  {
+    "sha256": "3D3874473A0B6057F5E165EB1BD484A05E79429EB8E66CFFD95BF54A2545155C",
+    "path": "src/character/sb/pinyin.js"
+  },
+  {
+    "sha256": "EAE05EB4B5635C9FFED50CA5E16DADCF4C8C53B3AD76F878D06E346A24B44D9F",
+    "path": "src/character/sb/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/sb/sort.js"
+  },
+  {
+    "sha256": "D4F2B4D9B449418924D2B9B548608B7DBAB2B708D87CC4E1291CA63FBD64E05A",
+    "path": "src/character/sb/translate.js"
+  },
+  {
+    "sha256": "27FE25EF6B06C3028845CDFFFA9A07A89D67E0217A72F70C97D38A1208234675",
+    "path": "src/character/sb/voices.js"
+  },
+  {
+    "sha256": "68FA9CBD70F09CEEF0ED0192D491D99B0AD3B6980E14BC392EC8E506A60B796E",
+    "path": "src/character/shenhua/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/shenhua/character.js"
+  },
+  {
+    "sha256": "7B32B71550DAB633B934B374C14E7B8283D0C0767870F877074AB0B2F4E250B5",
+    "path": "src/character/shenhua/characterFilter.js"
+  },
+  {
+    "sha256": "88FF2E9368C2FD3B00D76C7352C25724ECEEEC760D73340701C93F07ADA363B3",
+    "path": "src/character/shenhua/characterTitle.js"
+  },
+  {
+    "sha256": "FF193040CBB915530AF9F5C584892D678726CF2A4C27659FEA6D90E0A292EE76",
+    "path": "src/character/shenhua/dynamicTranslate.js"
+  },
+  {
+    "sha256": "EC6D11EAFF3C810C1923031475551DFA09595F4CC1AA20C113281550CF7F8637",
+    "path": "src/character/shenhua/index.js"
+  },
+  {
+    "sha256": "D114490FF7097F34D44197539720CB2DCE12F077E23EB4B41FE5FC315FA08CEA",
+    "path": "src/character/shenhua/intro.js"
+  },
+  {
+    "sha256": "3D94D4DE2580AE6B4467816A186B4474AC3D13C612E0EE0BB823B1017D566799",
+    "path": "src/character/shenhua/perfectPairs.js"
+  },
+  {
+    "sha256": "3D3874473A0B6057F5E165EB1BD484A05E79429EB8E66CFFD95BF54A2545155C",
+    "path": "src/character/shenhua/pinyin.js"
+  },
+  {
+    "sha256": "727007A513746B9B134C36A6CC1290C1E7DF63416AB5012F0BDF585CB4185394",
+    "path": "src/character/shenhua/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/shenhua/sort.js"
+  },
+  {
+    "sha256": "2293783162D620E5A696224B7F9C24BD1B26320DF15597E508C819C6B69777F1",
+    "path": "src/character/shenhua/translate.js"
+  },
+  {
+    "sha256": "2BD4B7B23BD5745D95EF354B488CE314F4571FDC3AEA04D856B2C24CA5D7F2D6",
+    "path": "src/character/shenhua/voices.js"
+  },
+  {
+    "sha256": "79D3C8C403AAE07566EC8875F59E58E2D7E348952270071F751FAE2CFDDC1120",
+    "path": "src/character/shiji/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/shiji/character.js"
+  },
+  {
+    "sha256": "9F8434483B6E947B0A59A8DF0C4B1D30FE3BF53863E966C3C48636E63129AFAA",
+    "path": "src/character/shiji/characterFilter.js"
+  },
+  {
+    "sha256": "75C272869C9CA02B1A81898C99F9CF41B76892C23170D9231B900CF723243257",
+    "path": "src/character/shiji/characterTitle.js"
+  },
+  {
+    "sha256": "35BE6C7C54B1E4B9892D358213EA7814A1CE21DD39DB44EBA7E109D06DE83CC4",
+    "path": "src/character/shiji/dynamicTranslate.js"
+  },
+  {
+    "sha256": "C72B2BB550635CFDCB09300918AD71CC5B674BE3D6714CA9733D1574CF3E5498",
+    "path": "src/character/shiji/index.js"
+  },
+  {
+    "sha256": "E0FFA06311CA0B7DD015A2F850582972AA303FBE3886FEC41128153DA1F50DC8",
+    "path": "src/character/shiji/intro.js"
+  },
+  {
+    "sha256": "3D94D4DE2580AE6B4467816A186B4474AC3D13C612E0EE0BB823B1017D566799",
+    "path": "src/character/shiji/perfectPairs.js"
+  },
+  {
+    "sha256": "3D3874473A0B6057F5E165EB1BD484A05E79429EB8E66CFFD95BF54A2545155C",
+    "path": "src/character/shiji/pinyin.js"
+  },
+  {
+    "sha256": "E43B885AE6212230E2478AF74DF431070C28151FFE88F9BE3F2F9C101FFEC096",
+    "path": "src/character/shiji/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/shiji/sort.js"
+  },
+  {
+    "sha256": "904F8EB23D34E726944D6ABB8F7691925828C1690C92EDAE9BD3CE7C7AEC6B77",
+    "path": "src/character/shiji/translate.js"
+  },
+  {
+    "sha256": "7FB35D4CB6AE741EF4AC2AC990F51D138A7B8DA62F107B7B99C1BC2139A2E14A",
+    "path": "src/character/shiji/voices.js"
+  },
+  {
+    "sha256": "4B4B143038FADF18716C1216270FDD123D0310F868C53C634DEE526EF609FE03",
+    "path": "src/character/sixiang/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/sixiang/character.js"
+  },
+  {
+    "sha256": "9F8434483B6E947B0A59A8DF0C4B1D30FE3BF53863E966C3C48636E63129AFAA",
+    "path": "src/character/sixiang/characterFilter.js"
+  },
+  {
+    "sha256": "0DBC76D1E760A6628DC2AC133BFD27A77E5B7A35A4042D24D9DC61AB03D803C2",
+    "path": "src/character/sixiang/characterTitle.js"
+  },
+  {
+    "sha256": "020D36DA3E24142E5C602E910665F8346A400927183C78D3E472385113BBBB79",
+    "path": "src/character/sixiang/dynamicTranslate.js"
+  },
+  {
+    "sha256": "18E7DB7D7DF49DEC4B6CBE31DB603DCD88E0D8F271597239459E6F7E8304536E",
+    "path": "src/character/sixiang/index.js"
+  },
+  {
+    "sha256": "0ECFBF802FBA3E486943DE135204B304DC88ACD78E1A7A44992BC19D0D2288CD",
+    "path": "src/character/sixiang/intro.js"
+  },
+  {
+    "sha256": "3D94D4DE2580AE6B4467816A186B4474AC3D13C612E0EE0BB823B1017D566799",
+    "path": "src/character/sixiang/perfectPairs.js"
+  },
+  {
+    "sha256": "3D3874473A0B6057F5E165EB1BD484A05E79429EB8E66CFFD95BF54A2545155C",
+    "path": "src/character/sixiang/pinyin.js"
+  },
+  {
+    "sha256": "04A36D66C6D4BD2975705E3DAAB82A3B77CCAE9AA6AA37307D6552AADE585D9D",
+    "path": "src/character/sixiang/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/sixiang/sort.js"
+  },
+  {
+    "sha256": "FCCCFF43BB782EBA6A17CF87A344A24EBA5F531EFA391C35D676CA269CE189FF",
+    "path": "src/character/sixiang/translate.js"
+  },
+  {
+    "sha256": "3D94D4DE2580AE6B4467816A186B4474AC3D13C612E0EE0BB823B1017D566799",
+    "path": "src/character/sixiang/voices.js"
+  },
+  {
+    "sha256": "448687A7FB56AD2DF8DA780804C95A93E261502ADDF61D1F813D45E6A25B727A",
+    "path": "src/character/sp/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/sp/character.js"
+  },
+  {
+    "sha256": "366BC571A891EF593D74A98BD9BA0B611DBCEE46A918A24AC6EF257BE97FC34A",
+    "path": "src/character/sp/characterFilter.js"
+  },
+  {
+    "sha256": "6D264C8CF0D6B71B2C6D19CD7010C84A4061BF5283DA71549F73C78F7EC7FB23",
+    "path": "src/character/sp/characterTitle.js"
+  },
+  {
+    "sha256": "E5BC3B32A52E75EF8DA32649573D83F4F5388CBBDAAB59D0B5168D14DCFE7F25",
+    "path": "src/character/sp/dynamicTranslate.js"
+  },
+  {
+    "sha256": "A791FDA66D89C2E19194EB0C5916ABC7B0E1A5C94E2784364A7F3C792ACECB35",
+    "path": "src/character/sp/index.js"
+  },
+  {
+    "sha256": "5A6E903B95C2E862F825DFA8047B8D9CA93CD94E1D46708E4D2ADCE478468E82",
+    "path": "src/character/sp/intro.js"
+  },
+  {
+    "sha256": "3D94D4DE2580AE6B4467816A186B4474AC3D13C612E0EE0BB823B1017D566799",
+    "path": "src/character/sp/perfectPairs.js"
+  },
+  {
+    "sha256": "3D3874473A0B6057F5E165EB1BD484A05E79429EB8E66CFFD95BF54A2545155C",
+    "path": "src/character/sp/pinyin.js"
+  },
+  {
+    "sha256": "2337809BFA1D1C98EB077CA1EEFE556FBC6B44263C07EDC7C13630D5AE26F47B",
+    "path": "src/character/sp/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/sp/sort.js"
+  },
+  {
+    "sha256": "E382AF4729D78868177AE4DA0F772C7BDC1EB25BB9601C15B4832DC4CF9AF06E",
+    "path": "src/character/sp/translate.js"
+  },
+  {
+    "sha256": "410E385D85256A8036D9E8EBB76CB8837F5301B688D82AD19D6A6854270BE684",
+    "path": "src/character/sp/voices.js"
+  },
+  {
+    "sha256": "68FA9CBD70F09CEEF0ED0192D491D99B0AD3B6980E14BC392EC8E506A60B796E",
+    "path": "src/character/sp2/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/sp2/character.js"
+  },
+  {
+    "sha256": "DDA0FFF01A91D3327B6193CC8B38147EA11B5E686C2DF035349A1E354722AA7F",
+    "path": "src/character/sp2/characterFilter.js"
+  },
+  {
+    "sha256": "495DC01942D1D0502078D269F16DC91946C0E74D93E150C1B03CD2FF61997D87",
+    "path": "src/character/sp2/characterTitle.js"
+  },
+  {
+    "sha256": "7A5D371013EC4F5E77CD1E04CD188BBDD040FE0F16BFE922EB1DE1940FE85383",
+    "path": "src/character/sp2/dynamicTranslate.js"
+  },
+  {
+    "sha256": "02F5A0A3DEFAE74EB9C5B678129505474C47C8FEF483FDDC0AA894A8314198B1",
+    "path": "src/character/sp2/index.js"
+  },
+  {
+    "sha256": "4EB2CBB58F91EF9767E5C2E906EE3483A7F4005C2BF87C081B4A9BD07D712385",
+    "path": "src/character/sp2/intro.js"
+  },
+  {
+    "sha256": "3D94D4DE2580AE6B4467816A186B4474AC3D13C612E0EE0BB823B1017D566799",
+    "path": "src/character/sp2/perfectPairs.js"
+  },
+  {
+    "sha256": "3D3874473A0B6057F5E165EB1BD484A05E79429EB8E66CFFD95BF54A2545155C",
+    "path": "src/character/sp2/pinyin.js"
+  },
+  {
+    "sha256": "77496DBFB0B7E99FF78073EE74FEFD0D733BC9449431DF4644922F374D75FE18",
+    "path": "src/character/sp2/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/sp2/sort.js"
+  },
+  {
+    "sha256": "F498117F5540100F945985C216234E481B97B47DE149DBCEA5F2BFFC54D662D7",
+    "path": "src/character/sp2/translate.js"
+  },
+  {
+    "sha256": "6B13775EC3D998394566F21264647807C0C9B563903A4CB5564CF14306AD9D39",
+    "path": "src/character/sp2/voices.js"
+  },
+  {
+    "sha256": "68FA9CBD70F09CEEF0ED0192D491D99B0AD3B6980E14BC392EC8E506A60B796E",
+    "path": "src/character/standard/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/standard/character.js"
+  },
+  {
+    "sha256": "9F8434483B6E947B0A59A8DF0C4B1D30FE3BF53863E966C3C48636E63129AFAA",
+    "path": "src/character/standard/characterFilter.js"
+  },
+  {
+    "sha256": "BDFA9FBE69D4934378E9F77E0B5B81BD5F1D99AD183F1BFF50BF939FBE6285C2",
+    "path": "src/character/standard/characterTitle.js"
+  },
+  {
+    "sha256": "020D36DA3E24142E5C602E910665F8346A400927183C78D3E472385113BBBB79",
+    "path": "src/character/standard/dynamicTranslate.js"
+  },
+  {
+    "sha256": "290CD02F2A3F797CEB150CF23AB022C889B9C322F6A492E81AE3D6B6A2C67B36",
+    "path": "src/character/standard/index.js"
+  },
+  {
+    "sha256": "F445F8767EE3FB2E80E30DD8F6E4EAEDA0C93C9851F22680A121A77E12DEA14D",
+    "path": "src/character/standard/intro.js"
+  },
+  {
+    "sha256": "3D94D4DE2580AE6B4467816A186B4474AC3D13C612E0EE0BB823B1017D566799",
+    "path": "src/character/standard/perfectPairs.js"
+  },
+  {
+    "sha256": "3D3874473A0B6057F5E165EB1BD484A05E79429EB8E66CFFD95BF54A2545155C",
+    "path": "src/character/standard/pinyin.js"
+  },
+  {
+    "sha256": "3856DB791AE4095BADB1C413B755AA9743A198F6548FA8969E66404674C8CD61",
+    "path": "src/character/standard/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/standard/sort.js"
+  },
+  {
+    "sha256": "5E8E1E4848029D694D1DE2C5C0340A96A38CB5C04D61D44B6341A6A63EFF14CC",
+    "path": "src/character/standard/translate.js"
+  },
+  {
+    "sha256": "05E3D0963095824979CD62BE330AD1452E0A993BD65898CB324920CAF65A4F25",
+    "path": "src/character/standard/voices.js"
+  },
+  {
+    "sha256": "68FA9CBD70F09CEEF0ED0192D491D99B0AD3B6980E14BC392EC8E506A60B796E",
+    "path": "src/character/sxrm/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/sxrm/character.js"
+  },
+  {
+    "sha256": "9F8434483B6E947B0A59A8DF0C4B1D30FE3BF53863E966C3C48636E63129AFAA",
+    "path": "src/character/sxrm/characterFilter.js"
+  },
+  {
+    "sha256": "428AD56B00EE5CBA3C67D5436C6FAAD5366261C7781B83334473B850A1911BEB",
+    "path": "src/character/sxrm/characterTitle.js"
+  },
+  {
+    "sha256": "0F015CF16C52E6808492BC14EA54AC6929D9D4B3B15A1623F982F542C817FD39",
+    "path": "src/character/sxrm/dynamicTranslate.js"
+  },
+  {
+    "sha256": "0DA68D55E72E5DA900D030FB99A6F3C910BD7BCD8261F75FB56FC77F820F1D96",
+    "path": "src/character/sxrm/index.js"
+  },
+  {
+    "sha256": "7608F6C62098AD02C55670F8D00E1390907D5DD236F683298CFFE1C3229A4694",
+    "path": "src/character/sxrm/intro.js"
+  },
+  {
+    "sha256": "3D3874473A0B6057F5E165EB1BD484A05E79429EB8E66CFFD95BF54A2545155C",
+    "path": "src/character/sxrm/pinyin.js"
+  },
+  {
+    "sha256": "8DEDD1069D9517EEDD1A87C1A0BBEA7004F10C77EB5784A9183E0262766E91E9",
+    "path": "src/character/sxrm/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/sxrm/sort.js"
+  },
+  {
+    "sha256": "D9CFFF32847EAC987874FF4436221F7B5692D17D2C8ADA3B2E568DEAC648B85D",
+    "path": "src/character/sxrm/translate.js"
+  },
+  {
+    "sha256": "F676D8869BEFAD12EB45CD88F52E515876670CA63B91937950F5812B292248EC",
+    "path": "src/character/sxrm/voices.js"
+  },
+  {
+    "sha256": "DE74355D9BBCCAED3E594DD774FE7A7AB96D092B9CE7A50CD89B33D4FC0D5A8C",
+    "path": "src/character/tw/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/tw/character.js"
+  },
+  {
+    "sha256": "88F9BD3E48E5B021DA0A146ABF07EDC0D92FF2C5025BB2D8DE26A87A7D4B9008",
+    "path": "src/character/tw/characterFilter.js"
+  },
+  {
+    "sha256": "7424E23DE5DFC36BCA5D1403B3891F4F1F9189137B1B946311597B84494765D9",
+    "path": "src/character/tw/characterTitle.js"
+  },
+  {
+    "sha256": "8E17A4ACFF16CD529E0890AFF00C9536B75BD862F02CAAF7DBA16055378EFE1C",
+    "path": "src/character/tw/dynamicTranslate.js"
+  },
+  {
+    "sha256": "25879FFBD1C2217B5D5651B401951A4524889FE85089747ED25D8B758E0656B3",
+    "path": "src/character/tw/index.js"
+  },
+  {
+    "sha256": "ED2A9FE42268EFABEFA84C1C21F0A756058088B23F5E897F35F1CF0D3D228B96",
+    "path": "src/character/tw/intro.js"
+  },
+  {
+    "sha256": "3D94D4DE2580AE6B4467816A186B4474AC3D13C612E0EE0BB823B1017D566799",
+    "path": "src/character/tw/perfectPairs.js"
+  },
+  {
+    "sha256": "95194C854AE46AC197A9826D14AE57398A3679AB7C67FC2457B7423129FC2F48",
+    "path": "src/character/tw/pinyin.js"
+  },
+  {
+    "sha256": "CEBF9F0755AB258F038F69B0F59E69D79E97A786468DF7B4E379F6249251EBA8",
+    "path": "src/character/tw/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/tw/sort.js"
+  },
+  {
+    "sha256": "158D6EA7C665613ECC960AD4D5BFE56D69D0E54CB75BAF89F507F7A24AF01CB6",
+    "path": "src/character/tw/translate.js"
+  },
+  {
+    "sha256": "4D748AAA3BBAA95484A8DD7E5972791A59267D07ADC84F602409BC16B0EE5533",
+    "path": "src/character/tw/voices.js"
+  },
+  {
+    "sha256": "4D7951227F901C1623FB285CAAF1912A64160A520790E4048FB728B001448703",
+    "path": "src/character/western/character.js"
+  },
+  {
+    "sha256": "4A1951BE4B834FAF3FE3FF2A0E7F291934F9D552DF2C35DEE2225B6C8289F342",
+    "path": "src/character/western/index.js"
+  },
+  {
+    "sha256": "63B08F743FC6BBCF180ABDABFEC721B524AE508851E7BB7C214200B6A7C5056E",
+    "path": "src/character/xianding/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/xianding/character.js"
+  },
+  {
+    "sha256": "FA3159639C9D78378F6BEE5C24A6AB42CA669320AD6C15720F265E0490BBE8F1",
+    "path": "src/character/xianding/characterFilter.js"
+  },
+  {
+    "sha256": "4827EB1A6C6C1E604AB8FA89148DFCA2174B1B22030D96997BE9AC5133DCB717",
+    "path": "src/character/xianding/characterTitle.js"
+  },
+  {
+    "sha256": "9E3C294254A2FC7894A686F096D8DA0A18270162C4CFCD5C93EF143953725EDC",
+    "path": "src/character/xianding/dynamicTranslate.js"
+  },
+  {
+    "sha256": "53C4B2714D7E1E4D83CA61689D20BAE717F80555B9691E83E74202E72F537E4B",
+    "path": "src/character/xianding/index.js"
+  },
+  {
+    "sha256": "77DD07E97351751D7E70C03A97B85253178E1AFFAE3D772C75DE857C034C1CC4",
+    "path": "src/character/xianding/intro.js"
+  },
+  {
+    "sha256": "9F085B1079AB38F776BBB3930DFD067A838CA3E0483AFF8625F88837E8ED964C",
+    "path": "src/character/xianding/perfectPairs.js"
+  },
+  {
+    "sha256": "3D3874473A0B6057F5E165EB1BD484A05E79429EB8E66CFFD95BF54A2545155C",
+    "path": "src/character/xianding/pinyin.js"
+  },
+  {
+    "sha256": "82B3EDB26CDC75FA7714A3B0C59661868B4BCE176527CD3785544F6782C2EF4F",
+    "path": "src/character/xianding/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/xianding/sort.js"
+  },
+  {
+    "sha256": "BE50E4AAFDBE888B73217D9CFC0AD8245799231E7CC227E718619C00EE7D0EBF",
+    "path": "src/character/xianding/translate.js"
+  },
+  {
+    "sha256": "67AAB8A7C7B8A05C9071377D5EAFA4FBCF5721EBB5EF0D05492240D6971864AD",
+    "path": "src/character/xianding/voices.js"
+  },
+  {
+    "sha256": "BD3BF3C09B8917E74ED1AE771D5F690AB894C085D5DD3436A7B339C0D8E88DEF",
+    "path": "src/character/yijiang/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/yijiang/character.js"
+  },
+  {
+    "sha256": "9F8434483B6E947B0A59A8DF0C4B1D30FE3BF53863E966C3C48636E63129AFAA",
+    "path": "src/character/yijiang/characterFilter.js"
+  },
+  {
+    "sha256": "F5D9B07386C17C3C870E8D0E1C10A2E62EB9A5E78D4D25673ACAC441D965891A",
+    "path": "src/character/yijiang/characterTitle.js"
+  },
+  {
+    "sha256": "C1951A9F3B79B42836089A889F98DA072CBF942FAC0DEAFFABA5BFE914399BCD",
+    "path": "src/character/yijiang/dynamicTranslate.js"
+  },
+  {
+    "sha256": "62FD6CEC4EE9A365791B04B1463A8247718D2E268CBBEB6682467E5BD78D7941",
+    "path": "src/character/yijiang/index.js"
+  },
+  {
+    "sha256": "3E930826CD65985AD3AD0FF95D6931638EF20504219F11213B54018876D80696",
+    "path": "src/character/yijiang/intro.js"
+  },
+  {
+    "sha256": "3D94D4DE2580AE6B4467816A186B4474AC3D13C612E0EE0BB823B1017D566799",
+    "path": "src/character/yijiang/perfectPairs.js"
+  },
+  {
+    "sha256": "3D3874473A0B6057F5E165EB1BD484A05E79429EB8E66CFFD95BF54A2545155C",
+    "path": "src/character/yijiang/pinyin.js"
+  },
+  {
+    "sha256": "97C6F38ADCE5AF083AE95593484F49479E435B67619821C0AF1821782F93D592",
+    "path": "src/character/yijiang/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/yijiang/sort.js"
+  },
+  {
+    "sha256": "064B6967CDF85D364E4BB2ECCC483F11A831AC373E36EE8A02DE0F20E1B7E812",
+    "path": "src/character/yijiang/translate.js"
+  },
+  {
+    "sha256": "626DB8FA37A6B0F38FA3BD2B34D961AE0C35E4D45304BC742B53ECF7140F0E0E",
+    "path": "src/character/yijiang/voices.js"
+  },
+  {
+    "sha256": "E60141670CA4DFBFA149599623D2F4BD16D353B2BEBECD8CFB880FF0C84F3983",
+    "path": "src/character/yingbian/card.js"
+  },
+  {
+    "sha256": "150C7D2A6A9568205F077B797AEEF1B82B36EBB480ABAC0A0C7EA319E0C2E8EC",
+    "path": "src/character/yingbian/character.js"
+  },
+  {
+    "sha256": "9F8434483B6E947B0A59A8DF0C4B1D30FE3BF53863E966C3C48636E63129AFAA",
+    "path": "src/character/yingbian/characterFilter.js"
+  },
+  {
+    "sha256": "2287E523B58C4AB11B69A098761D8F0750383CC5BB25F78C7A41F7D7A67536D7",
+    "path": "src/character/yingbian/characterTitle.js"
+  },
+  {
+    "sha256": "020D36DA3E24142E5C602E910665F8346A400927183C78D3E472385113BBBB79",
+    "path": "src/character/yingbian/dynamicTranslate.js"
+  },
+  {
+    "sha256": "2C395005F3EFE910422BF8AF1CDA57363F76063521FB7C6BD42418FF4C9B6E91",
+    "path": "src/character/yingbian/index.js"
+  },
+  {
+    "sha256": "0A8BB024A0BE4E88DEFF0F0A21309ACAFCECF090DA91E604BCD8B9DB509FC352",
+    "path": "src/character/yingbian/intro.js"
+  },
+  {
+    "sha256": "3D94D4DE2580AE6B4467816A186B4474AC3D13C612E0EE0BB823B1017D566799",
+    "path": "src/character/yingbian/perfectPairs.js"
+  },
+  {
+    "sha256": "3D3874473A0B6057F5E165EB1BD484A05E79429EB8E66CFFD95BF54A2545155C",
+    "path": "src/character/yingbian/pinyin.js"
+  },
+  {
+    "sha256": "871D7C437399EBC27B4DC6BA54EACC96E32490B19C0AA45D015CD2D4E6BFD461",
+    "path": "src/character/yingbian/skill.js"
+  },
+  {
+    "sha256": "9FB80E6885D5526955A38B41CB024333B6E0288F08143C5B820C781B9BDC660C",
+    "path": "src/character/yingbian/sort.js"
+  },
+  {
+    "sha256": "E46AE3B1B88CDF31AF7DCDF2A6852493DA812C3AD14CBF27E5C1BEC5AA7ECACF",
+    "path": "src/character/yingbian/translate.js"
+  },
+  {
+    "sha256": "FB2AFB518F43F3AA4CFBF86A20DA2B1E7A89604DD26FEDBE4C6B82D23D6CCDFC",
+    "path": "src/character/yingbian/voices.js"
+  },
+  {
+    "sha256": "3DC3420E7FC3635B493F7378DD13B8B4959A4C89963FDDA6F97B40861541345F",
+    "path": "src/mode/identity.js"
+  },
+  {
+    "sha256": "ABD774A298C6C24156F2F1C382A9F5F4068AF41F71FC935A941D50C3524B9043",
     "path": "src/noname/init/index.ts"
   },
   {
-    "sha256": "0B8CAEA1581DD6A6B89D5184A32D2882BC341B63ECF933EC919155EBEC9ABA80",
+    "sha256": "A49C7E0EE9A62556FE8B94685B6BB71C7F02EF3F696EEF7EFBC49B3BB54FD5D4",
     "path": "src/noname/init/mushoku-alucard.js"
   },
   {
-    "sha256": "1A538437F8BC2CF6DA054A0D4E4ECFF24EE81E27BA4DB4F214F2EE2C9A601DF1",
+    "sha256": "4E968D6C53743435AEADCE976D65EBAEF8F5993D1094AA95FFD7061BB77BFE2F",
     "path": "src/noname/init/mushoku-boss.js"
   },
   {
-    "sha256": "6AB50FEDDFEC22BBDAD7E2CE34E5BCE361EE2DDB67712110D2D1DF2D69A60A7A",
+    "sha256": "012B867B0C41AF8294292FFC29F1E8866E98CA8881A5039A98A1179BF738E500",
     "path": "src/noname/init/mushoku-characters.js"
   },
   {
-    "sha256": "E5366CBA49EADC7E754EE6EC020A1CE03E551E5371302C35333096474D7704BF",
+    "sha256": "CE52C311CFB227BF943C14D966835EFFF6E6689DC746B6DA9D22F9EDFB8A7F01",
     "path": "src/noname/init/mushoku-compatibility.js"
   },
   {
-    "sha256": "2BFC58FBBFDD65B1238479122666EC343BAB48C024219F85FA4F9D5D7336FFBC",
+    "sha256": "A3B78C1259FD6E17E1C41792980FCA915671ADE3A73AD39DB5556FCC94226AC5",
     "path": "src/noname/init/mushoku-online-modes.js"
   },
   {
-    "sha256": "95D985A12061E745BC3A35C20A63FEE3185D0FBB996E5104E8C4468CC0E8CEF0",
+    "sha256": "974E201BA0910168731242C853B6AAA12FB6BA03D9B5C2C7F33FFF9C19F05EBB",
     "path": "src/noname/init/mushoku-online.js"
   },
   {
-    "sha256": "7E7242A1954D2C9D8F7B28903825AFE40DE4FFCA682CA8685197A3367F014664",
+    "sha256": "0D7E2507D9E4081C97112A7C0228A5A264E9E869C8C7632A7B47444C281CD2E8",
     "path": "src/noname/init/mushoku-rosters.js"
   },
   {
-    "sha256": "F080CD61C8D08CE2C69B13A1CE283D6031180B04C648FC8B352ECB27C1366B46",
+    "sha256": "EB74BBA7B32AFE81E76A80BAD1B1CA30A25133B3D990B9E5BBDEE25E42E250A5",
     "path": "src/noname/library/index.js"
   },
   {
-    "sha256": "E92422E05CD277E8FF0AC1958B6431AD7BBF5219D8FFC8F8F576F4D89B04DC76",
+    "sha256": "4302D48EB60F3571B780C11894F4C5FE6348277C4A2D56C6A76C8483ECE4F700",
     "path": "src/noname/ui/click/index.js"
   },
   {
-    "sha256": "D3692D40D7FC244301981C22003CA518877F80B1153031A2E0207DCCC96939E6",
+    "sha256": "E262393C1C1381357849D7E322335BFDA10CBA7458D017E37566962E41BED455",
     "path": "src/noname/ui/create/index.js"
   },
   {
@@ -280,15 +1888,47 @@
     "path": "src/noname/ui/create/menu/pages/startMenu.js"
   },
   {
-    "sha256": "25766E89E8182B969443C39988B45B69B551E8907982CE49DE1E122DB3A275B9",
+    "sha256": "1A7A045B6543849FBEEEC327982569383D2BFA68E7DD799B29A050D006D2092C",
     "path": "src/noname/ui/mobile-accessibility.js"
   },
   {
-    "sha256": "9FE0AE35587476BA37AB6F4C125AAAEEA260459779E9BBB04AD7E18607778343",
-    "path": "mode/identity.js"
+    "sha256": "8B7A38CD7F11D425412AEEEA97B031D127F8710F285ADC507E246F1E4090EF26",
+    "path": "updater/android-launcher.html"
   },
   {
-    "sha256": "3DC3420E7FC3635B493F7378DD13B8B4959A4C89963FDDA6F97B40861541345F",
-    "path": "src/mode/identity.js"
+    "sha256": "8BE1A82A10BE321BABAAD013FBE96F25F8C20F9A12484780D4CEC03FA0806EDB",
+    "path": "updater/android-launcher.mjs"
+  },
+  {
+    "sha256": "9D6402B3D77E2BEAB9DF4651D1E2D94A2D0B824F319173B468BBEDACE4990C7F",
+    "path": "updater/config.json"
+  },
+  {
+    "sha256": "6297997D741D25B6E069B72168E4A214CBD5F324DC16A86A5DA5120AAEABA0DF",
+    "path": "updater/core.mjs"
+  },
+  {
+    "sha256": "67708971B005BDBBD13CCC79CA77353F00CE75C2425E5BC01DA102F9145D89CA",
+    "path": "updater/electron.mjs"
+  },
+  {
+    "sha256": "D5DCB3DBEA60637E1A4B7263874A34B1FDAED04CEE043E75A8D032CB7A7D0917",
+    "path": "updater/install.ps1"
+  },
+  {
+    "sha256": "FD633AF12CBFB29DCB079F16F88744FA1BF4AAC9F96E8F936CA5CDB7BC95DD40",
+    "path": "updater/launcher.css"
+  },
+  {
+    "sha256": "35F21CC84A04CDFB6F005C1E1B9AC33BA7A61DF7E02CB35665A33ACF066AFF0B",
+    "path": "updater/launcher.html"
+  },
+  {
+    "sha256": "FE2FFC521F679A0628A1F79C1BDA05E752CCF2F83D688DE867C0BE255A01C08A",
+    "path": "updater/launcher.mjs"
+  },
+  {
+    "sha256": "98EB57253597D9CEC6F8C5578F4C6EEB28A54EB296C88C44489A9CC23EC33F80",
+    "path": "updater/version.json"
   }
 ]

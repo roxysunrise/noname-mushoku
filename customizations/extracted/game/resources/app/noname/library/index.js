@@ -13046,6 +13046,7 @@ class Library {
             }
             player.playerid = i;
             player.nickname = info.nickname;
+            player.displayAi = info.displayAi;
             player.group = info.group;
             player.node.name.dataset.nature = get.groupnature(info.group);
             player.identity = info.identity;
