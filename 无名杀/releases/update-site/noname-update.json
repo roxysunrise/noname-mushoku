@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "version": "2026.10.24.1",
+  "baseVersion": "1.11.7",
+  "releasedAt": "2026-10-24",
+  "title": "角色技能更新",
+  "notes": [
+    "战斗机/坦克势力修正为群，副标签更新为机械",
+    "鸡仔换血与连击技能重构",
+    "战斗机游击改为弃置敌方手牌",
+    "保留游戏存档；仅允许高于本地版本的更新"
+  ],
+  "windows": {
+    "url": "https://noname-updates-d3gpg961xc497eb27-1510703983.tcloudbaseapp.com/noname-patch-2026.10.24.1.zip",
+    "bytes": 16436072,
+    "sha256": "7d141420890ec6784b52216978afcae6fd33f76be4a2f152db20a9bc1fc0a173"
+  },
+  "android": {
+    "url": "https://noname-updates-d3gpg961xc497eb27-1510703983.tcloudbaseapp.com/noname-patch-2026.10.24.1.zip",
+    "bytes": 16436072,
+    "sha256": "7d141420890ec6784b52216978afcae6fd33f76be4a2f152db20a9bc1fc0a173"
+  }
+}
