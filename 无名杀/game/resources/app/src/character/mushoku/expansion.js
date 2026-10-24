@@ -237,7 +237,7 @@ export default {
   } }, start: { charlotte: true, trigger: { player: "phaseBegin" }, forced: true, popup: false, content(event, trigger, player) { player.storage.ac_worldline_counting = true; } } },
  },
  ac_zhikong: { locked: true, mod: { targetInRange(card) { if (card.name === "sha") return true; }, globalTo(from, to, distance) { return distance + 1; } } },
- ac_youji: { enable: "phaseUse", usable: 1, position: "he", selectCard: 1, filterCard: true, filter(event, player) { return player.countCards("he") > 0 && game.hasPlayer(target => target !== player && target.countCards("h") > 0); }, filterTarget(card, player, target) { return target !== player && target.countCards("h") > 0; }, async content(event, trigger, player) { const target = event.target; if (!target.isIn() || !target.countCards("h")) return; await player.viewHandcards(target); if (!target.isIn() || !target.countCards("h")) return; await player.gainPlayerCard(target, "h", true, "visible"); }, ai: { order: 5, result: { target: -1 } } },
+ ac_youji: { enable: "phaseUse", usable: 1, position: "he", selectCard: 1, filterCard: true, filter(event, player) { return player.countCards("he") > 0 && game.hasPlayer(target => target !== player && target.countCards("h") > 0); }, filterTarget(card, player, target) { return target !== player && target.countCards("h") > 0; }, async content(event, trigger, player) { const target = event.target; if (!target.isIn() || !target.countCards("h")) return; await player.viewHandcards(target); if (!target.isIn() || !target.countCards("h")) return; await player.discardPlayerCard(target, "h", true, "visible"); }, ai: { order: 5, result: { target: -1 } } },
  ac_guibi: { trigger: { target: "useCardToTargeted" }, usable: 1, filter(event, player) { return event.card?.name === "sha" && player.countCards("he") > 0; }, async cost(event, trigger, player) { event.result = await player.chooseToDiscard("he", "规避：弃置一张牌，令此杀对你无效").set("chooseonly", true).set("ai", remoteChoice("card => 6 - get.value(card)")).forResult(); }, async content(event, trigger, player) { await player.discard(event.cards); trigger.getParent().excluded.add(player); } },
  ac_sijian: {
   trigger: { player: ["loseAfter", "dying"], global: ["equipAfter", "addJudgeAfter", "gainAfter", "loseAsyncAfter", "addToExpansionAfter"] }, usable: 2,
@@ -293,6 +293,65 @@ export default {
  ac_paoji: { enable: "phaseUse", usable: 1, position: "he", selectCard: 1, filterCard: card => get.type(card) === "equip", filter(event, player) { return player.countCards("he", card => get.type(card) === "equip") > 0; }, filterTarget(card, player, target) { return target !== player; }, async content(event, trigger, player) { if (event.target.isIn()) await event.target.damage(1, player); }, ai: { order: 6, result: { target: -1 } } },
  ac_gushou: { enable: "phaseUse", usable: 1, position: "he", selectCard: 1, filterCard: true, async content(event, trigger, player) { player.addTempSkill("ac_gushou_buff", { player: "phaseBegin" }); }, ai: { order: 3, result: { player: 1 } }, subSkill: { buff: { charlotte: true, mark: true, marktext: "守", intro: { content: "其他角色计算与你的距离+1；成为杀的目标时摸一张牌。" }, mod: { globalTo(from, to, distance) { return distance + 1; } }, trigger: { target: "useCardToTargeted" }, forced: true, filter(event, player) { return event.card?.name === "sha"; }, async content(event, trigger, player) { await player.draw(); } } } },
  mc_jinshen: { enable: "phaseUse", position: "h", filterCard: true, viewAs: { name: "sha" }, check: card => 5 - get.value(card), ai: { order: 5 }, mod: { attackRange(player, range) { return range + 3; } } },
- mc_huanxue: { enable: "phaseUse", usable: 1, filter(event, player) { return player.hp > 0; }, async content(event, trigger, player) { await player.loseHp(); if (!player.isIn()) return; player.addTempSkill("mc_huanxue_buff", { player: "phaseUseAfter" }); player.storage.mc_huanxue_buff = true; }, ai: { order: 3, result: { player: 1 } }, subSkill: { buff: { charlotte: true, onremove: true, trigger: { source: "damageBegin1" }, filter(event, player) { return player.storage.mc_huanxue_buff && event.card?.name === "sha" && event.getParent("useCard")?.player === player && event.num > 0; }, async content(event, trigger, player) { trigger.num++; player.storage.mc_huanxue_buff = false; player.removeSkill("mc_huanxue_buff"); } } } },
- mc_lianji: { enable: "phaseUse", limited: true, skillAnimation: true, animationColor: "orange", filterTarget(card, player, target) { return target !== player; }, async content(event, trigger, player) { player.awakenSkill("mc_lianji"); player.storage.mc_lianji = { target: event.target, active: true, rounds: 2 }; player.addSkill("mc_lianji_dot"); player.addSkill("mc_lianji_counter"); player.addSkill("mc_lianji_ondeath"); player.addSkill("mc_lianji_nodraw"); }, subSkill: { dot: { charlotte: true, trigger: { global: "phaseBegin" }, forced: true, popup: false, filter(event, player) { const s = player.storage.mc_lianji; return s?.active && s.target?.isIn() && player.isIn(); }, async content(event, trigger, player) { const target = player.storage.mc_lianji.target; if (!target?.isIn()) return; player.logSkill("mc_lianji", target); await target.damage(1, player); } }, counter: { charlotte: true, trigger: { global: "roundStart" }, forced: true, popup: false, filter(event, player) { const s = player.storage.mc_lianji; return s?.active && s.rounds > 0; }, async content(event, trigger, player) { player.storage.mc_lianji.rounds--; if (player.storage.mc_lianji.rounds <= 0) { player.storage.mc_lianji.active = false; player.removeSkill("mc_lianji_dot"); player.removeSkill("mc_lianji_counter"); player.storage.mc_lianji.nodraw_pending = true; } } }, ondeath: { charlotte: true, trigger: { player: "dieAfter" }, forced: true, popup: false, filter(event, player) { return player.storage.mc_lianji?.active; }, async content(event, trigger, player) { player.storage.mc_lianji.active = false; player.removeSkill("mc_lianji_dot"); player.removeSkill("mc_lianji_counter"); player.removeSkill("mc_lianji_ondeath"); player.removeSkill("mc_lianji_nodraw"); delete player.storage.mc_lianji; } }, nodraw: { charlotte: true, trigger: { player: "phaseDrawBegin1" }, forced: true, filter(event, player) { return player.storage.mc_lianji?.nodraw_pending; }, async content(event, trigger, player) { trigger.cancel(); delete player.storage.mc_lianji; player.removeSkill("mc_lianji_nodraw"); } } } },
+ mc_huanxue: {
+  enable: "phaseUse", usable: 1,
+  filter(event, player) { return player.hp > 0; },
+  async content(event, trigger, player) {
+   await player.loseHp();
+   if (!player.isIn()) return;
+   player.addTempSkill("mc_huanxue_buff", { global: "phaseAfter" });
+  },
+  ai: { order: 3, result: { player: 1 } },
+  subSkill: { buff: {
+   charlotte: true, trigger: { player: "useCard1" }, forced: true,
+   filter(event) { return event.card?.name === "sha"; },
+   async content(event, trigger, player) {
+    trigger.baseDamage = (typeof trigger.baseDamage === "number" ? trigger.baseDamage : 1) + 1;
+    player.removeSkill("mc_huanxue_buff");
+   },
+  } },
+ },
+ mc_lianji: {
+  enable: "phaseUse", limited: true, skillAnimation: true, animationColor: "orange",
+  filterTarget(card, player, target) { return target !== player; },
+  async content(event, trigger, player) {
+   player.awakenSkill("mc_lianji");
+   player.storage.mc_lianji = { target: event.target, remaining: 2 };
+   player.addSkill("mc_lianji_dot");
+   player.addSkill("mc_lianji_ondeath");
+   player.addSkill("mc_lianji_nodraw");
+  },
+  subSkill: {
+   dot: {
+    charlotte: true, trigger: { player: "phaseBegin" }, forced: true, popup: false,
+    async content(event, trigger, player) {
+     const state = player.storage.mc_lianji;
+     if (!state || !player.isIn()) return;
+     state.remaining--;
+     if (state.target?.isIn()) {
+      player.logSkill("mc_lianji", state.target);
+      await state.target.damage(1, player);
+     }
+     if (state.remaining <= 0) {
+      delete player.storage.mc_lianji;
+      player.removeSkill("mc_lianji_dot");
+      player.removeSkill("mc_lianji_ondeath");
+     }
+    },
+   },
+   ondeath: {
+    charlotte: true, trigger: { player: "dieAfter" }, forced: true, forceDie: true, popup: false,
+    async content(event, trigger, player) {
+     delete player.storage.mc_lianji;
+     player.removeSkill("mc_lianji_dot");
+     player.removeSkill("mc_lianji_ondeath");
+     player.removeSkill("mc_lianji_nodraw");
+    },
+   },
+   nodraw: {
+    charlotte: true, trigger: { player: "phaseBegin" }, forced: true, popup: false,
+    async content(event, trigger, player) { player.skip("phaseDraw"); player.removeSkill("mc_lianji_nodraw"); },
+   },
+  },
+ },
 };

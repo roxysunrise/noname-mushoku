@@ -32,9 +32,9 @@ var characters = {
   mc_dream: { sex: "male", group: "wang", hp: 4, skills: ["mc_choumou", "mc_xianyi"], img: "image/character/mc_dream.jpg" },
   ac_alucard: { sex: "male", group: "huan", hp: 4, maxHp: 4, skills: ["ac_life", "ac_river", "ac_jackal"], img: "image/character/ac_alucard.jpg" },
   ac_okabe: { sex: "male", group: "huan", hp: 3, maxHp: 3, skills: ["ac_observe", "ac_mail", "ac_worldline"], img: "image/character/ac_okabe.jpg" },
-  ac_fighter: { sex: "none", group: "qi", hp: 4, maxHp: 4, skills: ["ac_zhikong", "ac_youji", "ac_guibi"], img: "image/character/ac_fighter.jpg" },
-  ac_tank: { sex: "none", group: "qi", hp: 4, maxHp: 4, skills: ["ac_zhuangjia", "ac_paoji", "ac_gushou"], img: "image/character/ac_tank.jpg" },
-  mc_chicken: { sex: "male", group: "yi", hp: 4, skills: ["mc_jinshen", "mc_huanxue", "mc_lianji"] },
+  ac_fighter: { sex: "none", group: "qun", hp: 4, maxHp: 4, skills: ["ac_zhikong", "ac_youji", "ac_guibi"], img: "image/character/ac_fighter.jpg" },
+  ac_tank: { sex: "none", group: "qun", hp: 4, maxHp: 4, skills: ["ac_zhuangjia", "ac_paoji", "ac_gushou"], img: "image/character/ac_tank.jpg" },
+  mc_chicken: { sex: "male", group: "yi", hp: 4, skills: ["mc_jinshen", "mc_huanxue", "mc_lianji"], img: "image/character/mc_chicken.jpg" },
   mt_rudeus: { sex: "male", group: "huan", hp: 3, skills: ["mt_voiceless", "mt_foresight"] },
   mt_roxy: { sex: "female", group: "huan", hp: 3, skills: ["mt_roxy_mana", "mt_roxy_water", "mt_roxy_spirit", "mt_roxy_rain"] },
   mt_sylphie: { sex: "female", group: "huan", hp: 3, skills: ["mt_heal", "mt_guard"] },
@@ -532,7 +532,7 @@ var expansion_default = {
     if (!target.isIn() || !target.countCards("h")) return;
     await player.viewHandcards(target);
     if (!target.isIn() || !target.countCards("h")) return;
-    await player.gainPlayerCard(target, "h", true, "visible");
+    await player.discardPlayerCard(target, "h", true, "visible");
   }, ai: { order: 5, result: { target: -1 } } },
   ac_guibi: { trigger: { target: "useCardToTargeted" }, usable: 1, filter(event, player) {
     return event.card?.name === "sha" && player.countCards("he") > 0;
@@ -623,64 +623,92 @@ var expansion_default = {
   mc_jinshen: { enable: "phaseUse", position: "h", filterCard: true, viewAs: { name: "sha" }, check: (card) => 5 - get2.value(card), ai: { order: 5 }, mod: { attackRange(player, range) {
     return range + 3;
   } } },
-  mc_huanxue: { enable: "phaseUse", usable: 1, filter(event, player) {
-    return player.hp > 0;
-  }, async content(event, trigger, player) {
-    await player.loseHp();
-    if (!player.isIn()) return;
-    player.addTempSkill("mc_huanxue_buff", { player: "phaseUseAfter" });
-    player.storage.mc_huanxue_buff = true;
-  }, ai: { order: 3, result: { player: 1 } }, subSkill: { buff: { charlotte: true, onremove: true, trigger: { source: "damageBegin1" }, filter(event, player) {
-    return player.storage.mc_huanxue_buff && event.card?.name === "sha" && event.getParent("useCard")?.player === player && event.num > 0;
-  }, async content(event, trigger, player) {
-    trigger.num++;
-    player.storage.mc_huanxue_buff = false;
-    player.removeSkill("mc_huanxue_buff");
-  } } } },
-  mc_lianji: { enable: "phaseUse", limited: true, skillAnimation: true, animationColor: "orange", filterTarget(card, player, target) {
-    return target !== player;
-  }, async content(event, trigger, player) {
-    player.awakenSkill("mc_lianji");
-    player.storage.mc_lianji = { target: event.target, active: true, rounds: 2 };
-    player.addSkill("mc_lianji_dot");
-    player.addSkill("mc_lianji_counter");
-    player.addSkill("mc_lianji_ondeath");
-    player.addSkill("mc_lianji_nodraw");
-  }, subSkill: { dot: { charlotte: true, trigger: { global: "phaseBegin" }, forced: true, popup: false, filter(event, player) {
-    const s = player.storage.mc_lianji;
-    return s?.active && s.target?.isIn() && player.isIn();
-  }, async content(event, trigger, player) {
-    const target = player.storage.mc_lianji.target;
-    if (!target?.isIn()) return;
-    player.logSkill("mc_lianji", target);
-    await target.damage(1, player);
-  } }, counter: { charlotte: true, trigger: { global: "roundStart" }, forced: true, popup: false, filter(event, player) {
-    const s = player.storage.mc_lianji;
-    return s?.active && s.rounds > 0;
-  }, async content(event, trigger, player) {
-    player.storage.mc_lianji.rounds--;
-    if (player.storage.mc_lianji.rounds <= 0) {
-      player.storage.mc_lianji.active = false;
-      player.removeSkill("mc_lianji_dot");
-      player.removeSkill("mc_lianji_counter");
-      player.storage.mc_lianji.nodraw_pending = true;
+  mc_huanxue: {
+    enable: "phaseUse",
+    usable: 1,
+    filter(event, player) {
+      return player.hp > 0;
+    },
+    async content(event, trigger, player) {
+      await player.loseHp();
+      if (!player.isIn()) return;
+      player.addTempSkill("mc_huanxue_buff", { global: "phaseAfter" });
+    },
+    ai: { order: 3, result: { player: 1 } },
+    subSkill: { buff: {
+      charlotte: true,
+      trigger: { player: "useCard1" },
+      forced: true,
+      filter(event) {
+        return event.card?.name === "sha";
+      },
+      async content(event, trigger, player) {
+        trigger.baseDamage = (typeof trigger.baseDamage === "number" ? trigger.baseDamage : 1) + 1;
+        player.removeSkill("mc_huanxue_buff");
+      }
+    } }
+  },
+  mc_lianji: {
+    enable: "phaseUse",
+    limited: true,
+    skillAnimation: true,
+    animationColor: "orange",
+    filterTarget(card, player, target) {
+      return target !== player;
+    },
+    async content(event, trigger, player) {
+      player.awakenSkill("mc_lianji");
+      player.storage.mc_lianji = { target: event.target, remaining: 2 };
+      player.addSkill("mc_lianji_dot");
+      player.addSkill("mc_lianji_ondeath");
+      player.addSkill("mc_lianji_nodraw");
+    },
+    subSkill: {
+      dot: {
+        charlotte: true,
+        trigger: { player: "phaseBegin" },
+        forced: true,
+        popup: false,
+        async content(event, trigger, player) {
+          const state = player.storage.mc_lianji;
+          if (!state || !player.isIn()) return;
+          state.remaining--;
+          if (state.target?.isIn()) {
+            player.logSkill("mc_lianji", state.target);
+            await state.target.damage(1, player);
+          }
+          if (state.remaining <= 0) {
+            delete player.storage.mc_lianji;
+            player.removeSkill("mc_lianji_dot");
+            player.removeSkill("mc_lianji_ondeath");
+          }
+        }
+      },
+      ondeath: {
+        charlotte: true,
+        trigger: { player: "dieAfter" },
+        forced: true,
+        forceDie: true,
+        popup: false,
+        async content(event, trigger, player) {
+          delete player.storage.mc_lianji;
+          player.removeSkill("mc_lianji_dot");
+          player.removeSkill("mc_lianji_ondeath");
+          player.removeSkill("mc_lianji_nodraw");
+        }
+      },
+      nodraw: {
+        charlotte: true,
+        trigger: { player: "phaseBegin" },
+        forced: true,
+        popup: false,
+        async content(event, trigger, player) {
+          player.skip("phaseDraw");
+          player.removeSkill("mc_lianji_nodraw");
+        }
+      }
     }
-  } }, ondeath: { charlotte: true, trigger: { player: "dieAfter" }, forced: true, popup: false, filter(event, player) {
-    return player.storage.mc_lianji?.active;
-  }, async content(event, trigger, player) {
-    player.storage.mc_lianji.active = false;
-    player.removeSkill("mc_lianji_dot");
-    player.removeSkill("mc_lianji_counter");
-    player.removeSkill("mc_lianji_ondeath");
-    player.removeSkill("mc_lianji_nodraw");
-    delete player.storage.mc_lianji;
-  } }, nodraw: { charlotte: true, trigger: { player: "phaseDrawBegin1" }, forced: true, filter(event, player) {
-    return player.storage.mc_lianji?.nodraw_pending;
-  }, async content(event, trigger, player) {
-    trigger.cancel();
-    delete player.storage.mc_lianji;
-    player.removeSkill("mc_lianji_nodraw");
-  } } } }
+  }
 };
 
 // game/resources/app/src/character/mushoku/expansion-translate.js
@@ -744,9 +772,10 @@ var expansion_translate_default = {
   mc_jinshen: "\u8FD1\u8EAB\u6218",
   mc_jinshen_info: "\u51FA\u724C\u9636\u6BB5\uFF0C\u4F60\u53EF\u4EE5\u5C06\u4EFB\u610F\u4E00\u5F20\u624B\u724C\u5F53\u505A\u3010\u6740\u3011\u4F7F\u7528\uFF08\u8BA1\u5165\u6B21\u6570\u9650\u5236\uFF0C\u65E0\u53D1\u52A8\u6B21\u6570\u9650\u5236\u610F\u4E3A\u53EF\u591A\u6B21\u8F6C\u5316\uFF09\u3002\u653B\u51FB\u8DDD\u79BB+3\u3002",
   mc_huanxue: "\u6362\u8840",
-  mc_huanxue_info: "\u51FA\u724C\u9636\u6BB5\u9650\u4E00\u6B21\uFF0C\u4F60\u5931\u53BB1\u70B9\u4F53\u529B\uFF0C\u672C\u56DE\u5408\u4F60\u4F7F\u7528\u7684\u4E0B\u4E00\u5F20\u3010\u6740\u3011\u4F24\u5BB3+1\u3002",
+  mc_huanxue_info: "\u51FA\u724C\u9636\u6BB5\u9650\u4E00\u6B21\uFF0C\u4F60\u5931\u53BB1\u70B9\u4F53\u529B\uFF0C\u672C\u56DE\u5408\u4F60\u4F7F\u7528\u7684\u4E0B\u4E00\u5F20\u3010\u6740\u3011\u4F24\u5BB3+1\uFF1B",
   mc_lianji: "\u8FDE\u51FB",
-  mc_lianji_info: "\u9650\u5B9A\u6280\uFF0C\u51FA\u724C\u9636\u6BB5\uFF0C\u4F60\u53EF\u4EE5\u9009\u62E9\u4E00\u540D\u5176\u4ED6\u89D2\u8272\u3002\u6BCF\u56DE\u5408\u5F00\u59CB\u65F6\u5BF9\u5176\u9020\u62101\u70B9\u666E\u901A\u4F24\u5BB3\uFF0C\u6301\u7EED\u4E24\u8F6E\u3002\u82E5\u4E2D\u9014\u4F60\u6B7B\u4EA1\u5219\u7EC8\u6B62\uFF1B\u4F60\u7684\u4E0B\u4E00\u4E2A\u56DE\u5408\u8DF3\u8FC7\u6478\u724C\u9636\u6BB5\u3002"
+  mc_lianji_info: "\u9650\u5B9A\u6280\uFF0C\u51FA\u724C\u9636\u6BB5\uFF0C\u4F60\u53EF\u4EE5\u9009\u62E9\u4E00\u540D\u5176\u4ED6\u89D2\u8272\uFF0C\u6BCF\u56DE\u5408\u5BF9\u5176\u9020\u6210\u4E00\u70B9\u4F24\u5BB3\u6301\u7EED\u4E24\u56DE\u5408\uFF0C\u82E5\u4E2D\u9014\u81EA\u5DF1\u6B7B\u4EA1\u5219\u7EC8\u6B62\uFF1B\u4F60\u7684\u4E0B\u4E00\u4E2A\u56DE\u5408\u4E0D\u80FD\u6478\u724C\u3002",
+  mc_lianji_append: "\u7ED3\u7B97\u8BF4\u660E\uFF1A\u5728\u4F60\u63A5\u4E0B\u6765\u81EA\u5DF1\u7684\u4E24\u4E2A\u56DE\u5408\u5F00\u59CB\u65F6\uFF0C\u5404\u5BF9\u6240\u9009\u89D2\u8272\u9020\u62101\u70B9\u4F24\u5BB3\uFF1B\u53EA\u8DF3\u8FC7\u4F60\u4E0B\u4E00\u4E2A\u56DE\u5408\u7684\u6478\u724C\u9636\u6BB5\uFF0C\u4E0D\u7981\u6B62\u5176\u4ED6\u6548\u679C\u6478\u724C\u3002"
 };
 
 // game/resources/app/src/noname/init/mushoku-rosters.js
@@ -774,8 +803,8 @@ var labels = {
   ac_alucard: [["\u65E0\u751F\u4E4B\u738B", "#9b8cff"], ["\u547D\u6CB3\u541B\u4E34", "#d8b4ff"]],
   boss_alucard: [["\u65E0\u751F\u4E4B\u738B", "#A62D40"], ["\u4E0D\u6B7B", "#7651A8"], ["\u730E\u6740", "#C43D32"], ["\u89E3\u653E", "#A66B12"]],
   ac_okabe: [["\u72C2\u6C14\u79D1\u5B66\u5BB6", "#e5b86b"], ["\u4E16\u754C\u7EBF\u89C2\u6D4B\u8005", "#a7c7ff"]],
-  ac_fighter: [["\u63A0\u7A7A\u4E4B\u7FFC", "#a7d8ff"], ["\u673A\u68B0\u5929\u7A79", "#b8c5d6"]],
-  ac_tank: [["\u94A2\u94C1\u58C1\u5792", "#aab7c4"], ["\u91CD\u88C5\u5821\u5792", "#d2a679"]],
+  ac_fighter: [["\u63A0\u7A7A\u4E4B\u7FFC", "#a7d8ff"], ["\u673A\u68B0", "#b8c5d6"]],
+  ac_tank: [["\u94A2\u94C1\u58C1\u5792", "#aab7c4"], ["\u673A\u68B0", "#d2a679"]],
   boss_johan: [["\u65E0\u540D\u7684\u602A\u7269", "#c7b7cf"], ["\u5B8C\u7F8E\u72AF\u7F6A", "#be8b91"]],
   ac_hulk: [["\u6012\u610F\u5DE8\u795E", "#d66b5d"], ["\u4F3D\u9A6C\u72C2\u6F6E", "#8fd36d"]],
   ac_gojo: [["\u516D\u773C\u672F\u5E08", "#a8c7ff"], ["\u65E0\u91CF\u9886\u57DF", "#d1b4ff"]],
@@ -810,5 +839,5 @@ game3.import("character", () => ({
   skill: { ...skill_default, ...Object.fromEntries(Object.entries(expansion_default).filter(([id]) => id.startsWith("mc_"))) },
   translate: { ...translate_default, ...Object.fromEntries(Object.entries(expansion_translate_default).filter(([id]) => id.startsWith("mc_"))) },
   characterTitle: titlesForPack("minecraft"),
-  characterIntro: { mc_dream: "Dream\uFF0C\u730E\u4EBA\u6E38\u620F\u4F20\u5947\u3002\u7B79\u8C0B\u79EF\u84C4\u7269\u8D44\uFF0C\u9669\u9038\u5728\u7EDD\u5883\u4E2D\u5BFB\u627E\u8F6C\u673A\u3002", mc_netherite: "\u4F59\u70EC\u4E4B\u950B\u3002\u81EA\u4E0B\u754C\u70C8\u7130\u4E2D\u7194\u94F8\u800C\u751F\u7684\u5229\u5203\uFF0C\u653B\u5B88\u968F\u9634\u9633\u8F6C\u6362\u3002", mc_chicken: "\u65B9\u5757\u6597\u58EB\u3002\u6765\u81EAMinecraft\u7684\u9E21\u4ED4\u6218\u58EB\uFF0C\u5F02\u52BF\u529B\uFF0C4\u4F53\u529B\u3002\u8FD1\u8EAB\u6218\u5C06\u4EFB\u610F\u624B\u724C\u8F6C\u5316\u4E3A\u6740\u4E14\u653B\u51FB\u8DDD\u79BB+3\uFF1B\u6362\u8840\u4EE5\u81EA\u4F24\u6362\u53D6\u4E0B\u4E00\u5F20\u6740\u7684\u4F24\u5BB3\u589E\u5E45\uFF1B\u8FDE\u51FB\u4E3A\u9650\u5B9A\u6280\uFF0C\u9009\u5B9A\u4E00\u540D\u89D2\u8272\u540E\u5168\u5C40\u6BCF\u56DE\u5408\u9020\u6210\u6301\u7EED\u538B\u5236\uFF0C\u4EE5\u8DF3\u8FC7\u6478\u724C\u9636\u6BB5\u4E3A\u4EE3\u4EF7\u3002" }
+  characterIntro: { mc_dream: "Dream\uFF0C\u730E\u4EBA\u6E38\u620F\u4F20\u5947\u3002\u7B79\u8C0B\u79EF\u84C4\u7269\u8D44\uFF0C\u9669\u9038\u5728\u7EDD\u5883\u4E2D\u5BFB\u627E\u8F6C\u673A\u3002", mc_netherite: "\u4F59\u70EC\u4E4B\u950B\u3002\u81EA\u4E0B\u754C\u70C8\u7130\u4E2D\u7194\u94F8\u800C\u751F\u7684\u5229\u5203\uFF0C\u653B\u5B88\u968F\u9634\u9633\u8F6C\u6362\u3002", mc_chicken: "\u65B9\u5757\u6597\u58EB\u3002\u7070\u8272\u9E1F\u5934\u3001\u7EA2\u8272\u897F\u88C5\u4E0E\u9ED1\u9886\u5E26\u7684\u65B9\u5757\u6218\u58EB\uFF0C\u5F02\u52BF\u529B\uFF0C4\u4F53\u529B\u3002\u8FD1\u8EAB\u6218\u5C06\u624B\u724C\u8F6C\u5316\u4E3A\u6740\u5E76\u63D0\u5347\u653B\u51FB\u8DDD\u79BB\uFF1B\u6362\u8840\u5F3A\u5316\u672C\u56DE\u5408\u4E0B\u4E00\u5F20\u6740\uFF1B\u8FDE\u51FB\u5728\u81EA\u5DF1\u63A5\u4E0B\u6765\u4E24\u4E2A\u56DE\u5408\u5F00\u59CB\u65F6\u538B\u5236\u540C\u4E00\u76EE\u6807\uFF0C\u5E76\u8DF3\u8FC7\u81EA\u5DF1\u4E0B\u4E00\u4E2A\u56DE\u5408\u7684\u6478\u724C\u9636\u6BB5\u3002" }
 }));
